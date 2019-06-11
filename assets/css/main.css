@@ -6,11 +6,7 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
-@media only screen and (min-width: 768px){ // common tablet/mobile size
-  br {
-    display: none;
-  }
-}
+
 
 html, body, div, span, applet, object,
 iframe, h1, h2, h3, h4, h5, h6, p, blockquote,
@@ -3594,10 +3590,10 @@ input, select, textarea {
 			-webkit-transform: scale(1);
 			-ms-transform: scale(1);
 			transform: scale(1);
-			-moz-transition: -moz-transform 0.2s ease, opacity 0.2s ease;
-			-webkit-transition: -webkit-transform 0.2s ease, opacity 0.2s ease;
-			-ms-transition: -ms-transform 0.2s ease, opacity 0.2s ease;
-			transition: transform 0.2s ease, opacity 0.2s ease;
+			-moz-transition: -moz-transform 0.1s ease, opacity 0.1s ease;
+			-webkit-transition: -webkit-transform 0.1s ease, opacity 0.1s ease;
+			-ms-transition: -ms-transform 0.1s ease, opacity 0.1s ease;
+			transition: transform 0.1s ease, opacity 0.1s ease;
 			display: inline-block;
 			font-size: 1.75em;
 			opacity: 1;
@@ -3643,14 +3639,14 @@ input, select, textarea {
 			}
 
 		#banner .more {
-			-moz-transition: -moz-transform 0.75s ease, opacity 0.75s ease;
+			-moz-transition: -moz-transform 0.2s ease, opacity 0.2s ease;
 			-webkit-transition: -webkit-transform 0.75s ease, opacity 0.75s ease;
-			-ms-transition: -ms-transform 0.75s ease, opacity 0.75s ease;
-			transition: transform 0.75s ease, opacity 0.75s ease;
-			-moz-transition-delay: 3.5s;
-			-webkit-transition-delay: 3.5s;
-			-ms-transition-delay: 3.5s;
-			transition-delay: 3.5s;
+			-ms-transition: -ms-transform 0.2s ease, opacity 0.2s ease;
+			transition: transform 0.2s ease, opacity 0.2s ease;
+			-moz-transition-delay: 1s;
+			-webkit-transition-delay: 1s;
+			-ms-transition-delay: 1s;
+			transition-delay: 1s;
 			-moz-transform: translateY(0);
 			-webkit-transform: translateY(0);
 			-ms-transform: translateY(0);
@@ -3694,10 +3690,10 @@ input, select, textarea {
 			-webkit-transition: opacity 3s ease-in-out;
 			-ms-transition: opacity 3s ease-in-out;
 			transition: opacity 3s ease-in-out;
-			-moz-transition-delay: 1.25s;
-			-webkit-transition-delay: 1.25s;
-			-ms-transition-delay: 1.25s;
-			transition-delay: 1.25s;
+			-moz-transition-delay: 0.7s;
+			-webkit-transition-delay: 0.7s;
+			-ms-transition-delay: 0.7s;
+			transition-delay: 0.7s;
 			content: '';
 			background: #2e3842;
 			display: block;
