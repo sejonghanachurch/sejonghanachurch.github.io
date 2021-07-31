@@ -2508,6 +2508,32 @@ input, select, textarea {
 				background-color: #eb341c !important;
 			}
 
+        input[type="submit"].primarya,
+		input[type="reset"].primarya,
+		input[type="button"].primarya,
+		button.primarya,
+		.button.primarya {
+			background-color: #00c800;
+			box-shadow: none !important;
+			color: #ffffff !important;
+		}
+
+			input[type="submit"].primarya:hover,
+			input[type="reset"].primarya:hover,
+			input[type="button"].primarya:hover,
+			button.primarya:hover,
+			.button.primarya:hover {
+				background-color: #00c800 !important;
+			}
+
+			input[type="submit"].primarya:active,
+			input[type="reset"].primarya:active,
+			input[type="button"].primarya:active,
+			button.primarya:active,
+			.button.primarya:active {
+				background-color: #00c800 !important;
+			}
+
 		input[type="submit"].disabled, input[type="submit"]:disabled,
 		input[type="reset"].disabled,
 		input[type="reset"]:disabled,

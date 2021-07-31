@@ -18,6 +18,27 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+        <style>
+    .video-container {
+    overflow: hidden;
+    position: relative;
+    width:100%;
+}
+
+.video-container::after {
+    padding-top: 56.25%;
+    display: block;
+    content: '';
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+	</style>
 	</head>
 	<body class="landing is-preload">
 
@@ -70,6 +91,29 @@
 							</ul>
 						</div>
 					</section>
+                    
+				<!-- CTA -->
+					<section id="cta" class="wrapper style4">
+						<div class="inner">
+							<header>
+								<h2>바로가기</h2>
+								<p>다음과 같은 매체를 통하여 세종하나교회를 만나보세요!</p>
+							</header>
+							<ul class="actions stacked">
+								<li><a href="https://www.youtube.com/channel/UCBlksyAAB24gB6DTzb5MtKQ" class="button fit primary"><i class="fab fa-youtube fa-2x" style="vertical-align: middle;"></i> 유튜브 채널</a></li>
+								<li><a href="http://naver.me/xOCuXwfs" class="button fit primarya"><i class="fas fa-map fa-2x" style="vertical-align: middle;"></i> 네이버 지도</a></li>
+							</ul>
+						</div>
+						<div class="inner">
+<div class="video-container">
+  <iframe src="https://www.youtube.com/embed/K_Ysh_iuQiM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+						</div>
+					</section>
+
+
+                   
+
 				<!-- Three -->
 					<section id="three" class="wrapper style3 special">
 						<div class="inner">
