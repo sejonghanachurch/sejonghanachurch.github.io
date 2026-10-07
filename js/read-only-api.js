@@ -7,7 +7,9 @@ export function readPublicResource(input, options={}) {
 
   const url=new URL(input);
   const https=url.protocol==='https:'&&!url.username&&!url.password&&!url.port;
-  const drive=https&&url.hostname==='www.googleapis.com'&&/^\/drive\/v3\/files(?:\/[a-zA-Z0-9_-]+(?:\/export)?)?$/.test(url.pathname);
+  const google=https&&url.hostname==='www.googleapis.com';
+  const drive=google&&(/^\/drive\/v3\/files(?:\/[a-zA-Z0-9_-]+(?:\/export)?)?$/.test(url.pathname)||
+    (/^\/download\/drive\/v3\/files\/[a-zA-Z0-9_-]+$/.test(url.pathname)&&url.searchParams.getAll('alt').length===1&&url.searchParams.get('alt')==='media'));
   const youtube=https&&url.hostname==='www.googleapis.com'&&/^\/youtube\/v3\/(?:channels|playlistItems)$/.test(url.pathname);
   const image=https&&(url.hostname==='googleusercontent.com'||url.hostname.endsWith('.googleusercontent.com'));
   const inlineImage=/^data:image\/(?:png|jpeg|gif|webp|avif);base64,[a-z0-9+/=\s]+$/i.test(input);

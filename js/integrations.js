@@ -1,7 +1,9 @@
 import { CONFIG } from './config.js';
-import { readPublicResource } from './read-only-api.js';
+import { readPublicResource } from './read-only-api.js?v=drive-download-20261007';
 import { readPhotoCache, savePhotoCache, compactPhoto } from './photo-cache.js';
 const DRIVE = 'https://www.googleapis.com/drive/v3';
+// Drive Discovery specifies the download service for files.get media reads.
+const DRIVE_MEDIA = 'https://www.googleapis.com/download/drive/v3';
 const YOUTUBE = 'https://www.googleapis.com/youtube/v3';
 const cachePrefix = 'sejong-hana-v2:';
 const driveMedia = new Map();
@@ -37,7 +39,7 @@ export async function loadBulletinPdf(id,resourceKey='') {
 export function driveImage(file) {
   if(!validId(file.id))return '';
   const params=new URLSearchParams({alt:'media',key:CONFIG.googleApiKey});
-  return `${DRIVE}/files/${encodeURIComponent(file.id)}?${params}`;
+  return `${DRIVE_MEDIA}/files/${encodeURIComponent(file.id)}?${params}`;
 }
 function resourceHeaders(file) {
   return file?.resourceKey?{'X-Goog-Drive-Resource-Keys':`${file.id}/${file.resourceKey}`} : {};
@@ -46,7 +48,8 @@ async function request(base,path,params={},headers={}) {
   const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),CONFIG.requestTimeoutMs);
   try {
     const query=new URLSearchParams({...params,key:CONFIG.googleApiKey});
-    const response=await readPublicResource(`${base}/${path}?${query}`,{signal:controller.signal,cache:'no-store',headers});
+    const resourceBase=base===DRIVE&&params.alt==='media'?DRIVE_MEDIA:base;
+    const response=await readPublicResource(`${resourceBase}/${path}?${query}`,{signal:controller.signal,cache:'no-store',headers});
     if(!response.ok)throw new Error(`Google resource unavailable (${response.status})`);
     return await response.json();
   } finally {clearTimeout(timer);}
@@ -190,7 +193,7 @@ async function noticeText(file){
     try{
       const isDoc=file.mimeType==='application/vnd.google-apps.document';
       const params=new URLSearchParams({key:CONFIG.googleApiKey,...(isDoc?{mimeType:'text/plain'}:{alt:'media'})});
-      const response=await readPublicResource(`${DRIVE}/files/${encodeURIComponent(file.id)}${isDoc?'/export':''}?${params}`,{signal:controller.signal,cache:'no-store',headers:resourceHeaders(file)});
+      const response=await readPublicResource(`${isDoc?DRIVE:DRIVE_MEDIA}/files/${encodeURIComponent(file.id)}${isDoc?'/export':''}?${params}`,{signal:controller.signal,cache:'no-store',headers:resourceHeaders(file)});
       if(!response.ok)throw new Error(`Notice document unavailable (${response.status})`);
       return (await response.text()).replace(/^\uFEFF/,'');
     }finally{clearTimeout(timer);}

@@ -1,4 +1,4 @@
-import { loadBulletinPdf } from './integrations.js';
+import { loadBulletinPdf } from './integrations.js?v=drive-download-20261007';
 
 const params=new URLSearchParams(location.search);
 const status=document.querySelector('#pdf-status');

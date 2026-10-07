@@ -72,7 +72,7 @@ function driveKeys(path){
  return [];
 }
 function pageResource(path){return path.startsWith('news/notices/')||path==='mission/saturday-outreach'?null:path==='sermons'?'videos':driveKeys(path)[0];}
-import { loadDrive, loadVideos, loadVisionVideos, preloadNotice, loadPhotoOriginal, safeUrl } from './integrations.js?v=cells-unified-20261007';
+import { loadDrive, loadVideos, loadVisionVideos, preloadNotice, loadPhotoOriginal, safeUrl } from './integrations.js?v=drive-download-20261007';
 const main=document.querySelector('#main');
 const homeIntro=main.innerHTML;
 let state={...SAMPLE,driveStatus:'unconfigured',noticesStatus:'loading',videoStatus:'unconfigured',jubileeStatus:'loading',jubileeVideos:[],missionStatus:'loading',missionVideos:[],youngAdultStatus:'loading',youngAdultVideos:[],visionStatus:'loading',visionVideos:[],visionLoaded:false,oneMinuteStatus:'loading',oneMinuteVideos:[],oneMinuteLoaded:false,infantPlaylists:CONFIG.infantPlaylists.map(playlist=>({...playlist,status:'loading',videos:[]}))};
