@@ -333,21 +333,6 @@ async function loadNotice(notice,onUpdate=()=>{}){
   }
   return detail;
 }
-async function groupContent(base,folders,onUpdate=()=>{},{coverOnly=false}={}) {
-  const folder=findFolder(folders,[base.title,...(base.aliases||[]),base.id]);
-  if(!folder)return {...base,contentPending:false,mediaPending:false};
-  const files=await listDriveFiles(folder.id,folder.resourceKey),content=await getContent(files);
-  const imageFiles=files.filter(isImage),coverFile=imageFiles.find(file=>file.id===content.coverFileId)||imageFiles[0];
-  const mediaFiles=coverOnly?(coverFile?[coverFile]:[]):files;
-  const mediaVersion=JSON.stringify(mediaFiles.filter(isImage).map(file=>[file.id,file.modifiedTime||'']));
-  const groupText=(value,fallback)=>{const text=plain(value,fallback);return base.id==='caleb'?text.replaceAll('갈랩세대','갈렙세대'):text;};
-  const heading=groupText(content.title,base.title);
-  const text={...base,title:base.aliases?.includes(heading.trim())?base.title:heading,description:groupText(content.description,base.description),leader:plain(content.leader,base.leader||''),meeting:groupText(content.meeting,base.meeting),location:groupText(content.location,base.location),audience:groupText(content.audience,base.audience),sample:content.sample===true||!content.description,contentPending:false,mediaPending:true,mediaVersion,image:'',images:[]};
-  onUpdate(text);
-  const coverId=coverFile?.id;
-  const photos=await photosFrom(mediaFiles,(photos,slots)=>onUpdate({...text,image:photos.find(photo=>photo.id===coverId)?.url||'',images:base.id==='saturday-outreach'?slots:photos})),cover=photos.find(f=>f.id===content.coverFileId)||photos[0];
-  return {...text,image:cover?cover.url:base.image,images:photos,mediaPending:false,mediaError:photos.length<mediaFiles.filter(isImage).length,imageSample:!cover||content.sample===true||content.imageSample===true};
-}
 async function mapLimited(items,limit,worker){
   let index=0;const failures=[];
   await Promise.all(Array.from({length:Math.min(limit,items.length)},async()=>{
@@ -356,40 +341,17 @@ async function mapLimited(items,limit,worker){
   if(failures.length)throw failures[0];
 }
 export async function loadDrive(base,{path=null,onUpdate=()=>{}}={}) {
-  if(!CONFIG.googleApiKey)return {status:'unconfigured'};
   const all=path===null,home=path==='';
-  const wantsCells=all||path==='cells'||path?.startsWith('cells/');
-  const wantsEducation=all||path==='education'||path?.startsWith('education/');
   const wantsBulletins=all||path==='news/bulletins';
   const wantsAlbums=all||home||path==='news/albums';
   const wantsNotices=all||home||path==='news/notices'||path?.startsWith('news/notices/');
-  const wantsOutreach=all||path==='mission/saturday-outreach';
-  if(!wantsCells&&!wantsEducation&&!wantsBulletins&&!wantsAlbums&&!wantsNotices&&!wantsOutreach)return {status:'idle'};
+  // Only church news and its homepage previews use Drive. Other pages remain
+  // local and must not even request the shared Drive root.
+  if(!wantsBulletins&&!wantsAlbums&&!wantsNotices)return {status:'idle'};
+  if(!CONFIG.googleApiKey)return {status:'unconfigured'};
   const root=await listDriveFiles(CONFIG.driveRootFolderId),result={status:'connected'};
   const publish=patch=>onUpdate({status:'connected',...patch});
   const tasks=[];
-  if(wantsOutreach)tasks.push((async()=>{
-    const folders=await childFiles(root,['선교','mission']);
-    const update=outreach=>{result.outreach=outreach;publish({outreach});};
-    const outreach=await groupContent(base.outreach,folders,update);
-    update(outreach);
-    if(outreach.mediaError)throw new Error('Some outreach photos are unavailable');
-  })());
-  for(const [wanted,key,names] of [[wantsCells,'cells',['셀모임','cells']],[wantsEducation,'education',['교육공동체','education']]]){
-    if(!wanted)continue;
-    tasks.push((async()=>{
-      const folders=await childFiles(root,names),id=path?.startsWith(key+'/')?path.split('/')[1]:null;
-      const groups=base[key].filter(g=>!id||g.id===id);
-      result[key]=groups.map(g=>({...g,contentPending:true,mediaPending:true,image:'',images:[]}));
-      // A list can show known group names before each introduction and image arrives.
-      if(!id)publish({[key]:[...result[key]]});
-      await mapLimited(groups,2,async(group,index)=>{
-        const update=next=>{result[key][index]=next;publish({[key]:[...result[key]]});};
-        try{update(await groupContent(group,folders,update,{coverOnly:key==='cells'}));}
-        catch(error){update({...group,contentPending:false,mediaPending:false,loadError:true});throw error;}
-      });
-    })());
-  }
   if(wantsNotices)tasks.push((async()=>{
     const files=await childFiles(root,['공지사항','notices']);
     result.notices=noticesFrom(files);
@@ -411,8 +373,10 @@ export async function loadDrive(base,{path=null,onUpdate=()=>{}}={}) {
   })());
   if(wantsAlbums)tasks.push((async()=>{
     const folders=(await childFiles(root,['앨범','albums'])).filter(isFolder);
-    result.albums=folders.map(folder=>({id:folder.id,title:folder.name,description:folder.description||'',date:folder.name.match(/^\d{4}-\d{2}-\d{2}/)?.[0]||'',uploadDate:noticeDate(folder.createdTime),image:'',images:[],contentPending:true,mediaPending:true,url:`https://drive.google.com/drive/folders/${folder.id}`}));
-    const publishAlbums=()=>publish({albums:[...result.albums].sort((a,b)=>b.date.localeCompare(a.date))});
+    // Keep the full upload timestamp so albums uploaded on the same day sort correctly.
+    const byUploadDate=(a,b)=>(Date.parse(b.uploadedAt)||0)-(Date.parse(a.uploadedAt)||0)||a.id.localeCompare(b.id);
+    result.albums=folders.map(folder=>({id:folder.id,title:folder.name,description:folder.description||'',date:folder.name.match(/^\d{4}-\d{2}-\d{2}/)?.[0]||'',uploadedAt:folder.createdTime||'',image:'',images:[],contentPending:true,mediaPending:true,url:`https://drive.google.com/drive/folders/${folder.id}`}));
+    const publishAlbums=()=>publish({albums:[...result.albums].sort(byUploadDate)});
     publishAlbums();
     await mapLimited(folders,2,async folder=>{
       const index=result.albums.findIndex(a=>a.id===folder.id);
@@ -424,7 +388,7 @@ export async function loadDrive(base,{path=null,onUpdate=()=>{}}={}) {
       result.albums[index]={...album,image:cover?.url||'',images:photos,mediaPending:false,mediaError:!photos.length&&files.some(isImage)};publishAlbums();
       }catch(error){result.albums[index]={...result.albums[index],mediaPending:false,mediaError:true,loadError:true};publishAlbums();throw error;}
     });
-    result.albums=result.albums.filter(a=>a.images.length||a.mediaError).sort((a,b)=>b.date.localeCompare(a.date));
+    result.albums=result.albums.filter(a=>a.images.length||a.mediaError).sort(byUploadDate);
     publishAlbums();
   })());
   const completed=await Promise.allSettled(tasks);
