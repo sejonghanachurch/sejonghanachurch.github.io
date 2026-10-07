@@ -1,0 +1,104 @@
+{
+  "notice": "소개용 샘플 사진입니다. 실제 교인이나 교회 행사 사진이 아닙니다.",
+  "assets": [
+    {
+      "file": "cell-1.jpg",
+      "description": "성경과 커피가 놓인 차분한 묵상 테이블",
+      "creator": "Chris Liu",
+      "sourcePage": "https://www.pexels.com/photo/open-book-with-cross-bookmark-next-to-coffee-cup-and-small-globe-22710987/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "sample": true
+    },
+    {
+      "file": "cell-2.jpg",
+      "description": "커피를 나누며 대화하는 친구들",
+      "creator": "Vitaly Gariev",
+      "sourcePage": "https://www.pexels.com/photo/friends-enjoying-coffee-and-conversing-at-a-cafe-36729758/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "sample": true
+    },
+    {
+      "file": "cell-3.jpg",
+      "description": "야외에서 함께 웃는 친구들",
+      "creator": "Sachu Zayn",
+      "sourcePage": "https://www.pexels.com/photo/a-group-of-people-sitting-outside-and-smiling-20243345/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "sample": true
+    },
+    {
+      "file": "cell-4.jpg",
+      "description": "펼친 성경 위로 기도하는 두 손",
+      "creator": "Luis Quintero",
+      "sourcePage": "https://www.pexels.com/photo/person-placing-hands-on-bible-2258251/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "sample": true
+    },
+    {
+      "file": "cell-5.jpg",
+      "description": "함께 나누는 식사와 따뜻한 차",
+      "creator": "SHVETS production",
+      "sourcePage": "https://www.pexels.com/photo/breakfast-in-a-restaurant-7973622/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "sample": true
+    },
+    {
+      "file": "cell-7.jpg",
+      "description": "함께 손을 모으는 사람들",
+      "creator": "Andrea Piacquadio",
+      "sourcePage": "https://www.pexels.com/photo/crop-multiracial-people-joining-hands-together-during-break-in-modern-workplace-3931562/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "sample": true
+    },
+    {
+      "file": "cell-8.jpg",
+      "description": "책을 함께 읽으며 이야기하는 모임",
+      "creator": "Damian Santos",
+      "sourcePage": "https://www.pexels.com/photo/diverse-group-of-friends-enjoying-casual-indoor-gathering-35203998/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "sample": true
+    },
+    {
+      "file": "infant.jpg",
+      "description": "아이의 손과 나무 장난감 블록 — 부서 소개용 샘플 사진",
+      "creator": "Ivan S",
+      "sourcePage": "https://www.pexels.com/photo/kid-playing-wooden-toys-8504533/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "sample": true
+    },
+    {
+      "file": "children.jpg",
+      "description": "탁자에서 함께 그림을 그리는 어린이 — 부서 소개용 샘플 사진",
+      "creator": "Pavel Danilyuk",
+      "sourcePage": "https://www.pexels.com/photo/kids-sitting-at-the-table-8294751/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "sample": true
+    },
+    {
+      "file": "youth.jpg",
+      "description": "책과 노트북으로 함께 공부하는 청소년 — 부서 소개용 샘플 사진",
+      "creator": "Antoni Shkraba",
+      "sourcePage": "https://www.pexels.com/photo/students-doing-their-classwork-together-5306450/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "sample": true
+    },
+    {
+      "file": "young-adult.jpg",
+      "description": "야외에서 대화하는 청년 친구들 — 부서 소개용 샘플 사진",
+      "creator": "Andrea Piacquadio",
+      "sourcePage": "https://www.pexels.com/photo/happy-multiethnic-friends-sitting-in-park-3776808/",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "sample": true
+    }
+  ]
+}

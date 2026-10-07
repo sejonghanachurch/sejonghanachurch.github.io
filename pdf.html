@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <script>if(location.protocol==='http:'&&location.hostname==='sejonghanachurch.com')location.replace(location.href.replace(/^http:/,'https:'));</script>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#001b54">
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32.png">
+  <link rel="icon" type="image/svg+xml" sizes="any" href="./assets/favicon.svg">
+  <title>주보 | 세종하나교회</title>
+  <link rel="stylesheet" href="./styles.css">
+  <style>
+    html,body{width:100%;height:100%;overflow:hidden;background:#292929}
+    #pdf-frame{display:block;width:100%;height:100dvh;border:0}
+    #pdf-frame[hidden],#pdf-status[hidden]{display:none}
+    #pdf-status{min-height:100dvh;display:grid;place-content:center;text-align:center;padding:28px;background:var(--pale)}
+    #pdf-status h1{font-size:24px}#pdf-status p{color:var(--muted)}
+    #pdf-status .button-row{justify-content:center}#pdf-status .button-row[hidden]{display:none}
+  </style>
+</head>
+<body>
+  <div id="pdf-status" role="status">
+    <h1>주보를 불러오고 있습니다.</h1>
+    <p>잠시만 기다려 주세요.</p>
+    <div class="button-row" hidden><button id="retry" class="button solid">다시 열기</button><a class="button outline" href="./#/news/bulletins">주보 목록</a></div>
+  </div>
+  <iframe id="pdf-frame" title="세종하나교회 주보 PDF" hidden></iframe>
+  <script type="module" src="./js/pdf-viewer.js"></script>
+</body>
+</html>
