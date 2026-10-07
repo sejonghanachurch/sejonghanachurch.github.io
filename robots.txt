@@ -1,2 +1,10 @@
+# Link preview crawlers may read the public page and its share image.
+User-agent: kakaotalk-scrap
+User-agent: facebookexternalhit
+User-agent: Slackbot-LinkExpanding
+User-agent: Slack-ImgProxy
+User-agent: Twitterbot
+Allow: /
+
 User-agent: *
 Disallow: /

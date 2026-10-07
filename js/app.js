@@ -1,5 +1,5 @@
-import { SAMPLE } from './data.js?v=cells-unified-20261007';
-import { COMMUNITY } from './community-data.js?v=local-community-20261007';
+import { SAMPLE } from './data.js?v=education-label-20261007';
+import { COMMUNITY } from './community-data.js?v=education-contacts-20261008';
 const groupPath=(root,id)=>root==='education'&&id==='adults'?'cells':`${root}/${id}`;
 const nav = [
  ['교회소개',[['담임목사 인사','about/greeting'],['교회 비전','about/vision'],['연혁','about/history'],['섬기는 사람들','about/people'],['교회 조직','about/organization'],['온라인헌금','about/offering'],['오시는길','directions']]],
@@ -61,7 +61,10 @@ document.querySelector('#back-top').onclick=()=>window.scrollTo({top:0,behavior:
 document.querySelector('#year').textContent=new Date().getFullYear();
 import { CONFIG } from './config.js';
 import { resource, settleResource, mountResources, patchResources } from './resource-view.js';
-import { syncHomeMoments } from './home-moments.js?v=auto-moments-20261007-2';
+import { syncHomeMoments } from './home-moments.js?v=photo-swipe-20261008';
+import { syncHomeHero } from './home-hero.js?v=hero-arrows-20261008-2';
+import { bindHorizontalSwipe } from './horizontal-swipe.js?v=photo-swipe-20261008';
+import { capturePhotoSlide, startPhotoSlide } from './photo-slide.js?v=photo-preview-slide-20261008';
 const currentPath=()=>{const path=location.hash.replace(/^#\/?/,'').replace(/\/$/,'');return path==='mission'?'mission/overseas':path;};
 function driveKeys(path){
  if(!path)return ['notices','albums'];
@@ -71,9 +74,10 @@ function driveKeys(path){
  return [];
 }
 function pageResource(path){return path.startsWith('news/notices/')||path==='mission/saturday-outreach'?null:path==='sermons'?'videos':driveKeys(path)[0];}
-import { loadDrive, loadVideos, loadVisionVideos, preloadNotice, loadPhotoOriginal, safeUrl } from './integrations.js?v=news-only-drive-20261007';
+import { loadDrive, loadVideos, loadVisionVideos, preloadNotice, safeUrl } from './integrations.js?v=news-only-drive-20261007';
 const main=document.querySelector('#main');
 const homeIntro=main.innerHTML;
+const homeNewcomer=document.querySelector('#home-newcomer-template').innerHTML;
 let state={...SAMPLE,...COMMUNITY,driveStatus:'unconfigured',noticesStatus:'loading',videoStatus:'unconfigured',jubileeStatus:'loading',jubileeVideos:[],missionStatus:'loading',missionVideos:[],youngAdultStatus:'loading',youngAdultVideos:[],visionStatus:'loading',visionVideos:[],visionLoaded:false,oneMinuteStatus:'loading',oneMinuteVideos:[],oneMinuteLoaded:false,infantPlaylists:CONFIG.infantPlaylists.map(playlist=>({...playlist,status:'loading',videos:[]}))};
 const driveErrors=new Set();
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -82,7 +86,6 @@ const date=value=>/^\d{4}-\d{2}-\d{2}$/.test(value||'')?value.replaceAll('-','.'
 const youtube='https://www.youtube.com/channel/'+CONFIG.youtubeChannelId;
 const jubileePlaylist='https://www.youtube.com/playlist?list='+encodeURIComponent(CONFIG.jubileePlaylistId);
 const missionPlaylist='https://www.youtube.com/playlist?list='+encodeURIComponent(CONFIG.missionPlaylistId);
-const sampleNote='<div class="notice">이 페이지의 소개 문구는 1차 초안입니다. 실제 공동체의 안내 내용으로 업데이트할 예정입니다.</div>';
 const empty=(title,description)=>`<div class="blank-state"><h3>${esc(title)}</h3><p>${esc(description)}</p></div>`;
 const imageTag=(src,alt,cls='')=>`<img src="${url(src)}" alt="${esc(alt)}" ${cls?`class="${cls}"`:''} loading="lazy" data-fallback="true">`;
 const videoThumb=v=>({'G4mc3skIenA':'./assets/sermon-latest.jpg','PZNTJbrassM':'./assets/sermon-2.jpg','7h2bONSKLOo':'./assets/sermon-3.jpg'}[v.id]||`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`);
@@ -102,16 +105,17 @@ function homeNoticeRows(){
  return empty('등록된 공지사항이 없습니다.','새로운 교회 소식이 등록되면 이곳에서 확인하실 수 있습니다.');
 }
 function home(){title('');const v=state.videos[0];return homeIntro+`
-<section class="soft-bg"><div class="section"><div class="section-heading"><div><p class="eyebrow green">THE WORD FOR OUR EVERYDAY</p><h2>말씀으로 여는 한 주</h2></div><a class="text-link" href="#/sermons">말씀 더 보기 <span>+</span></a></div>${resource('videos',v?`<div class="sermon-layout">${videoCover(v)}<div class="sermon-copy"><span class="tag">주일예배 말씀</span><h3>${esc(v.title)}</h3><p>${v.scripture?esc(v.scripture):'우리의 일상에 살아 있는 하나님의 말씀'}</p><div class="sermon-meta">${v.speaker?`<span>${esc(v.speaker)}</span>`:''}<span>${date(v.date)}</span></div><button class="button solid" data-video="${esc(v.id)}">▷ &nbsp; 말씀 영상 보기</button></div></div>`:empty('말씀을 함께 나눕니다.','주일예배 영상은 교회 YouTube 채널에서 만나보세요.'),'video')}</div></section>
-<section class="section"><div class="section-heading"><div><p class="eyebrow green">TOGETHER, WE GROW</p><h2>우리가 함께 자라는 자리</h2></div><p class="section-description">서로의 이름을 부르고, 함께 믿음을 키워갑니다.</p></div><div class="community-grid"><a class="community-card" href="#/cells"><p class="eyebrow">SMALL GROUP, BIG LOVE</p><h3>삶을 나누는 셀모임</h3><p>일곱 셀이 함께하는,<br>말씀과 사랑으로 이어지는 우리의 일상.</p><span class="text-link">우리 셀 만나보기 <span>+</span></span><span class="card-watermark">together</span></a><a class="community-card" href="#/education"><p class="eyebrow">FAITH ACROSS GENERATIONS</p><h3>믿음으로 함께 자라는 공동체</h3><p>유아부부터 갈렙세대까지,<br>세대를 넘어 함께하는 믿음의 여정.</p><span class="text-link">교육공동체 만나보기 <span>+</span></span><span class="card-watermark">grow</span></a></div></section>
-<section class="soft-bg"><div class="section news-layout"><div><div class="section-heading"><div><p class="eyebrow green">CHURCH NEWS</p><h2>하나의 소식</h2></div><a class="text-link" href="#/news/notices">전체 보기 <span>+</span></a></div>${resource('notices',homeNoticeRows())}</div><div><div class="section-heading"><div><p class="eyebrow green">OUR MOMENTS</p><h2>함께한 순간들</h2></div><a class="text-link" href="#/news/albums">앨범 보기 <span>+</span></a></div>${resource('albums','<div class="home-moments" data-home-moments data-immediate role="region" aria-roledescription="슬라이드" aria-label="함께한 순간들 사진"></div>','image')}</div></div></section>
-<section class="visit-banner"><div><p class="eyebrow">A PLACE TO CALL HOME</p><h2>이번 주일, 우리 함께 예배해요.</h2><p>세종 금남면 금남구즉로 509</p></div><a class="button yellow" href="#/directions">교회 찾아오시는 길</a></section>`;}
+<section class="home-section soft-bg"><div class="section"><div class="section-heading"><div><p class="eyebrow green">THE WORD FOR OUR EVERYDAY</p><h2>말씀으로 여는 한 주</h2></div><a class="text-link" href="#/sermons">말씀 더 보기 <span>+</span></a></div>${resource('videos',v?`<div class="sermon-layout">${videoCover(v)}<div class="sermon-copy"><span class="tag">주일예배 말씀</span><h3>${esc(v.title)}</h3><p>${v.scripture?esc(v.scripture):'우리의 일상에 살아 있는 하나님의 말씀'}</p><div class="sermon-meta">${v.speaker?`<span>${esc(v.speaker)}</span>`:''}<span>${date(v.date)}</span></div><div class="button-row sermon-actions"><button class="button solid" data-video="${esc(v.id)}">▷ &nbsp; 말씀 영상 보기</button><a class="button outline" href="#/about/greeting">담임목사 소개</a></div></div></div>`:empty('말씀을 함께 나눕니다.','주일예배 영상은 교회 YouTube 채널에서 만나보세요.'),'video')}</div></section>
+<section class="home-section"><div class="section news-layout"><div><div class="section-heading"><div><p class="eyebrow green">CHURCH NEWS</p><h2>하나의 소식</h2></div><a class="text-link" href="#/news/notices">전체 보기 <span>+</span></a></div>${resource('notices',homeNoticeRows())}</div><div><div class="section-heading"><div><p class="eyebrow green">OUR MOMENTS</p><h2>함께한 순간들</h2></div><a class="text-link" href="#/news/albums">앨범 보기 <span>+</span></a></div>${resource('albums','<div class="home-moments" data-home-moments data-immediate role="region" aria-roledescription="슬라이드" aria-label="함께한 순간들 사진"></div>','image')}</div></div></section>
+<section class="home-section soft-bg"><div class="section"><div class="section-heading"><div><p class="eyebrow green">TOGETHER, WE GROW</p><h2>우리가 함께 자라는 자리</h2></div><p class="section-description">서로의 이름을 부르고, 함께 믿음을 키워갑니다.</p></div><div class="community-grid"><a class="community-card" href="#/cells"><p class="eyebrow">SMALL GROUP, BIG LOVE</p><h3>삶을 나누는 셀모임</h3><p>일곱 셀이 함께하는,<br>말씀과 사랑으로 이어지는 우리의 일상.</p><span class="text-link">우리 셀 만나보기 <span>+</span></span><span class="card-watermark">together</span></a><a class="community-card" href="#/education"><p class="eyebrow">FAITH ACROSS GENERATIONS</p><h3>믿음으로 함께 자라는 공동체</h3><p>유아부부터 갈렙세대까지,<br>세대를 넘어 함께하는 믿음의 여정.</p><span class="text-link">교육공동체 만나보기 <span>+</span></span><span class="card-watermark">grow</span></a></div></div></section>
+<section class="home-section home-section--card">${homeNewcomer}</section>
+<section class="home-section home-section--card home-section--visit"><div class="visit-banner"><div><p class="eyebrow">A PLACE TO CALL HOME</p><h2>이번 주일, 우리 함께 예배해요.</h2><p>세종 금남면 금남구즉로 509</p></div><a class="button yellow" href="#/directions">교회 찾아오시는 길</a></div></section>`;}
 function groupPicture(g,key){return resource(`group-image:${key}`,g.image?imageTag(g.image,`${g.title} ${g.sample||g.imageSample?'분위기를 보여주는 샘플 이미지':'공동체 사진'}`):'','image',true,Boolean(g.mediaPending&&!g.image));}
 function cells(){
  const cards=state.cells.map(g=>{
   const key=`cells/${g.id}`,headingId=`cell-${g.id}-title`;
   const picture=resource(`group-image:${key}`,g.image?imageTag(g.image,`${g.title} 대표 사진`):'','image',true,Boolean(g.contentPending||g.mediaPending&&!g.image));
-  const info=`<dl class="cell-info"><div><dt>셀장</dt><dd>${esc(g.leader?.trim()||'교회에 문의해 주세요.')}</dd></div><div><dt>모임 시간</dt><dd>${esc(g.meeting)}</dd></div><div><dt>모임 장소</dt><dd>${esc(g.location)}</dd></div></dl>`;
+  const info=`<dl class="cell-info"><div><dt>셀리더</dt><dd>${esc(g.leader?.trim()||'교회에 문의해 주세요.')}</dd></div><div><dt>모임 시간</dt><dd>${esc(g.meeting)}</dd></div><div><dt>모임 장소</dt><dd>${esc(g.location)}</dd></div></dl>`;
   return `<article class="cell-card" aria-labelledby="${headingId}"><div class="card-media">${picture}</div><div class="cell-card-body">${resource(`cell-title:${key}`,`<h2 id="${headingId}" data-immediate>${esc(g.title)}</h2>`,'rows',true)}${resource(`cell-info:${key}`,info,'rows',true,Boolean(g.contentPending))}</div></article>`;
  }).join('');
  return page('셀모임','일상을 나누고, 함께 기도하는 작은 교회.',`<div class="cell-list">${cards}</div>`);
@@ -121,11 +125,11 @@ function groupPage(root,id){
  const g=state.education.find(x=>x.id===id);
  if(!g)return notFound();
  const mature=['adults','caleb'].includes(id);
- const copy=`<div class="prose"><p class="eyebrow green">${g.eyebrow}</p><h2>${mature?'삶을 나누며,<br>믿음으로 함께합니다.':'오늘의 작은 믿음이<br>내일의 큰 소망으로.'}</h2><p>${esc(g.description)}</p><div class="info-list">${g.audience?`<div class="info-row"><strong>함께하는 이들</strong><span>${esc(g.audience)}</span></div>`:''}<div class="info-row"><strong>모임 안내</strong><span>${esc(g.meeting)}</span></div><div class="info-row"><strong>장소</strong><span>${esc(g.location)}</span></div></div>${g.sample?sampleNote:''}<a class="button solid" href="#/directions">교회 방문 안내</a></div>`;
- return page(g.title,'하나님의 사랑 안에서 함께 자라는 공동체',`<div class="detail-grid"><div>${groupPicture(g,`${root}/${id}`)}</div><div>${resource(`group-copy:${root}/${id}`,copy,'rows',true,Boolean(g.contentPending))}</div></div>${resource(`group-gallery:${root}/${id}`,g.images.length>(mature?1:0)?`<h3 class="spaced-title">우리의 이야기</h3>${gallery(g.images,{hideTitles:true,galleryTitle:g.title})}`:'','image',true)}`,nav[3],id==='infant'?infantVideos():id==='young-adult'?youngAdultVideos():'');
+ const copy=`<div class="prose"><p class="eyebrow green">${g.eyebrow}</p><h2>${mature?'삶을 나누며,<br>믿음으로 함께합니다.':'오늘의 작은 믿음이<br>내일의 큰 소망으로.'}</h2><p>${esc(g.description)}</p><div class="info-list">${g.leader?`<div class="info-row"><strong>담당자</strong><span>${esc(g.leader)}</span></div>`:''}${g.audience?`<div class="info-row"><strong>함께하는 이들</strong><span>${esc(g.audience)}</span></div>`:''}<div class="info-row"><strong>모임 안내</strong><span>${esc(g.meeting)}</span></div><div class="info-row"><strong>장소</strong><span>${esc(g.location)}</span></div></div><div class="button-row"><a class="button solid" href="#/directions">교회 방문 안내</a></div></div>`;
+ return page(g.title,'하나님의 사랑 안에서 함께 자라는 공동체',`<div class="detail-grid"><div>${groupPicture(g,`${root}/${id}`)}</div><div>${resource(`group-copy:${root}/${id}`,copy,'rows',true,Boolean(g.contentPending))}</div></div>${resource(`group-gallery:${root}/${id}`,g.images.length>(mature?1:0)?`<h3 class="spaced-title">활동 사진</h3>${gallery(g.images,{hideTitles:true,galleryTitle:g.title})}`:'','image',true)}`,nav[3],id==='infant'?infantVideos():id==='young-adult'?youngAdultVideos():'');
 }
 function infantVideos(){
- return `<section class="infant-videos" aria-labelledby="infant-videos-title"><h3 class="spaced-title" id="infant-videos-title">유아부 영상</h3><div class="infant-video-grid">${state.infantPlaylists.map(playlist=>{
+ return `<section class="infant-videos" aria-labelledby="infant-videos-title"><h3 class="spaced-title" id="infant-videos-title">활동 영상</h3><div class="infant-video-grid">${state.infantPlaylists.map(playlist=>{
   const href='https://www.youtube.com/playlist?list='+encodeURIComponent(playlist.id);
   const videos=playlist.status==='error'?`<div class="blank-state"><h3>영상을 불러오지 못했습니다.</h3><p>잠시 후 다시 방문하거나 YouTube에서 확인해 주세요.</p><a class="button outline" href="${url(href)}" target="_blank" rel="noopener noreferrer">재생목록 보기 <span aria-hidden="true">↗</span></a></div>`:videoCards(playlist.videos);
   return resource(`infant-videos:${playlist.id}`,videos,'cards');
@@ -134,36 +138,36 @@ function infantVideos(){
 function youngAdultVideos(){
  const videos=state.youngAdultStatus==='error'?empty('영상을 불러오지 못했습니다.','잠시 후 다시 방문하거나 아래 재생목록에서 확인해 주세요.'):videoCards(state.youngAdultVideos);
  const href='https://www.youtube.com/playlist?list='+encodeURIComponent(CONFIG.youngAdultPlaylistId);
- return `<section class="young-adult-videos" aria-labelledby="young-adult-videos-title"><h3 class="spaced-title" id="young-adult-videos-title">청년부 영상</h3>${resource('young-adult-videos',videos,'cards',!CONFIG.youngAdultPlaylistId)}<div class="button-row"><a class="button outline" href="${url(href)}" target="_blank" rel="noopener noreferrer">YouTube에서 재생목록 전체 보기 <span aria-hidden="true">↗</span></a></div></section>`;
+ return `<section class="young-adult-videos" aria-labelledby="young-adult-videos-title"><h3 class="spaced-title" id="young-adult-videos-title">활동 영상</h3>${resource('young-adult-videos',videos,'cards',!CONFIG.youngAdultPlaylistId)}<div class="button-row"><a class="button outline" href="${url(href)}" target="_blank" rel="noopener noreferrer">YouTube에서 재생목록 전체 보기 <span aria-hidden="true">↗</span></a></div></section>`;
 }
-function photoSources(photo){return `${photo.originalKey?` data-photo-key="${esc(photo.originalKey)}"`:''}${photo.originalUrl?` data-photo-original="${url(photo.originalUrl)}"`:''}`;}
-function gallery(images,{albumId='',albumTitle='',hideTitles=false,galleryTitle=''}={}){return `<div class="gallery">${images.map((p,index)=>{
+function gallery(images,{albumId='',albumTitle='',hideTitles=false,galleryTitle=''}={}){return `<div class="gallery"${!albumId?` data-photo-gallery="${esc(galleryTitle||'공동체')}"`:''}>${images.map((p,index)=>{
  const label=albumId?`${albumTitle} 사진 ${index+1}`:hideTitles?`${galleryTitle||'공동체'} 사진 ${index+1}`:p.title;
- return `<button data-photo="${url(p.url)}"${photoSources(p)} data-photo-title="${esc(label)}"${albumId?` data-photo-album="${esc(albumId)}" data-photo-index="${index}"`:''}${hideTitles?' data-photo-hide-title="true"':''}${albumId||hideTitles?` aria-label="${index+1}번째 사진 크게 보기"`:''}>${imageTag(p.url,label)}${albumId||hideTitles?'':`<span>${esc(p.title)}</span>`}</button>`;
+ return `<button data-photo="${url(p.url)}" data-photo-title="${esc(label)}" data-photo-index="${index}"${albumId?` data-photo-album="${esc(albumId)}"`:''}${hideTitles?' data-photo-hide-title="true"':''}${albumId||hideTitles?` aria-label="${index+1}번째 사진 크게 보기"`:''}>${imageTag(p.url,label)}${albumId||hideTitles?'':`<span>${esc(p.title)}</span>`}</button>`;
 }).join('')}</div>`;}
 function peopleCards(){
  const people=[
   {id:'pastor',name:'위남환',role:'담임목사',image:'./assets/pastor-wi-namhwan-smooth.svg',width:1082,height:1082},
   {id:'seong',name:'성혜순',role:'사모',ministries:['유아부'],image:'./assets/seong-hyesun-smooth.svg',width:204,height:320},
   {id:'song',name:'송나단',role:'부목사',ministries:['학생부']},
+  {id:'seok',name:'석정문',role:'협동목사',ministries:['교회 조직코칭','리더코칭','평신도코칭'],image:'./assets/seok-jeongmun.png',width:1140,height:1380},
   {id:'wi',name:'위태영',role:'전도사',ministries:['청년부']},
   {id:'park',name:'박한솔',role:'전도사',ministries:['초등부','행정']},
   {id:'moon',name:'문홍일',role:'전도사',ministries:['학생부','토요캠프']}
  ];
- return `<div class="people-grid">${people.map(person=>`<article class="people-card${person.image?' people-card-portrait':''}" aria-labelledby="people-${person.id}">${person.image?`<div class="people-photo-stage">${resource(`people-photo:${person.id}`,`<div class="people-photo-frame ${person.id==='pastor'?'people-photo-pastor':'people-photo-seong'}"><img src="${person.image}" alt="${esc(person.name)} ${esc(person.role)}" width="${person.width}" height="${person.height}" loading="eager" decoding="async"></div>`,'image',true)}</div>`:''}<div class="people-card-body"><div class="people-identity"><p class="people-role">${esc(person.role)}</p><h2 id="people-${person.id}">${esc(person.name)}</h2></div><div class="people-details">${person.ministries?`<dl class="people-ministry"><div><dt>사역</dt><dd>${esc(person.ministries.join(', '))}</dd></div></dl>`:'<a class="text-link" href="#/about/greeting">담임목사 인사 <span aria-hidden="true">+</span></a>'}</div></div></article>`).join('')}</div>`;
+ return `<div class="people-grid">${people.map(person=>`<article class="people-card people-card-portrait" aria-labelledby="people-${person.id}">${person.image?`<div class="people-photo-stage people-photo-stage-${esc(person.id)}">${resource(`people-photo:${person.id}`,`<div class="people-photo-frame people-photo-${esc(person.id)}"><img src="${person.image}" alt="${esc(person.name)} ${esc(person.role)}" width="${person.width}" height="${person.height}" loading="eager" decoding="async"></div>`,'image',true)}</div>`:`<div class="people-photo-stage people-photo-placeholder" role="img" aria-label="${esc(person.name)} 프로필 사진 없음"><svg viewBox="0 0 120 148" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="60" cy="34" r="23"/><path d="M17 136v-24a43 43 0 0 1 86 0v24Z"/><text x="60" y="106" text-anchor="middle" dominant-baseline="middle" fill="currentColor" stroke="none">?</text></svg></div>`}<div class="people-card-body"><div class="people-identity"><p class="people-role">${esc(person.role)}</p><h2 id="people-${person.id}">${esc(person.name)}</h2></div><div class="people-details">${person.ministries?`<dl class="people-ministry"><div><dt>사역</dt><dd>${esc(person.ministries.join(', '))}</dd></div></dl>`:'<a class="text-link" href="#/about/greeting">담임목사 인사 <span aria-hidden="true">+</span></a>'}</div></div></article>`).join('')}</div>`;
 }
 function pastorProfile(){
  return `<section class="pastor-profile" aria-labelledby="pastor-profile-title"><p class="pastor-profile-role">세종하나교회 담임목사</p><h2 id="pastor-profile-title">위남환</h2><dl><div><dt>학력</dt><dd><p>대전침례신학대학교 학사 / 석사</p><p>미국 미드웨스턴 목회학 박사<span class="pastor-profile-school" lang="en">Midwestern Baptist Theological Seminary, D.Min.</span></p></dd></div><div><dt>사역</dt><dd><p>다니엘 기도회 세종지부 협력목사</p><p>세종쥬빌리구국기도회 대표</p></dd></div></dl></section>`;
 }
 function organizationChart(){
  const teams=[
-  ['예배팀','찬양과 기도회를 준비하고 성가대와 찬양팀을 운영합니다. 성찬식, 침례식과 절기 예배의 준비와 진행을 돕습니다.'],
-  ['전도팀','토요전도와 새가족 돌봄을 맡아 이웃에게 복음을 전합니다. 선교 교회를 후원하고 선교지 방문을 준비합니다.'],
-  ['교육팀','성경 읽기와 암송, 말씀 교육을 통해 성도들의 믿음 성장을 돕습니다. 부서별 교육과 토요캠프, 다음 세대의 캠프 활동을 지원합니다.'],
-  ['행정팀','교회 재정을 관리하고 사역 계획과 운영 자료를 정리합니다. 홈페이지와 주보, 예배 영상으로 교회 소식을 전합니다.'],
-  ['관리팀','교회 시설과 냉난방 설비를 점검하고 청소와 공간 관리를 맡습니다. 절기 장식과 현수막 설치로 예배와 행사를 준비합니다.']
+  ['예배팀','정원교 간사','찬양과 기도회를 준비하고 성가대와 찬양팀을 운영합니다. 성찬식, 침례식과 절기 예배의 준비와 진행을 돕습니다.'],
+  ['전도팀','위태영 전도사','토요전도와 새가족 돌봄을 맡아 이웃에게 복음을 전합니다. 선교 교회를 후원하고 선교지 방문을 준비합니다.'],
+  ['교육팀','이은영 간사','성경 읽기와 암송, 말씀 교육을 통해 성도들의 믿음 성장을 돕습니다. 부서별 교육과 토요캠프, 다음 세대의 캠프 활동을 지원합니다.'],
+  ['행정팀','홍정호 집사','교회 재정을 관리하고 사역 계획과 운영 자료를 정리합니다. 홈페이지와 주보, 예배 영상으로 교회 소식을 전합니다.'],
+  ['관리팀','이종화 집사','교회 시설과 냉난방 설비를 점검하고 청소와 공간 관리를 맡습니다. 절기 장식과 현수막 설치로 예배와 행사를 준비합니다.']
  ];
- return `<div class="organization"><header class="organization-head"><h2>세종하나교회</h2><p>담임목사 위남환</p></header><section class="organization-teams" aria-label="교회 사역팀">${teams.map(([name,description],index)=>`<article class="organization-team" aria-labelledby="organization-team-${index}"><h3 id="organization-team-${index}">${esc(name)}</h3><p>${esc(description)}</p></article>`).join('')}</section></div>`;
+ return `<div class="organization"><header class="organization-head"><h2>세종하나교회</h2><p>담임목사 위남환</p></header><section class="organization-teams" aria-label="교회 사역팀">${teams.map(([name,leader,description],index)=>`<article class="organization-team" aria-labelledby="organization-team-${index}"><div class="organization-team-heading"><h3 id="organization-team-${index}">${esc(name)}</h3><p class="organization-team-leader"><span>팀장</span> <strong>${esc(leader)}</strong></p></div><p>${esc(description)}</p></article>`).join('')}</section></div>`;
 }
 function churchVision(){
  const values=[
@@ -189,10 +193,10 @@ function churchHistory(){
   {date:'2026-03-22',title:'황용리 성전 입당'}
  ];
  const years=[...new Set(events.map(event=>event.date.slice(0,4)))];
- return `<div class="church-history"><header class="history-intro"><div><p class="eyebrow">OUR JOURNEY</p><h2>처음의 믿음에서,<br>오늘의 은혜까지.</h2><p class="history-intro-copy">1995년 송강동에서 시작된 믿음의 걸음이<br>오늘의 세종하나교회로 이어집니다.</p></div><div class="history-range" aria-label="1995년부터 2026년까지"><span>1995</span><span class="history-range-line" aria-hidden="true"></span><span>2026</span></div></header><ol class="history-timeline" aria-label="교회 연혁">${years.map(year=>`<li class="history-year"><h3 class="history-year-label" id="history-year-${year}">${year}</h3><ol class="history-year-events" aria-labelledby="history-year-${year}">${events.filter(event=>event.date.startsWith(year)).map(event=>`<li class="history-event"><time datetime="${event.date}">${event.date.replaceAll('-','.')}</time><h4>${esc(event.title)}</h4>${event.description?`<p>${esc(event.description)}</p>`:''}</li>`).join('')}</ol></li>`).join('')}</ol></div>`;
+ return `<div class="church-history"><header class="history-intro"><div><p class="eyebrow">OUR JOURNEY</p><h2>처음의 믿음에서,<br>오늘의 은혜까지.</h2></div><div class="history-range" aria-label="1995년부터 2026년까지"><span>1995</span><span class="history-range-line" aria-hidden="true"></span><span>2026</span></div></header><ol class="history-timeline" aria-label="교회 연혁">${years.map(year=>`<li class="history-year"><h3 class="history-year-label" id="history-year-${year}">${year}</h3><ol class="history-year-events" aria-labelledby="history-year-${year}">${events.filter(event=>event.date.startsWith(year)).map(event=>`<li class="history-event"><time datetime="${event.date}">${event.date.replaceAll('-','.')}</time><h4>${esc(event.title)}</h4>${event.description?`<p>${esc(event.description)}</p>`:''}</li>`).join('')}</ol></li>`).join('')}</ol></div>`;
 }
 function onlineOffering(){
- return `<div class="online-offering"><div class="offering-intro"><blockquote><span>헌금은,</span> <span>하나님이 나에게 주신 것에 대한</span> <span>자발적 감사의 반응입니다.</span></blockquote><div class="offering-intro-art" aria-hidden="true"><img src="./assets/offering-banner.png" alt="" width="994" height="290" decoding="async"></div></div><section class="offering-account" aria-labelledby="offering-account-title"><p class="eyebrow green">ONLINE OFFERING</p><h2 id="offering-account-title">온라인헌금 계좌안내</h2><dl><div class="offering-account-number"><dt>농협</dt><dd><span id="offering-account-number">355-0009-2519-93</span><button class="button outline offering-copy" type="button" data-copy-offering aria-describedby="offering-copy-status"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="8" y="8" width="11" height="13" rx="2"/><path d="M15 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h3"/></svg>계좌번호 복사</button></dd></div><div class="offering-account-holder"><dt>예금주</dt><dd>기독교한국침례회 하나교회</dd></div></dl><p id="offering-copy-status" class="inline-status" role="status" aria-live="polite"></p></section><section class="offering-guide" aria-labelledby="offering-guide-title"><h2 id="offering-guide-title">입금자 작성 안내</h2><p class="offering-guide-instruction"><strong>입금자란에 이름과 생년월일, 헌금종류를 꼭 기록하여 주세요!</strong></p><div class="offering-example"><h3>작성 예시</h3><p class="offering-example-format">본인이름 <span aria-hidden="true">+</span> 생년월일 <span aria-hidden="true">+</span> 십일조</p><p class="offering-example-name"><code>김만나201223십</code></p></div></section></div>`;
+ return `<div class="online-offering"><div class="offering-intro"><blockquote><span>헌금은,</span> <span>하나님이 나에게 주신 것에 대한</span> <span>자발적 감사의 반응입니다.</span></blockquote><div class="offering-intro-art" aria-hidden="true"><img src="./assets/offering-banner.png" alt="" width="994" height="290" decoding="async"></div></div><section class="offering-account" aria-labelledby="offering-account-title"><p class="eyebrow green">ONLINE OFFERING</p><h2 id="offering-account-title">온라인헌금 계좌안내</h2><dl><div class="offering-account-number"><dt>농협</dt><dd><span id="offering-account-number">355-0009-2519-93</span><button class="button outline offering-copy" type="button" data-copy-offering aria-describedby="offering-copy-status"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="8" y="8" width="11" height="13" rx="2"/><path d="M15 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h3"/></svg>계좌번호 복사</button></dd></div><div class="offering-account-holder"><dt>예금주</dt><dd>기독교한국침례회 하나교회</dd></div></dl><p id="offering-copy-status" class="inline-status" role="status" aria-live="polite"></p></section><section class="offering-guide" aria-labelledby="offering-guide-title"><h2 id="offering-guide-title">입금자 작성 안내</h2><p class="offering-guide-instruction"><strong>입금자란에 이름과 생년월일, 헌금종류를 꼭 기록하여 주세요!</strong></p><div class="offering-example"><h3>작성 예시</h3><p class="offering-example-format">본인이름 <span aria-hidden="true">+</span> 생년월일 <span aria-hidden="true">+</span> 십일조</p><p class="offering-example-name"><code>김하나870414십일조</code></p></div></section></div>`;
 }
 function about(path){
  const key=path.split('/')[1];const content={
@@ -252,7 +256,7 @@ function saturdayOutreach(){
  const copy=`<div class="prose"><p>${esc(outreach.description)}</p></div><div class="info-list outreach-info"><div class="info-row"><strong>전도 시간</strong><span>${esc(outreach.meeting)}</span></div><div class="info-row"><strong>참여</strong><span>${esc(outreach.audience)}</span></div></div>`;
  const photos=outreach.images.length?`<div class="outreach-gallery">${outreach.images.map((photo,index)=>{
   const caption=`토요전도 활동 사진 ${index+1}`;
-  const content=photo.status==='error'?'<p class="inline-status">사진을 불러오지 못했습니다.</p>':photo.url?`<button class="outreach-photo" data-photo="${url(photo.url)}"${photoSources(photo)} data-photo-title="${esc(caption)}" aria-label="${esc(caption)} 크게 보기">${imageTag(photo.url,caption)}</button>`:'';
+  const content=photo.status==='error'?'<p class="inline-status">사진을 불러오지 못했습니다.</p>':photo.url?`<button class="outreach-photo" data-photo="${url(photo.url)}" data-photo-title="${esc(caption)}" aria-label="${esc(caption)} 크게 보기">${imageTag(photo.url,caption)}</button>`:'';
   return resource(`outreach-photo:${photo.id||index}`,content,'image',true,photo.status==='loading');
  }).join('')}</div>`:outreach.mediaError?'<p class="inline-status">사진을 불러오지 못했습니다. 잠시 후 다시 방문해 주세요.</p>':empty('등록된 사진이 없습니다.','토요전도 활동 사진이 등록되면 이곳에서 볼 수 있습니다.');
  return page('토요전도','이웃에게 전하는 복음과 사랑.',`<section class="mission-intro"><p class="eyebrow green">SATURDAY OUTREACH</p><h2>매주 토요일,<br>이웃을 찾아갑니다.</h2>${resource('outreach-copy',copy,'rows',true)}</section><section aria-labelledby="outreach-photos-title"><h3 class="spaced-title" id="outreach-photos-title">토요전도 활동 사진</h3>${resource('outreach-gallery',photos,'cards',true,Boolean(outreach.mediaPending&&!outreach.images.length))}</section>`,missionNav);
@@ -277,7 +281,7 @@ function noticePhotosView(item,id){
  const photos=item.images||[];
  const items=photos.map((photo,index)=>{
   const label=photo.alt||`${item.title} 사진 ${index+1}`;
-  const picture=photo.status==='ready'?`<figure class="notice-photo"><button class="notice-photo-button" data-photo="${url(photo.url)}"${photoKey(photo)} data-photo-title="${esc(label)}" aria-label="${esc(label)} 크게 보기"><img src="${url(photo.url)}" alt="${esc(label)}" loading="lazy" decoding="async"></button></figure>`:photo.status==='error'?'<p class="notice-photo-error">사진을 불러오지 못했습니다.</p>':'';
+  const picture=photo.status==='ready'?`<figure class="notice-photo"><button class="notice-photo-button" data-photo="${url(photo.url)}" data-photo-title="${esc(label)}" aria-label="${esc(label)} 크게 보기"><img src="${url(photo.url)}" alt="${esc(label)}" loading="lazy" decoding="async"></button></figure>`:photo.status==='error'?'<p class="notice-photo-error">사진을 불러오지 못했습니다.</p>':'';
   const ratio=photo.width&&photo.height?`${photo.width}/${photo.height}`:'16/9';
   return `<div class="notice-photo-slot" style="--photo-ratio:${ratio}">${resource(`notice-photo:${id}:${photo.id}`,picture,'image',true,photo.status==='loading')}</div>`;
  }).join('');
@@ -318,13 +322,15 @@ function render({scroll=false}={}){
  main.replaceChildren(createView());
  mountResources(main);
  updateHomeMoments();
+ syncHomeHero(main);
  if(scroll){window.scrollTo({top:0,behavior:'instant'});main.focus({preventScroll:true});}
 }
 const viewer=document.querySelector('#viewer');
-let viewerGeneration=0;
 let currentAlbum=null;
-let albumPhotoView=null;
-function modal(content){viewerGeneration++;albumPhotoView=null;viewer.classList.remove('album-photo-view');document.querySelector('#viewer-content').innerHTML=content;if(!viewer.open)viewer.showModal();}
+let photoView=null;
+let photoSwipe=null;
+let photoSlide=null;
+function modal(content){photoSlide?.destroy();photoSlide=null;photoSwipe?.destroy();photoSwipe=null;photoView=null;viewer.classList.remove('album-photo-view');document.querySelector('#viewer-content').innerHTML=content;if(!viewer.open)viewer.showModal();}
 function albumModal(id,{photoIndex,scrollTop=0}={}){
  const album=state.albums.find(item=>item.id===id)||(currentAlbum?.id===id?currentAlbum:{id,title:'우리 교회 둘러보기',images:[{url:'./assets/church.png',title:'세종하나교회 전경'}]});
  currentAlbum=album;
@@ -333,41 +339,45 @@ function albumModal(id,{photoIndex,scrollTop=0}={}){
  if(/^\d+$/.test(String(photoIndex)))viewer.querySelector(`[data-photo-index="${photoIndex}"]`)?.focus({preventScroll:true});
 }
 viewer.querySelector('.dialog-close').onclick=()=>viewer.close();
-viewer.addEventListener('close',()=>{viewerGeneration++;if(!viewer.open){document.querySelector('#viewer-content').innerHTML='';currentAlbum=null;albumPhotoView=null;viewer.classList.remove('album-photo-view');}});
-async function photoModal(photo,{albumView,focusStep,focusClose=false}={}){
- const title=photo.dataset.photoTitle||'교회 사진',key=photo.dataset.photoKey,original=photo.dataset.photoOriginal,albumId=photo.dataset.photoAlbum;
+viewer.addEventListener('close',()=>{if(!viewer.open){photoSlide?.destroy();photoSlide=null;photoSwipe?.destroy();photoSwipe=null;document.querySelector('#viewer-content').innerHTML='';currentAlbum=null;photoView=null;viewer.classList.remove('album-photo-view');}});
+function galleryNavigation(photo){
+ const host=photo.closest?.('[data-photo-gallery]');
+ if(!host)return null;
+ const buttons=[...host.querySelectorAll('[data-photo]')],index=buttons.indexOf(photo);
+ if(index<0)return null;
+ return {galleryTitle:host.dataset.photoGallery,index,hideTitle:photo.dataset.photoHideTitle==='true',images:buttons.map(button=>({url:button.dataset.photo,title:button.dataset.photoTitle}))};
+}
+function photoModal(photo,{photoNavigation,focusStep,focusClose=false,slideFrom,slideStep}={}){
+ const title=photo.dataset.photoTitle||'교회 사진',albumId=photo.dataset.photoAlbum;
  const hideTitle=Boolean(albumId)||photo.dataset.photoHideTitle==='true';
  const index=Number(photo.dataset.photoIndex);
- const navigation=albumView||(albumId&&currentAlbum?.id===albumId&&Number.isInteger(index)&&index>=0&&index<currentAlbum.images.length?{albumId,albumTitle:currentAlbum.title,images:currentAlbum.images.slice(),index,galleryScrollTop:viewer.scrollTop}:null);
+ const navigation=photoNavigation||(albumId&&currentAlbum?.id===albumId&&Number.isInteger(index)&&index>=0&&index<currentAlbum.images.length?{albumId,albumTitle:currentAlbum.title,images:currentAlbum.images.slice(),index,galleryScrollTop:viewer.scrollTop,hideTitle:true}:galleryNavigation(photo));
  const back=albumId?`<button type="button" class="button outline album-back" data-album-back="${esc(albumId)}" data-album-photo-index="${esc(photo.dataset.photoIndex)}" data-album-scroll="${navigation?.galleryScrollTop??viewer.scrollTop}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m14 6-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>앨범으로 돌아가기</button>`:'';
  const arrow=step=>`<button type="button" class="album-photo-arrow ${step<0?'previous':'next'}" data-album-photo-step="${step}" aria-label="${step<0?'이전':'다음'} 사진"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="${step<0?'m14 6-6 6 6 6':'m10 6 6 6-6 6'}" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`;
  const controls=navigation?.images.length>1;
- const image=navigation?`<div class="album-photo-stage">${controls?arrow(-1):''}${imageTag(photo.dataset.photo,title,'album-photo-image')}${controls?arrow(1):''}</div>`:imageTag(photo.dataset.photo,title);
- modal(`${back}<h2 id="viewer-title"${hideTitle?' class="sr-only"':''}>${esc(title)}</h2>${image}${key||original?'<p class="inline-status" role="status" data-photo-loading>큰 사진을 불러오는 중입니다.</p>':''}`);
- albumPhotoView=navigation;
+ const image=navigation?`<div class="album-photo-stage" data-photo-index="${navigation.index}">${controls?arrow(-1):''}${imageTag(photo.dataset.photo,title,'album-photo-image')}${controls?arrow(1):''}</div>`:imageTag(photo.dataset.photo,title);
+ modal(`${back}<h2 id="viewer-title"${hideTitle?' class="sr-only"':''}>${esc(title)}</h2>${image}`);
+ const currentImage=viewer.querySelector('img');
+ currentImage.loading='eager';
+ photoView=navigation;
  if(navigation){viewer.classList.add('album-photo-view');viewer.scrollTop=0;}
- if(albumId)(focusClose?viewer.querySelector('.dialog-close'):viewer.querySelector(focusStep?`[data-album-photo-step="${focusStep}"]`:'[data-album-back]'))?.focus({preventScroll:true});
- if(!key&&!original)return;
- const generation=viewerGeneration,content=document.querySelector('#viewer-content');
- try{
-  const source=safeUrl(original||await loadPhotoOriginal(key)),image=new Image();image.src=source;await image.decode();
-  if(!viewer.open||generation!==viewerGeneration)return;
-  content.querySelector('img').src=source;content.querySelector('[data-photo-loading]')?.remove();
- }catch{
-  if(viewer.open&&generation===viewerGeneration)content.querySelector('[data-photo-loading]')?.replaceChildren('현재 크기의 사진으로 보여드립니다.');
- }
+ photoSlide=slideFrom?startPhotoSlide(viewer.querySelector('.album-photo-stage'),slideFrom,slideStep):null;
+ if(controls)photoSwipe=bindHorizontalSwipe(viewer.querySelector('.album-photo-stage'),{onSwipe:navigatePhoto});
+ if(navigation)(focusClose?viewer.querySelector('.dialog-close'):viewer.querySelector(focusStep?`[data-album-photo-step="${focusStep}"]`:albumId?'[data-album-back]':'.dialog-close'))?.focus({preventScroll:true});
 }
-function navigateAlbumPhoto(step){
- const current=albumPhotoView;
+function navigatePhoto(step){
+ const current=photoView;
  if(!viewer.open||!current||current.images.length<2)return;
  const index=(current.index+step+current.images.length)%current.images.length,photo=current.images[index];
  const focusStep=document.activeElement?.dataset.albumPhotoStep,focusClose=document.activeElement===viewer.querySelector('.dialog-close');
- photoModal({dataset:{photo:photo.url,photoKey:photo.originalKey,photoOriginal:photo.originalUrl,photoTitle:`${current.albumTitle} 사진 ${index+1}`,photoAlbum:current.albumId,photoIndex:String(index)}},{albumView:{...current,index},focusStep,focusClose});
+ const title=current.albumId?`${current.albumTitle} 사진 ${index+1}`:photo.title||`${current.galleryTitle} 사진 ${index+1}`;
+ const slideFrom=capturePhotoSlide(viewer.querySelector('.album-photo-stage'));
+ photoModal({dataset:{photo:photo.url,photoTitle:title,photoAlbum:current.albumId,photoIndex:String(index),photoHideTitle:String(current.hideTitle)}},{photoNavigation:{...current,index},focusStep,focusClose,slideFrom,slideStep:step});
 }
 viewer.addEventListener('click',event=>{if(event.target===viewer){const r=viewer.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)viewer.close();}});
 document.addEventListener('keydown',event=>{
- if(viewer.open&&albumPhotoView&&['ArrowLeft','ArrowRight'].includes(event.key)&&!event.ctrlKey&&!event.altKey&&!event.metaKey&&!event.target.closest('input,textarea,select,[contenteditable="true"]')){
-  if(albumPhotoView.images.length>1){event.preventDefault();navigateAlbumPhoto(event.key==='ArrowLeft'?-1:1);}
+ if(viewer.open&&photoView&&['ArrowLeft','ArrowRight'].includes(event.key)&&!event.ctrlKey&&!event.altKey&&!event.metaKey&&!event.target.closest('input,textarea,select,[contenteditable="true"]')){
+  if(photoView.images.length>1){event.preventDefault();navigatePhoto(event.key==='ArrowLeft'?-1:1);}
   return;
  }
  if(event.key!=='Escape'||viewer.open)return;
@@ -383,7 +393,13 @@ document.addEventListener('keydown',event=>{
  }
 });
 document.addEventListener('click',async event=>{
- const photoStep=event.target.closest('[data-album-photo-step]');if(photoStep){navigateAlbumPhoto(Number(photoStep.dataset.albumPhotoStep));return;}
+ const homeBrand=event.target.closest('.brand[href="#/"]');
+ if(homeBrand&&!event.defaultPrevented&&!currentPath()&&event.button===0&&!event.ctrlKey&&!event.metaKey&&!event.shiftKey&&!event.altKey){
+  event.preventDefault();
+  if(location.hash!=='#/')history.replaceState(history.state,'','#/');
+  renderNavigation();return;
+ }
+ const photoStep=event.target.closest('[data-album-photo-step]');if(photoStep){navigatePhoto(Number(photoStep.dataset.albumPhotoStep));return;}
  const albumBack=event.target.closest('[data-album-back]');if(albumBack){albumModal(albumBack.dataset.albumBack,{photoIndex:albumBack.dataset.albumPhotoIndex,scrollTop:Number(albumBack.dataset.albumScroll)||0});return;}
  const video=event.target.closest('[data-video]');
  if(video){const id=video.dataset.video;if(!/^[a-zA-Z0-9_-]{11}$/.test(id))return;const data=[...state.videos,...state.jubileeVideos,...state.missionVideos,...state.youngAdultVideos,...state.visionVideos,...state.oneMinuteVideos,...state.infantPlaylists.flatMap(playlist=>playlist.videos)].find(v=>v.id===id);modal(`<h2 id="viewer-title">${esc(data?.title||'예배 영상')}</h2><iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0" title="${esc(data?.title||'예배 영상')}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe><p class="inline-status">영상 재생이 제한되면 <a href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener noreferrer">YouTube에서 보기</a>를 이용해 주세요.</p>`);}
@@ -394,7 +410,15 @@ document.addEventListener('click',async event=>{
  if(event.target.closest('[data-copy-offering]')){const status=document.querySelector('#offering-copy-status'),account=document.querySelector('#offering-account-number').textContent;try{await navigator.clipboard.writeText(account);status.textContent='계좌번호를 복사했습니다.';}catch{status.textContent=`직접 복사해 주세요: ${account}`;}}
  if(!event.target.closest('.nav-group')||event.target.closest('.dropdown a'))closeDesktopMenus();
 });
-window.addEventListener('hashchange',()=>{if(viewer.open)viewer.close();const btn=document.querySelector('.menu-toggle');btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-label','전체 메뉴 열기');document.querySelector('#mobile-nav').hidden=true;document.body.classList.remove('menu-open');closeDesktopMenus();document.activeElement?.blur();render({scroll:true});refreshDrive();refreshOneMinute();refreshVision();});
+function renderNavigation(){
+ if(viewer.open)viewer.close();
+ const btn=document.querySelector('.menu-toggle');
+ btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-label','전체 메뉴 열기');
+ document.querySelector('#mobile-nav').hidden=true;document.body.classList.remove('menu-open');
+ closeDesktopMenus();document.activeElement?.blur();
+ render({scroll:true});refreshDrive();refreshOneMinute();refreshVision();
+}
+window.addEventListener('hashchange',renderNavigation);
 render();
 // Drive is the live source of truth. Video refresh is independent of content refresh.
 const driveRefreshTasks=new Map();
@@ -440,6 +464,7 @@ function renderResourceUpdate(){
  if(viewer.open){renderPending=true;return;}
  renderPending=false;patchResources(main,createView());
  updateHomeMoments();
+ syncHomeHero(main);
 }
 viewer.addEventListener('close',()=>{if(renderPending)renderResourceUpdate();});
 async function refreshDrive(){
@@ -503,6 +528,7 @@ async function refreshDrive(){
 refreshDrive();
 // Re-entering the current menu also requests the latest Drive content.
 document.addEventListener('click',event=>{
+ if(event.defaultPrevented)return;
  const link=event.target.closest('a[href^="#/"]');
  if(link&&link.hash===location.hash&&!event.ctrlKey&&!event.metaKey&&!event.shiftKey&&!event.altKey){
   if(link.closest('#mobile-nav')&&!document.querySelector('#mobile-nav').hidden)document.querySelector('.menu-toggle').click();

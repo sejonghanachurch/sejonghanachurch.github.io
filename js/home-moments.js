@@ -1,3 +1,5 @@
+import { bindHorizontalSwipe } from './horizontal-swipe.js?v=photo-swipe-20261008';
+
 const INTERVAL=4500;
 let active=null;
 
@@ -18,12 +20,12 @@ function createCarousel(host){
   host.innerHTML=`<div class="moments-stage"><p class="moments-empty" role="status"></p></div>`;
   const stage=host.querySelector('.moments-stage');
   const media=matchMedia('(prefers-reduced-motion: reduce)'),events=new AbortController();
-  let photos=[],index=0,signature='',timer=null,visible=false,hovered=false,focused=false,destroyed=false,animation=null,pointer=null,suppressClick=false;
+  let photos=[],index=0,signature='',timer=null,visible=false,hovered=false,focused=false,dragging=false,destroyed=false,animation=null;
   const on=(target,type,listener,options={})=>target.addEventListener(type,listener,{...options,signal:events.signal});
   const stop=()=>{clearTimeout(timer);timer=null;};
   function schedule(){
     stop();
-    if(!destroyed&&photos.length>1&&visible&&!document.hidden&&!hovered&&!focused&&!media.matches&&!animation){timer=setTimeout(()=>move(1),INTERVAL);}
+    if(!destroyed&&photos.length>1&&visible&&!document.hidden&&!hovered&&!focused&&!dragging&&!media.matches&&!animation){timer=setTimeout(()=>move(1),INTERVAL);}
   }
   function markSlide(){
     host.dataset.slideKey=photos[index]?.key||'';
@@ -68,14 +70,12 @@ function createCarousel(host){
   on(host,'pointerleave',event=>{if(event.pointerType!=='touch'){hovered=false;schedule();}});
   on(host,'focusin',()=>{focused=true;schedule();});
   on(host,'focusout',event=>{focused=host.contains(event.relatedTarget);schedule();});
-  on(stage,'pointerdown',event=>{suppressClick=false;if(event.pointerType!=='mouse')pointer={id:event.pointerId,x:event.clientX,y:event.clientY};});
-  on(stage,'pointerup',event=>{
-    if(pointer?.id!==event.pointerId)return;
-    const dx=event.clientX-pointer.x,dy=event.clientY-pointer.y;pointer=null;
-    if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.3){suppressClick=true;move(dx<0?1:-1);}
+  const swipe=bindHorizontalSwipe(stage,{
+    canStart:()=>photos.length>1&&!animation,
+    onStart(){dragging=true;stop();},
+    onSwipe(direction){move(direction);},
+    onEnd(){dragging=false;schedule();}
   });
-  on(stage,'pointercancel',()=>{pointer=null;});
-  on(stage,'click',event=>{if(suppressClick){event.preventDefault();suppressClick=false;}},{capture:true});
   on(document,'visibilitychange',schedule);
   on(media,'change',()=>{cancelAnimation();if(photos.length)show();schedule();});
   const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;schedule();},{threshold:0.25});
@@ -97,7 +97,7 @@ function createCarousel(host){
       }
       schedule();
     },
-    destroy(){destroyed=true;stop();cancelAnimation();observer.disconnect();events.abort();}
+    destroy(){destroyed=true;stop();cancelAnimation();swipe.destroy();observer.disconnect();events.abort();}
   };
 }
 
