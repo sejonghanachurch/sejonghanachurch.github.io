@@ -3,7 +3,6 @@ import { CONFIG } from './config.js';
 const ready = new Set();
 const versions = new WeakMap();
 const waiting = new Set();
-const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
 export function settleResource(key) { ready.add(key); }
 export function resetResource(key) { ready.delete(key); }
@@ -50,7 +49,7 @@ function prepare(region) {
   });
   // Animate content units independently, so a slow image never delays the text.
   targets.forEach((element, index) => {
-    if (reduceMotion.matches || element.hasAttribute('data-immediate') || element.matches('[data-resource]') || element.querySelector('[data-resource]')) return;
+    if (element.hasAttribute('data-immediate') || element.matches('[data-resource]') || element.querySelector('[data-resource]')) return;
     element.classList.add('resource-enter');
     element.style.setProperty('--enter-delay', `${Math.min(index, 4) * 65}ms`);
     if (observer) { waiting.add(element); observer.observe(element); }
