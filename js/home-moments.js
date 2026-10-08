@@ -19,13 +19,13 @@ function photosFrom(albums,safeUrl){
 function createCarousel(host){
   host.innerHTML=`<div class="moments-stage"><p class="moments-empty" role="status"></p></div>`;
   const stage=host.querySelector('.moments-stage');
-  const media=matchMedia('(prefers-reduced-motion: reduce)'),events=new AbortController();
+  const events=new AbortController();
   let photos=[],index=0,signature='',timer=null,visible=false,hovered=false,focused=false,dragging=false,destroyed=false,animation=null;
   const on=(target,type,listener,options={})=>target.addEventListener(type,listener,{...options,signal:events.signal});
   const stop=()=>{clearTimeout(timer);timer=null;};
   function schedule(){
     stop();
-    if(!destroyed&&photos.length>1&&visible&&!document.hidden&&!hovered&&!focused&&!dragging&&!media.matches&&!animation){timer=setTimeout(()=>move(1),INTERVAL);}
+    if(!destroyed&&photos.length>1&&visible&&!document.hidden&&!hovered&&!focused&&!dragging&&!animation){timer=setTimeout(()=>move(1),INTERVAL);}
   }
   function markSlide(){
     host.dataset.slideKey=photos[index]?.key||'';
@@ -57,7 +57,6 @@ function createCarousel(host){
     if(destroyed||animation!==loading||!next.isConnected)return;
     next.style.visibility='';
     index=nextIndex;markSlide();
-    if(media.matches){stage.replaceChildren(next);animation=null;schedule();return;}
     previous.setAttribute('aria-hidden','true');previous.inert=true;
     const options={duration:800,easing:'cubic-bezier(.22,.61,.36,1)',fill:'both'};
     const running=[previous.animate([{transform:'translateX(0)'},{transform:`translateX(${-direction*100}%)`}],options),next.animate([{transform:`translateX(${direction*100}%)`},{transform:'translateX(0)'}],options)];
@@ -77,7 +76,6 @@ function createCarousel(host){
     onEnd(){dragging=false;schedule();}
   });
   on(document,'visibilitychange',schedule);
-  on(media,'change',()=>{cancelAnimation();if(photos.length)show();schedule();});
   const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;schedule();},{threshold:0.25});
   observer.observe(host);
   return {

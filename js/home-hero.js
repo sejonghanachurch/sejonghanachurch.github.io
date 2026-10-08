@@ -6,13 +6,12 @@ let active=null;
 
 function createSlideshow(host){
   const slides=[...host.querySelectorAll('[data-hero-slide]')];
-  const media=matchMedia('(prefers-reduced-motion: reduce)');
   const events=new AbortController();
   let index=0,timer=null,leavingTimer=null,pending=false,destroyed=false,revision=0,exhausted=false,dragging=false;
   const on=(target,type,listener)=>target.addEventListener(type,listener,{signal:events.signal});
   const stop=()=>{clearTimeout(timer);timer=null;};
   const canAdvance=()=>!destroyed&&!document.hidden&&!exhausted&&slides.length>1;
-  const canRun=()=>canAdvance()&&!media.matches&&!dragging;
+  const canRun=()=>canAdvance()&&!dragging;
 
   function prepare(slide){
     const image=slide.matches('img')?slide:slide.querySelector('img');
@@ -100,11 +99,6 @@ function createSlideshow(host){
     host.classList.toggle('is-paused',document.hidden||dragging);
     if(document.hidden){revision++;pending=false;stop();}
     else schedule();
-  });
-  on(media,'change',()=>{
-    stop();
-    if(media.matches)showFirst();
-    schedule();
   });
   showFirst();
   host.classList.toggle('is-paused',document.hidden);

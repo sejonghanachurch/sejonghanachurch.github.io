@@ -37,6 +37,13 @@
 @media(max-width:1000px){.hero-controls{top:18px;flex-direction:row-reverse;gap:8px}}
 @media(max-width:640px){.hero-controls{right:18px}}
 @keyframes heroZoom{from{transform:scale(1)}to{transform:scale(1.06)}}
+/* Photo playback is independent of the OS motion setting. Other page effects
+   still follow the reduced-motion rules above. */
+@media(prefers-reduced-motion:reduce){
+  .hero .hero-image{transition:opacity 1.6s ease-in-out!important}
+  .hero .hero-image.is-active,.hero .hero-image.is-leaving{animation:heroZoom 7.6s linear both!important}
+  .hero.is-paused .hero-image{animation-play-state:paused!important}
+}
 
 .announcement-list{list-style:none;padding:0;margin:0;border-top:2px solid var(--primary)}.announcement-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;gap:22px;align-items:center;padding:25px 10px;border-bottom:1px solid var(--line);transition:background .2s}.announcement-row:hover{background:var(--pale)}.announcement-row strong{font-weight:700;overflow-wrap:anywhere}.announcement-row time,.announcement-meta time{font-size:15px;color:var(--muted);white-space:nowrap}.announcement-arrow{color:var(--primary);font-size:22px}.announcement-article{max-width:950px}.announcement-article header{border-bottom:1px solid var(--line);padding:8px 0 28px}.announcement-article h2{font-size:clamp(25px,3vw,36px);margin:16px 0 0;overflow-wrap:anywhere}.announcement-meta{display:flex;align-items:center;gap:14px}.announcement-body{font-size:19px;line-height:1.9;white-space:pre-wrap;overflow-wrap:anywhere;padding:35px 0;border-bottom:1px solid var(--line)}
 @media(max-width:640px){.announcement-row{grid-template-columns:auto minmax(0,1fr) auto;gap:10px 14px;padding:22px 0}.announcement-row time{grid-column:2;grid-row:2;font-size:13px}.announcement-arrow{grid-column:3;grid-row:1 / span 2}.announcement-row .tag{align-self:start;margin-top:2px}.announcement-body{font-size:18px;padding:27px 0}}
