@@ -61,7 +61,7 @@ document.querySelector('#back-top').onclick=()=>window.scrollTo({top:0,behavior:
 document.querySelector('#year').textContent=new Date().getFullYear();
 import { CONFIG } from './config.js';
 import { resource, settleResource, mountResources, patchResources } from './resource-view.js';
-import { syncHomeMoments } from './home-moments.js?v=photo-motion-20261008';
+import { syncHomeMoments } from './home-moments.js?v=moments-4s-20261008';
 import { syncHomeHero } from './home-hero.js?v=photo-motion-20261008';
 import { bindHorizontalSwipe } from './horizontal-swipe.js?v=viewer-scroll-lock-20261008';
 import { capturePhotoSlide, startPhotoSlide } from './photo-slide.js?v=photo-motion-20261008';
