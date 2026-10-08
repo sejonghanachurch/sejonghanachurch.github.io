@@ -63,7 +63,7 @@ import { CONFIG } from './config.js';
 import { resource, settleResource, mountResources, patchResources } from './resource-view.js';
 import { syncHomeMoments } from './home-moments.js?v=photo-swipe-20261008';
 import { syncHomeHero } from './home-hero.js?v=hero-arrows-20261008-2';
-import { bindHorizontalSwipe } from './horizontal-swipe.js?v=photo-swipe-20261008';
+import { bindHorizontalSwipe } from './horizontal-swipe.js?v=viewer-scroll-lock-20261008';
 import { capturePhotoSlide, startPhotoSlide } from './photo-slide.js?v=photo-preview-slide-20261008';
 const currentPath=()=>{const path=location.hash.replace(/^#\/?/,'').replace(/\/$/,'');return path==='mission'?'mission/overseas':path;};
 function driveKeys(path){
@@ -95,7 +95,7 @@ function title(value){document.title=value?`세종하나교회 ${value}`:'세종
 function subnav(group,path){return `<nav class="subnav" aria-label="${esc(group[0])} 하위 메뉴">${group[1].map(([name,p])=>`<a class="${(path===p||path.startsWith(p+'/'))?'active':''}" ${(path===p||path.startsWith(p+'/'))?'aria-current="page"':''} href="#/${p}">${name}</a>`).join('')}</nav>`;}
 function page(heading,intro,body,group,afterBody=''){const path=currentPath(),key=pageResource(path);title(heading);if(key)body=resource(key,body,path.includes('/')&&(path.startsWith('cells/')||path.startsWith('education/'))?'detail':['cells','education','sermons','news/albums'].includes(path)?'cards':'rows',path==='cells');return `<section class="page-hero reveal"><div class="breadcrumbs"><a href="#/">홈</a> &nbsp; / &nbsp; ${esc(group?.[0]||heading)}</div><h1>${esc(heading)}</h1><p>${esc(intro)}</p></section><section class="page-content reveal${group?' page-layout':''}">${group?subnav(group,path):''}<div class="page-body">${body}${afterBody}</div></section>`;}
 function bulletinRows(limit=100){
-  if(state.bulletins.length)return state.bulletins.slice(0,limit).map(b=>`<a class="news-item" href="${url(b.url)}" target="_blank" rel="noopener noreferrer"><span class="tag">주보</span><strong>${esc(b.title)}</strong><small>${date(b.date)}</small><span class="plus">+</span></a>`).join('');
+  if(state.bulletins.length)return state.bulletins.slice(0,limit).map(b=>`<a class="news-item" href="${url(b.url)}"${b.url.startsWith('./pdf.html?')?'':' target="_blank" rel="noopener noreferrer"'}><span class="tag">주보</span><strong>${esc(b.title)}</strong><small>${date(b.date)}</small><span class="plus">+</span></a>`).join('');
   if(state.driveStatus==='connected')return empty('등록된 주보가 없습니다.','새 주보가 등록되면 이곳에서 보실 수 있습니다.');
   return `<button class="news-item plain-button full-width" data-bulletin-sample><span class="tag">안내</span><strong>주보는 이렇게 만나보세요</strong><span class="sample-tag">샘플</span><span class="plus">+</span></button><a class="news-item" href="#/worship"><span class="tag">예배</span><strong>세종하나교회 예배 안내</strong><span class="plus">+</span></a><a class="news-item" href="#/welcome"><span class="tag">환영</span><strong>처음 오신 여러분을 환영합니다</strong><span class="plus">+</span></a>`;
 }
@@ -330,7 +330,24 @@ let currentAlbum=null;
 let photoView=null;
 let photoSwipe=null;
 let photoSlide=null;
-function modal(content){photoSlide?.destroy();photoSlide=null;photoSwipe?.destroy();photoSwipe=null;photoView=null;viewer.classList.remove('album-photo-view');document.querySelector('#viewer-content').innerHTML=content;if(!viewer.open)viewer.showModal();}
+let viewerScroll=null;
+function lockViewerScroll(){
+ if(viewerScroll)return;
+ const body=document.body,properties=['--viewer-scroll-top','--viewer-scrollbar-gap'];
+ viewerScroll={x:window.scrollX,y:window.scrollY,styles:properties.map(name=>[name,body.style.getPropertyValue(name),body.style.getPropertyPriority(name)])};
+ const gap=window.innerWidth-document.documentElement.clientWidth+(parseFloat(getComputedStyle(body).paddingRight)||0);
+ body.style.setProperty('--viewer-scroll-top',`${-viewerScroll.y}px`);
+ body.style.setProperty('--viewer-scrollbar-gap',`${gap}px`);
+ document.documentElement.classList.add('viewer-open');body.classList.add('viewer-open');
+}
+function unlockViewerScroll({restore=true}={}){
+ if(!viewerScroll)return;
+ const saved=viewerScroll;viewerScroll=null;
+ document.documentElement.classList.remove('viewer-open');document.body.classList.remove('viewer-open');
+ for(const [name,value,priority] of saved.styles){if(value)document.body.style.setProperty(name,value,priority);else document.body.style.removeProperty(name);}
+ if(restore)window.scrollTo({left:saved.x,top:saved.y,behavior:'instant'});
+}
+function modal(content){photoSlide?.destroy();photoSlide=null;photoSwipe?.destroy();photoSwipe=null;photoView=null;viewer.classList.remove('album-photo-view');document.querySelector('#viewer-content').innerHTML=content;if(!viewer.open){lockViewerScroll();try{viewer.showModal();}catch(error){unlockViewerScroll();throw error;}}}
 function albumModal(id,{photoIndex,scrollTop=0}={}){
  const album=state.albums.find(item=>item.id===id)||(currentAlbum?.id===id?currentAlbum:{id,title:'우리 교회 둘러보기',images:[{url:'./assets/church.png',title:'세종하나교회 전경'}]});
  currentAlbum=album;
@@ -339,7 +356,7 @@ function albumModal(id,{photoIndex,scrollTop=0}={}){
  if(/^\d+$/.test(String(photoIndex)))viewer.querySelector(`[data-photo-index="${photoIndex}"]`)?.focus({preventScroll:true});
 }
 viewer.querySelector('.dialog-close').onclick=()=>viewer.close();
-viewer.addEventListener('close',()=>{if(!viewer.open){photoSlide?.destroy();photoSlide=null;photoSwipe?.destroy();photoSwipe=null;document.querySelector('#viewer-content').innerHTML='';currentAlbum=null;photoView=null;viewer.classList.remove('album-photo-view');}});
+viewer.addEventListener('close',()=>{if(!viewer.open){photoSlide?.destroy();photoSlide=null;photoSwipe?.destroy();photoSwipe=null;document.querySelector('#viewer-content').innerHTML='';currentAlbum=null;photoView=null;viewer.classList.remove('album-photo-view');unlockViewerScroll();}});
 function galleryNavigation(photo){
  const host=photo.closest?.('[data-photo-gallery]');
  if(!host)return null;
@@ -362,7 +379,7 @@ function photoModal(photo,{photoNavigation,focusStep,focusClose=false,slideFrom,
  photoView=navigation;
  if(navigation){viewer.classList.add('album-photo-view');viewer.scrollTop=0;}
  photoSlide=slideFrom?startPhotoSlide(viewer.querySelector('.album-photo-stage'),slideFrom,slideStep):null;
- if(controls)photoSwipe=bindHorizontalSwipe(viewer.querySelector('.album-photo-stage'),{onSwipe:navigatePhoto});
+ if(controls)photoSwipe=bindHorizontalSwipe(viewer.querySelector('.album-photo-stage'),{onSwipe:navigatePhoto,allowDiagonal:true});
  if(navigation)(focusClose?viewer.querySelector('.dialog-close'):viewer.querySelector(focusStep?`[data-album-photo-step="${focusStep}"]`:albumId?'[data-album-back]':'.dialog-close'))?.focus({preventScroll:true});
 }
 function navigatePhoto(step){
@@ -412,6 +429,7 @@ document.addEventListener('click',async event=>{
 });
 function renderNavigation(){
  if(viewer.open)viewer.close();
+ unlockViewerScroll({restore:false});
  const btn=document.querySelector('.menu-toggle');
  btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-label','전체 메뉴 열기');
  document.querySelector('#mobile-nav').hidden=true;document.body.classList.remove('menu-open');

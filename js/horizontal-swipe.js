@@ -23,8 +23,9 @@ function suppressDragClick(){
   clearSuppressedClick=clear;
 }
 
-export function bindHorizontalSwipe(host,{onSwipe,canStart=()=>true,onStart=()=>{},onEnd=()=>{}}){
+export function bindHorizontalSwipe(host,{onSwipe,canStart=()=>true,onStart=()=>{},onEnd=()=>{},allowDiagonal=false}){
   const events=new AbortController();
+  const horizontalRatio=allowDiagonal?0.7:1.25;
   let pointer=null,destroyed=false;
   const on=(target,type,listener,options={})=>target.addEventListener(type,listener,{...options,signal:events.signal});
   host.classList.add('has-swipe');
@@ -34,8 +35,8 @@ export function bindHorizontalSwipe(host,{onSwipe,canStart=()=>true,onStart=()=>
     const current=pointer;pointer=null;
     const dx=(event?.clientX??current.x)-current.startX;
     const dy=(event?.clientY??current.y)-current.startY;
-    const horizontal=current.axis==='horizontal'||(!current.axis&&Math.abs(dx)>INTENT_DISTANCE&&Math.abs(dx)>Math.abs(dy)*1.25);
-    const swiped=!cancelled&&horizontal&&Math.abs(dx)>=SWIPE_DISTANCE&&Math.abs(dx)>Math.abs(dy)*1.25;
+    const horizontal=current.axis==='horizontal'||(!current.axis&&Math.abs(dx)>INTENT_DISTANCE&&Math.abs(dx)>Math.abs(dy)*horizontalRatio);
+    const swiped=!cancelled&&horizontal&&Math.abs(dx)>=SWIPE_DISTANCE&&Math.abs(dx)>Math.abs(dy)*horizontalRatio;
     host.classList.remove('is-swiping');
     if(host.hasPointerCapture?.(current.id))host.releasePointerCapture(current.id);
     if(horizontal||Math.max(Math.abs(dx),Math.abs(dy))>=INTENT_DISTANCE)suppressDragClick();
@@ -56,8 +57,8 @@ export function bindHorizontalSwipe(host,{onSwipe,canStart=()=>true,onStart=()=>
     const dx=pointer.x-pointer.startX,dy=pointer.y-pointer.startY;
     if(!pointer.axis){
       if(Math.max(Math.abs(dx),Math.abs(dy))<INTENT_DISTANCE)return;
-      if(Math.abs(dy)>Math.abs(dx)*1.1){pointer.axis='vertical';return;}
-      if(Math.abs(dx)<=Math.abs(dy)*1.25)return;
+      if(!allowDiagonal&&Math.abs(dy)>Math.abs(dx)*1.1){pointer.axis='vertical';return;}
+      if(Math.abs(dx)<=Math.abs(dy)*horizontalRatio)return;
       pointer.axis='horizontal';host.classList.add('is-swiping');
       host.setPointerCapture?.(pointer.id);
     }
