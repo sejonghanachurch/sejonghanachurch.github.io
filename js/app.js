@@ -259,9 +259,9 @@ function saturdayCamp(){
 function saturdayOutreach(){
  const outreach=state.outreach;
  const copy=`<div class="prose"><p>${esc(outreach.description)}</p></div><div class="info-list outreach-info"><div class="info-row"><strong>전도 시간</strong><span>${esc(outreach.meeting)}</span></div><div class="info-row"><strong>참여</strong><span>${esc(outreach.audience)}</span></div></div>`;
- const photos=outreach.images.length?`<div class="outreach-gallery">${outreach.images.map((photo,index)=>{
+ const photos=outreach.images.length?`<div class="outreach-gallery" data-photo-gallery="토요전도">${outreach.images.map((photo,index)=>{
   const caption=`토요전도 활동 사진 ${index+1}`;
-  const content=photo.status==='error'?'<p class="inline-status">사진을 불러오지 못했습니다.</p>':photo.url?`<button class="outreach-photo" data-photo="${url(photo.url)}" data-photo-title="${esc(caption)}" aria-label="${esc(caption)} 크게 보기">${imageTag(photo.url,caption)}</button>`:'';
+  const content=photo.status==='error'?'<p class="inline-status">사진을 불러오지 못했습니다.</p>':photo.url?`<button class="outreach-photo" data-photo="${url(photo.url)}" data-photo-title="${esc(caption)}" data-photo-index="${index}" data-photo-hide-title="true" aria-label="${esc(caption)} 크게 보기">${imageTag(photo.url,caption)}</button>`:'';
   return resource(`outreach-photo:${photo.id||index}`,content,'image',true,photo.status==='loading');
  }).join('')}</div>`:outreach.mediaError?'<p class="inline-status">사진을 불러오지 못했습니다. 잠시 후 다시 방문해 주세요.</p>':empty('등록된 사진이 없습니다.','토요전도 활동 사진이 등록되면 이곳에서 볼 수 있습니다.');
  return page('토요전도','이웃에게 전하는 복음과 사랑.',`<section class="mission-intro"><p class="eyebrow green">SATURDAY OUTREACH</p><h2>매주 토요일,<br>이웃을 찾아갑니다.</h2>${resource('outreach-copy',copy,'rows',true)}</section><section aria-labelledby="outreach-photos-title"><h3 class="spaced-title" id="outreach-photos-title">토요전도 활동 사진</h3>${resource('outreach-gallery',photos,'cards',true,Boolean(outreach.mediaPending&&!outreach.images.length))}</section>`,missionNav);
