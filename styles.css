@@ -20,9 +20,8 @@
 .hero.has-swipe a{cursor:pointer}
 .hero{isolation:isolate;background:#102620}
 .hero .hero-image{position:absolute;inset:0;z-index:0;opacity:0;transform:scale(1);transition:opacity 1.6s ease-in-out;will-change:opacity,transform;pointer-events:none}
-.hero .hero-image.is-active{z-index:1;opacity:1;animation:heroZoom 7.6s linear both}
-.hero .hero-image.is-leaving{opacity:1;animation:heroZoom 7.6s linear both}
-.hero.is-paused .hero-image{animation-play-state:paused}
+.hero .hero-image.is-active{z-index:1;opacity:1;animation:heroZoom 5.6s linear infinite alternate}
+.hero .hero-image.is-leaving{opacity:1;animation:heroZoom 5.6s linear infinite alternate}
 .hero .hero-image--camp{object-position:center 72%}
 .hero .hero-image--choir{object-position:center 70%}
 .hero .hero-shade{z-index:2;background:linear-gradient(90deg,rgba(6,27,21,.64),rgba(6,27,21,.42) 52%,rgba(6,27,21,.14)),linear-gradient(0deg,rgba(11,30,23,.42),rgba(11,30,23,.03) 50%)}
@@ -34,7 +33,7 @@
 .hero-controls svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 @media(max-width:1000px){.hero-controls{top:18px;flex-direction:row-reverse;gap:8px}}
 @media(max-width:640px){.hero-controls{right:18px}}
-@keyframes heroZoom{from{transform:scale(1)}to{transform:scale(1.06)}}
+@keyframes heroZoom{from{transform:scale(1)}to{transform:scale(1.09)}}
 
 .announcement-list{list-style:none;padding:0;margin:0;border-top:2px solid var(--primary)}.announcement-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;gap:22px;align-items:center;padding:25px 10px;border-bottom:1px solid var(--line);transition:background .2s}.announcement-row:hover{background:var(--pale)}.announcement-row strong{font-weight:700;overflow-wrap:anywhere}.announcement-row time,.announcement-meta time{font-size:15px;color:var(--muted);white-space:nowrap}.announcement-arrow{color:var(--primary);font-size:22px}.announcement-article{max-width:950px}.announcement-article header{border-bottom:1px solid var(--line);padding:8px 0 28px}.announcement-article h2{font-size:clamp(25px,3vw,36px);margin:16px 0 0;overflow-wrap:anywhere}.announcement-meta{display:flex;align-items:center;gap:14px}.announcement-body{font-size:19px;line-height:1.9;white-space:pre-wrap;overflow-wrap:anywhere;padding:35px 0;border-bottom:1px solid var(--line)}
 @media(max-width:640px){.announcement-row{grid-template-columns:auto minmax(0,1fr) auto;gap:10px 14px;padding:22px 0}.announcement-row time{grid-column:2;grid-row:2;font-size:13px}.announcement-arrow{grid-column:3;grid-row:1 / span 2}.announcement-row .tag{align-self:start;margin-top:2px}.announcement-body{font-size:18px;padding:27px 0}}
@@ -229,9 +228,13 @@ dialog .photo-slide-outgoing,.album-photo-stage.is-photo-sliding>.album-photo-im
 @media(max-width:640px){.jubilee-intro h2{font-size:28px;margin-bottom:28px}.jubilee-intro h2 br{display:none}.jubilee-principles p{font-size:17px}}
 @media(max-width:640px){.worship-schedule-table{display:block;position:relative}.worship-schedule-table thead{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);white-space:nowrap}.worship-schedule-table tbody{display:block;border-top:1px solid var(--line)}.worship-schedule-table tbody tr{display:grid;grid-template-columns:70px minmax(0,1fr);column-gap:12px;row-gap:8px;padding:20px 0;border-bottom:1px solid var(--line)}.worship-schedule-table tbody tr:last-child{border-bottom:0}.page-layout .worship-schedule-table tbody th,.page-layout .worship-schedule-table tbody td{border:0;padding:0;width:auto;font-size:18px;line-height:1.6}.worship-schedule-table tbody th{grid-column:1 / -1}.worship-schedule-table tbody td:nth-child(2){grid-column:1}.worship-schedule-table .worship-time{grid-column:2}}
 
-/* A single cell meeting page with one representative photo per cell. */
+/* Cell photos share one crop ratio, with a slideshow for multiple photos. */
 .cell-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
 .cell-card{min-width:0;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:white}
+.cell-slideshow{position:relative;width:100%;height:100%;isolation:isolate;overflow:hidden}
+.cell-slideshow .cell-slide{position:absolute;inset:0;z-index:0;opacity:0;object-fit:cover;transition:opacity .8s ease-in-out;pointer-events:none}
+.cell-slideshow .cell-slide.is-active{z-index:1;opacity:1}
+.cell-slideshow .cell-slide.is-leaving{opacity:1}
 .cell-card-body{padding:28px 30px}
 .cell-card h2{font-size:28px;line-height:1.4;color:var(--primary);margin:0 0 20px}
 .cell-info{margin:0;border-top:1px solid var(--line)}

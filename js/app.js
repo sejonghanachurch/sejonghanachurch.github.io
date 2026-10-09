@@ -1,5 +1,5 @@
 import { SAMPLE } from './data.js?v=education-label-20261007';
-import { COMMUNITY } from './community-data.js?v=education-contacts-20261008';
+import { COMMUNITY } from './community-data.js?v=cell2-blossoms-20261009';
 const groupPath=(root,id)=>root==='education'&&id==='adults'?'cells':`${root}/${id}`;
 const nav = [
  ['교회소개',[['담임목사 인사','about/greeting'],['교회 비전','about/vision'],['연혁','about/history'],['섬기는 사람들','about/people'],['교회 조직','about/organization'],['온라인헌금','about/offering'],['오시는길','directions']]],
@@ -62,7 +62,8 @@ document.querySelector('#year').textContent=new Date().getFullYear();
 import { CONFIG } from './config.js';
 import { resource, settleResource, mountResources, patchResources } from './resource-view.js?v=site-motion-20261008';
 import { syncHomeMoments } from './home-moments.js?v=moments-4s-20261008';
-import { syncHomeHero } from './home-hero.js?v=photo-motion-20261008';
+import { syncHomeHero } from './home-hero.js?v=hero-continuous-20261009';
+import { syncCellPhotos } from './cell-photos.js?v=cell2-photos-20261009';
 import { bindHorizontalSwipe } from './horizontal-swipe.js?v=viewer-scroll-lock-20261008';
 import { capturePhotoSlide, startPhotoSlide } from './photo-slide.js?v=photo-motion-20261008';
 const currentPath=()=>{const path=location.hash.replace(/^#\/?/,'').replace(/\/$/,'');return path==='mission'?'mission/overseas':path;};
@@ -114,7 +115,12 @@ function groupPicture(g,key){return resource(`group-image:${key}`,g.image?imageT
 function cells(){
  const cards=state.cells.map(g=>{
   const key=`cells/${g.id}`,headingId=`cell-${g.id}-title`;
-  const picture=resource(`group-image:${key}`,g.image?imageTag(g.image,`${g.title} 대표 사진`):'','image',true,Boolean(g.contentPending||g.mediaPending&&!g.image));
+  const photos=(g.images||[]).filter(photo=>safeUrl(photo.url));
+  const media=photos.length>1?`<div class="cell-slideshow" data-cell-slideshow data-immediate role="group" aria-roledescription="슬라이드" aria-label="${esc(g.title)} 모임 사진">${photos.map((photo,i)=>{
+   const position=/^(?:\d{1,2}|100)% (?:\d{1,2}|100)%$/.test(photo.position)?photo.position:'50% 50%';
+   return `<img src="${url(photo.url)}" alt="${esc(`${g.title} 모임 사진`)}" class="cell-slide${i===0?' is-active':''}" data-cell-slide="${esc(photo.id)}" aria-hidden="${i!==0}" style="object-position:${position}" loading="eager" decoding="async">`;
+  }).join('')}</div>`:g.image?imageTag(g.image,`${g.title} 대표 사진`):'';
+  const picture=resource(`group-image:${key}`,media,'image',true,Boolean(g.contentPending||g.mediaPending&&!g.image));
   const info=`<dl class="cell-info"><div><dt>셀리더</dt><dd>${esc(g.leader?.trim()||'교회에 문의해 주세요.')}</dd></div><div><dt>모임 시간</dt><dd>${esc(g.meeting)}</dd></div><div><dt>모임 장소</dt><dd>${esc(g.location)}</dd></div></dl>`;
   return `<article class="cell-card" aria-labelledby="${headingId}"><div class="card-media">${picture}</div><div class="cell-card-body">${resource(`cell-title:${key}`,`<h2 id="${headingId}" data-immediate>${esc(g.title)}</h2>`,'rows',true)}${resource(`cell-info:${key}`,info,'rows',true,Boolean(g.contentPending))}</div></article>`;
  }).join('');
@@ -328,6 +334,7 @@ function render({scroll=false}={}){
  mountResources(main);
  updateHomeMoments();
  syncHomeHero(main);
+ syncCellPhotos(main);
  if(scroll){window.scrollTo({top:0,behavior:'instant'});main.focus({preventScroll:true});}
 }
 const viewer=document.querySelector('#viewer');
@@ -488,6 +495,7 @@ function renderResourceUpdate(){
  renderPending=false;patchResources(main,createView());
  updateHomeMoments();
  syncHomeHero(main);
+ syncCellPhotos(main);
 }
 viewer.addEventListener('close',()=>{if(renderPending)renderResourceUpdate();});
 async function refreshDrive(){
