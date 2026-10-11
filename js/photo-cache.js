@@ -51,11 +51,11 @@ export async function compactPhoto(blob){
  let bitmap;
  try{
   bitmap=await createImageBitmap(blob);
-  const scale=Math.min(1,1200/Math.max(bitmap.width,bitmap.height));
+  const scale=Math.min(1,960/Math.max(bitmap.width,bitmap.height));
   const canvas=document.createElement('canvas');
   canvas.width=Math.max(1,Math.round(bitmap.width*scale));canvas.height=Math.max(1,Math.round(bitmap.height*scale));
   canvas.getContext('2d').drawImage(bitmap,0,0,canvas.width,canvas.height);
-  const preview=await new Promise(resolve=>canvas.toBlob(resolve,'image/webp',.78));
+  const preview=await new Promise(resolve=>canvas.toBlob(resolve,'image/webp',.76));
   return preview&&(scale<1||preview.size<blob.size)?preview:blob;
  }catch{return blob;}finally{bitmap?.close();}
 }

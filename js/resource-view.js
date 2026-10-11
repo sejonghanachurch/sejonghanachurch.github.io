@@ -1,3 +1,4 @@
+import { imageAsset } from './image-assets.js?v=cell8-photo-20261011';
 import { CONFIG } from './config.js';
 
 const ready = new Set();
@@ -59,7 +60,9 @@ function prepare(region) {
 
 export function bindImages(root) {
   root.querySelectorAll('img[data-fallback]').forEach(img => img.addEventListener('error', () => {
-    img.src = './assets/church.png';
+    img.removeAttribute('srcset');
+    img.removeAttribute('sizes');
+    img.src = imageAsset('./assets/church.png').src;
     img.alt += ' 사진을 불러올 수 없어 교회 전경으로 표시합니다.';
   }, {once:true}));
 }

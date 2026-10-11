@@ -34,7 +34,7 @@ export const COMMUNITY = {
       "mediaPending": false,
       "description": "[소개 문구 초안] 기쁜 날에도, 마음이 무거운 날에도 함께합니다. 서로의 이야기를 듣고 기도로 동행하는 2셀입니다.",
       "meeting": "주일 점심 식사 후",
-      "location": "예배당 내 유아실",
+      "location": "예배당 내 자모실",
       "image": "./assets/community/cells/2/cell-2-20261009-3-preview.webp",
       "images": [
         {
@@ -178,26 +178,21 @@ export const COMMUNITY = {
       "contentPending": false,
       "mediaPending": false,
       "description": "[소개 문구 초안] 새로운 만남을 언제나 환영합니다. 함께 배우고 함께 기도하며 믿음의 길을 걷는 8셀입니다.",
-      "meeting": "모임 시간은 교회에 문의해 주세요.",
-      "location": "모임 장소는 교회에서 안내해 드립니다.",
-      "image": "./assets/community/cells/8/1SH63TX6LV52kNgq6K1BvXMsD9LEDJZ75-preview.webp",
+      "meeting": "주일 점심 식사 후",
+      "location": "교회 식당",
+      "image": "./assets/community/cells/8/cell-8-20261011.png",
       "images": [
         {
-          "id": "1SH63TX6LV52kNgq6K1BvXMsD9LEDJZ75",
-          "title": "01-공동체-샘플.jpg",
-          "url": "./assets/community/cells/8/1SH63TX6LV52kNgq6K1BvXMsD9LEDJZ75-preview.webp",
-          "originalUrl": "./assets/community/cells/8/1SH63TX6LV52kNgq6K1BvXMsD9LEDJZ75-full.webp",
+          "id": "cell-8-20261011",
+          "title": "8셀 공동체 사진",
+          "url": "./assets/community/cells/8/cell-8-20261011.png",
           "status": "ready"
         }
       ],
-      "sample": true,
-      "imageSample": true,
+      "sample": false,
+      "imageSample": false,
       "audience": null,
-      "imageCredit": "Damian Santos / Pexels",
-      "imageLicense": "Pexels License",
-      "imageLicenseUrl": "https://www.pexels.com/license/",
-      "imageSourceUrl": "https://www.pexels.com/photo/diverse-group-of-friends-enjoying-casual-indoor-gathering-35203998/",
-      "imageAlt": "책을 함께 읽으며 이야기하는 모임 — 소그룹 소개용 샘플 사진"
+      "imageAlt": "8셀 공동체 사진"
     }
   ],
   "education": [

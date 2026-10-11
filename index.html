@@ -26,22 +26,23 @@
 <meta name="theme-color" content="#001b54">
 <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32.png">
 <link rel="icon" type="image/svg+xml" sizes="any" href="./assets/favicon.svg">
-<link rel="stylesheet" href="./styles.css?v=notice-row-size-20261011">
+<link rel="stylesheet" href="./styles.css?v=church-photos-20261011">
 </head>
 <body>
 <a class="skip-link" href="#main">본문 바로가기</a>
 <header class="header">
-<a class="brand" href="#/" aria-label="세종하나교회 홈"><span class="brand-logo"><img src="./assets/church-logo.png" alt="세종하나교회" width="2363" height="2363"></span></a>
+<a class="brand" href="#/" aria-label="세종하나교회 홈"><span class="brand-logo"><img src="./assets/optimized/church-logo-1280-b8ef2c9790.webp" srcset="./assets/optimized/church-logo-640-dec38f45e9.webp 640w, ./assets/optimized/church-logo-960-18633073aa.webp 960w, ./assets/optimized/church-logo-1280-b8ef2c9790.webp 1280w" sizes="(max-width:640px) 200px, 260px" alt="세종하나교회" width="2363" height="2363"></span></a>
 <nav id="desktop-nav" aria-label="주 메뉴"></nav>
 <a class="welcome-button" href="#/welcome">처음 오셨나요? <span aria-hidden="true">+</span></a>
 <button class="menu-toggle" aria-label="전체 메뉴 열기" aria-expanded="false" aria-controls="mobile-nav"><span></span><span></span></button>
 </header>
 <nav id="mobile-nav" class="mobile-nav" aria-label="모바일 메뉴" hidden></nav>
-<main id="main" tabindex="-1">
+<main id="main" tabindex="-1"></main>
+<template id="home-intro-template">
 <section class="hero">
-<img src="./assets/church.png" class="hero-image is-active" data-hero-slide="exterior" alt="푸른 하늘과 나무에 둘러싸인 세종하나교회 전경" fetchpriority="high" decoding="async">
-<img src="./assets/hero-summer-bible-school.webp" class="hero-image hero-image--camp" data-hero-slide="bible-school" alt="유초등부 여름성경학교에서 함께한 세종하나교회 성도들" aria-hidden="true" loading="eager" decoding="async" fetchpriority="low">
-<img src="./assets/hero-choir.webp" class="hero-image hero-image--choir" data-hero-slide="choir" alt="세종하나교회 입당감사예배의 성가대 찬양" aria-hidden="true" loading="eager" decoding="async" fetchpriority="low">
+<img src="./assets/optimized/church-1672-840a7fca3b.webp" srcset="./assets/optimized/church-640-44751ce44c.webp 640w, ./assets/optimized/church-960-e7c60fb610.webp 960w, ./assets/optimized/church-1672-840a7fca3b.webp 1672w" sizes="(max-width:640px) 950px, 96vw" class="hero-image is-active" data-hero-slide="exterior" alt="푸른 하늘과 나무에 둘러싸인 세종하나교회 전경" fetchpriority="high" decoding="async">
+<img src="./assets/optimized/hero-summer-bible-school-2400-cb66401c77.webp" srcset="./assets/optimized/hero-summer-bible-school-640-50dcaf0311.webp 640w, ./assets/optimized/hero-summer-bible-school-960-dedf30bbe0.webp 960w, ./assets/optimized/hero-summer-bible-school-2400-cb66401c77.webp 2400w" sizes="(max-width:640px) 950px, 96vw" class="hero-image hero-image--camp" data-hero-slide="bible-school" alt="유초등부 여름성경학교에서 함께한 세종하나교회 성도들" aria-hidden="true" loading="eager" decoding="async" fetchpriority="low">
+<img src="./assets/optimized/hero-choir-2400-bf2c28aab4.webp" srcset="./assets/optimized/hero-choir-640-65b8aed5db.webp 640w, ./assets/optimized/hero-choir-960-525386a358.webp 960w, ./assets/optimized/hero-choir-2400-bf2c28aab4.webp 2400w" sizes="(max-width:640px) 950px, 96vw" class="hero-image hero-image--choir" data-hero-slide="choir" alt="세종하나교회 입당감사예배의 성가대 찬양" aria-hidden="true" loading="eager" decoding="async" fetchpriority="low">
 <div class="hero-shade"></div>
 <div class="hero-content"><p class="eyebrow">WELCOME TO SEJONG HANA CHURCH</p><h1 class="hero-title">하나님을 중심으로,<br>하나님을 기쁘시게<span>.</span></h1><p class="hero-copy">하나님을 중심삼고,<br class="hero-copy-break"> 말씀 안에서 믿음을 키웁니다.<br>당신의 일상에 따뜻한 믿음의 길을 함께합니다.</p><a href="#/about/vision" class="button yellow">우리 교회 이야기</a></div>
 <div class="hero-caption">사랑으로 만나, 믿음으로 하나 되는 곳</div>
@@ -52,7 +53,7 @@
 <div class="hero-bottom"><span>세종하나교회에 오신 여러분을 환영합니다.</span><a href="#/directions">세종 금남면 금남구즉로 509 <span aria-hidden="true">⌖</span></a></div>
 </section>
 <section class="quick-links" aria-label="빠른 안내"><a href="#/worship"><span class="quick-icon">◷</span><span><small>하나님을 만나는 시간</small><strong>예배 안내</strong></span><span class="plus">+</span></a><a href="#/sermons"><span class="quick-icon">▷</span><span><small>삶을 새롭게 하는 말씀</small><strong>주일예배 영상</strong></span><span class="plus">+</span></a><a href="#/news/bulletins"><span class="quick-icon">▤</span><span><small>이번 주 교회 이야기</small><strong>주보 안내</strong></span><span class="plus">+</span></a><a href="#/directions"><span class="quick-icon">⌖</span><span><small>반가운 만남의 시작</small><strong>오시는 길</strong></span><span class="plus">+</span></a></section>
-</main>
+</template>
 <template id="home-newcomer-template">
 <section class="home-newcomer" aria-labelledby="home-newcomer-title">
   <div class="newcomer-intro">
@@ -83,7 +84,7 @@
 </template>
 <footer>
   <div class="footer-top">
-    <a class="brand" href="#/"><span class="brand-logo"><img src="./assets/church-logo.png" alt="세종하나교회" width="2363" height="2363"></span></a>
+    <a class="brand" href="#/"><span class="brand-logo"><img src="./assets/optimized/church-logo-1280-b8ef2c9790.webp" srcset="./assets/optimized/church-logo-640-dec38f45e9.webp 640w, ./assets/optimized/church-logo-960-18633073aa.webp 960w, ./assets/optimized/church-logo-1280-b8ef2c9790.webp 1280w" sizes="(max-width:640px) 200px, 260px" alt="세종하나교회" width="2363" height="2363"></span></a>
     <p>하나님 안에서 하나 되는 우리,<br>세상을 향해 사랑을 나누는 교회.</p>
     <a class="footer-youtube" href="https://www.youtube.com/channel/UCBlksyAAB24gB6DTzb5MtKQ" target="_blank" rel="noopener noreferrer"><img src="./assets/youtube-logo.png" alt="" width="144" height="144"><span>YouTube</span></a>
   </div>
@@ -96,6 +97,6 @@
   </div>
 </footer>
 <dialog id="viewer" aria-labelledby="viewer-title"><button class="dialog-close" aria-label="닫기">×</button><div id="viewer-content"></div></dialog>
-<script type="module" src="./js/app.js?v=notice-list-20261011"></script>
+<script type="module" src="./js/app.js?v=album-label-20261011"></script>
 </body>
 </html>

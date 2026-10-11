@@ -1,6 +1,6 @@
 import { CONFIG } from './config.js';
 import { readPublicResource } from './read-only-api.js?v=drive-download-20261007';
-import { readPhotoCache, savePhotoCache, compactPhoto } from './photo-cache.js';
+import { readPhotoCache, savePhotoCache, compactPhoto } from './photo-cache.js?v=photo-preview-960-20261011';
 import { parseNoticeTitle, compareNotices } from './notice-metadata.js?v=notice-metadata-20261011';
 const DRIVE = 'https://www.googleapis.com/drive/v3';
 // Drive Discovery specifies the download service for files.get media reads.
@@ -10,6 +10,7 @@ const cachePrefix = 'sejong-hana-v2:';
 const driveMedia = new Map();
 const mediaBlobs=new Map(),originalPhotos=new Map(),pendingPreviews=new Map(),noticeSources=new Map(),pendingNoticeSources=new Map();
 const noticePhotoCache=new Map(),pendingNoticePhotos=new Map();
+const albumPhotoCache=new Map(),pendingAlbumPhotos=new Map();
 const pendingCache = new Map(),pendingFolders=new Map(),pendingImages=new Map();
 const memoryCache=new Map();
 const validId = value => typeof value === 'string' && /^[a-zA-Z0-9_-]+$/.test(value);
@@ -77,32 +78,42 @@ function storePhoto(key,blob){
   if(driveMedia.has(key))return driveMedia.get(key);
   const address=URL.createObjectURL(blob);driveMedia.set(key,address);mediaBlobs.set(key,blob);return address;
 }
-function thumbnailSource(value){
+function thumbnailSources(value){
   const source=documentPhotoSource(value);
-  if(!source||source.startsWith('data:'))return '';
+  if(!source||source.startsWith('data:'))return [];
   const address=new URL(source);
-  // Google currently supplies =sNNN URLs. This size hint is best effort, not an API guarantee.
-  address.pathname=address.pathname.replace(/=s\d+(?:-[a-z0-9]+)*$/i,'=s1200');
-  return address.href;
+  // Size and WebP hints are best effort. Retry the ordinary preview when a
+  // particular Google image service does not accept the format hint.
+  address.pathname=address.pathname.replace(/=s\d+(?:-[a-z0-9]+)*$/i,'=s960');
+  const ordinary=address.href;
+  address.pathname=address.pathname.replace(/=s960$/,'=s960-rw');
+  return [...new Set([address.href,ordinary])];
 }
 async function drivePreview(file){
-  const version=noticeVersion(file),key=`drive-preview:v1:${version}`,originalKey=`drive:${version}`;
+  const version=noticeVersion(file),key=`drive-preview:v2:${version}`,originalKey=`drive:${version}`;
   originalPhotos.set(originalKey,{kind:'drive',file});
   if(driveMedia.has(key))return {url:driveMedia.get(key),originalKey};
   if(pendingPreviews.has(key))return pendingPreviews.get(key);
   const task=(async()=>{
     let blob=await readPhotoCache(key);
     if(!(blob instanceof Blob)||!blob.type.startsWith('image/')){
-      const thumbnail=thumbnailSource(file.thumbnailLink);
-      if(thumbnail){
-        const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),4000);
+      const thumbnails=thumbnailSources(file.thumbnailLink);
+      if(thumbnails.length){
+        // Give the smaller preview the normal read timeout. A slow connection
+        // should not trigger a second, much larger original download early.
+        const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),CONFIG.requestTimeoutMs);
         try{
-          const response=await readPublicResource(thumbnail,{signal:controller.signal,cache:'default',referrerPolicy:'no-referrer'});
-          if(!response.ok)throw new Error('Preview unavailable');
-          blob=await response.blob();
-          if(!blob.type.startsWith('image/'))throw new Error('Invalid preview');
-          const decoded=await createImageBitmap(blob);decoded.close();
-        }catch{blob=null;}finally{clearTimeout(timer);}
+          for(const thumbnail of thumbnails){
+            try{
+              const response=await readPublicResource(thumbnail,{signal:controller.signal,cache:'default',referrerPolicy:'no-referrer'});
+              if(!response.ok)throw new Error('Preview unavailable');
+              blob=await response.blob();
+              if(!blob.type.startsWith('image/'))throw new Error('Invalid preview');
+              const decoded=await createImageBitmap(blob);decoded.close();
+              break;
+            }catch{blob=null;if(controller.signal.aborted)break;}
+          }
+        }finally{clearTimeout(timer);}
       }
       if(!blob){await imageResource(file);blob=mediaBlobs.get(version);}
       blob=await compactPhoto(blob);await savePhotoCache(key,blob);
@@ -129,6 +140,41 @@ async function photosFrom(files,onUpdate=()=>{}) {
   });
   if(failed)console.warn('일부 사진을 불러오지 못했습니다. 다음 갱신 때 다시 시도합니다.');
   return photos.filter(photo=>photo.status==='ready');
+}
+// Album cards and homepage previews need only their cover. Other photos are
+// requested when the visitor opens that album, while keeping the file order.
+export async function loadAlbumPhotos(album,onUpdate=()=>{}){
+  const files=Array.isArray(album.photoFiles)?album.photoFiles:[];
+  if(album.photosLoaded||!files.length){onUpdate(album);return album;}
+  const key=album.photoVersion;
+  const stored=albumPhotoCache.get(key);
+  if(stored){const ready={...album,...stored};onUpdate(ready);return ready;}
+  let record=pendingAlbumPhotos.get(key);
+  const update=patch=>onUpdate({...album,...patch});
+  if(record){
+    record.listeners.add(update);if(record.last)update(record.last);
+    return {...album,...await record.promise};
+  }
+  record={listeners:new Set([update]),last:null,promise:null};
+  const publish=patch=>{
+    record.last=patch;
+    for(const listener of record.listeners)listener(patch);
+    return patch;
+  };
+  // Reuse the cover immediately; drivePreview deduplicates its cached request.
+  const first={images:album.images||[],photosPending:true,photosLoaded:false,photosError:false};
+  record.promise=Promise.resolve().then(async()=>{
+    const photos=await photosFrom(files,ready=>publish({images:ready.length?ready:first.images,photosPending:true,photosLoaded:false,photosError:false}));
+    const cover=photos.find(photo=>photo.id===album.coverFileId)||photos[0];
+    const patch={images:photos,image:cover?.url||album.image||'',photosPending:false,photosLoaded:photos.length===files.length,photosError:photos.length!==files.length,mediaError:!photos.length&&files.length>0};
+    // Successful albums remain ready across route changes with identical files.
+    // A wholly failed album can still be retried on the next open.
+    if(photos.length===files.length)albumPhotoCache.set(key,patch);
+    return publish(patch);
+  }).finally(()=>pendingAlbumPhotos.delete(key));
+  pendingAlbumPhotos.set(key,record);
+  publish(first);
+  return {...album,...await record.promise};
 }
 function readCached(key){
   let stored=memoryCache.get(key);
@@ -236,21 +282,21 @@ async function noticePhotos(file,onUpdate=()=>{}){
     return next;
   };
   record.promise=(async()=>{
-    const manifestKey=`notice-manifest:v1:${version}`,manifest=await readPhotoCache(manifestKey);
+    const manifestKey=`notice-manifest:v2:${version}`,manifest=await readPhotoCache(manifestKey);
     if(Array.isArray(manifest?.images)){
       const restored=await Promise.all(manifest.images.map(async photo=>{
-        const blob=await readPhotoCache(`notice-preview:v1:${version}:${photo.id}`);
+        const blob=await readPhotoCache(`notice-preview:v2:${version}:${photo.id}`);
         if(!(blob instanceof Blob)||!blob.type.startsWith('image/'))return null;
         const originalKey=`document:${version}:${photo.id}`;
         originalPhotos.set(originalKey,{kind:'document',file,index:Number(photo.id)});
-        return {...photo,url:storePhoto(`notice-preview:v1:${version}:${photo.id}`,blob),originalKey,status:'ready'};
+        return {...photo,url:storePhoto(`notice-preview:v2:${version}:${photo.id}`,blob),originalKey,status:'ready'};
       }));
       if(restored.every(Boolean))return publish({images:restored,imagesStatus:'ready'});
     }
     let sources;
     try{sources=await readNoticeSources(file);}catch{return publish({images:stored?.images||[],imagesStatus:'error'});}
     const images=sources.map((photo,index)=>{
-      const key=`notice-preview:v1:${version}:${index}`,imageUrl=driveMedia.get(key)||'',originalKey=`document:${version}:${index}`;
+      const key=`notice-preview:v2:${version}:${index}`,imageUrl=driveMedia.get(key)||'',originalKey=`document:${version}:${index}`;
       originalPhotos.set(originalKey,{kind:'document',file,index});
       return {id:String(index),url:imageUrl,originalKey,alt:photo.alt,width:photo.width,height:photo.height,status:imageUrl?'ready':'loading'};
     });
@@ -259,7 +305,7 @@ async function noticePhotos(file,onUpdate=()=>{}){
     await mapLimited(images,2,async(photo,index)=>{
       if(photo.status!=='ready'){
         try{
-          const key=`notice-preview:v1:${version}:${index}`;
+          const key=`notice-preview:v2:${version}:${index}`;
           let blob=await readPhotoCache(key);
           if(!(blob instanceof Blob)||!blob.type.startsWith('image/')){
             const original=`notice-original:${version}:${index}`;
@@ -375,14 +421,18 @@ export async function loadDrive(base,{path=null,onUpdate=()=>{}}={}) {
     result.albums=folders.map(folder=>({id:folder.id,title:folder.name,description:folder.description||'',date:folder.name.match(/^\d{4}-\d{2}-\d{2}/)?.[0]||'',uploadedAt:folder.createdTime||'',image:'',images:[],contentPending:true,mediaPending:true,url:`https://drive.google.com/drive/folders/${folder.id}`}));
     const publishAlbums=()=>publish({albums:[...result.albums].sort(byUploadDate)});
     publishAlbums();
-    await mapLimited(folders,2,async folder=>{
+    await mapLimited([...folders].sort((a,b)=>(Date.parse(b.createdTime)||0)-(Date.parse(a.createdTime)||0)||a.id.localeCompare(b.id)),2,async folder=>{
       const index=result.albums.findIndex(a=>a.id===folder.id);
       try{
       const files=await listDriveFiles(folder.id,folder.resourceKey),content=await getContent(files);
       const album={...result.albums[index],title:plain(content.title,folder.name),description:plain(content.description,folder.description||''),date:plain(content.date,folder.name.match(/^\d{4}-\d{2}-\d{2}/)?.[0]||''),contentPending:false};
       result.albums[index]=album;publishAlbums();
-      const photos=await photosFrom(files),cover=photos.find(f=>f.id===content.coverFileId)||photos[0];
-      result.albums[index]={...album,image:cover?.url||'',images:photos,mediaPending:false,mediaError:!photos.length&&files.some(isImage)};publishAlbums();
+      const photoFiles=files.filter(isImage),coverFile=photoFiles.find(file=>file.id===content.coverFileId)||photoFiles[0];
+      const photoVersion=JSON.stringify([folder.id,coverFile?.id||'',photoFiles.map(file=>[file.id,file.modifiedTime||''])]);
+      const loaded=albumPhotoCache.get(photoVersion);
+      let preview=null;
+      if(!loaded&&coverFile)try{preview={id:coverFile.id,title:coverFile.description||coverFile.name,...await drivePreview(coverFile),status:'ready'};}catch{}
+      result.albums[index]={...album,photoFiles,photoVersion,photoCount:photoFiles.length,coverFileId:coverFile?.id||'',image:preview?.url||'',images:preview?[preview]:[],photosLoaded:photoFiles.length<=1&&(!photoFiles.length||Boolean(preview)),photosPending:false,mediaPending:false,mediaError:!preview&&photoFiles.length>0,...(loaded||{})};publishAlbums();
       }catch(error){result.albums[index]={...result.albums[index],mediaPending:false,mediaError:true,loadError:true};publishAlbums();throw error;}
     });
     result.albums=result.albums.filter(a=>a.images.length||a.mediaError).sort(byUploadDate);
