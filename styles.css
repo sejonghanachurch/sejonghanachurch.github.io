@@ -285,3 +285,7 @@ dialog .photo-slide-outgoing,.album-photo-stage.is-photo-sliding>.album-photo-im
 
 /* Mark the next row's start beside the third mobile step. */
 @media(max-width:640px){.newcomer-journey li:nth-child(3):before{content:'';position:absolute;top:37px;left:calc(50% - 66px);width:8px;height:8px;border-top:1.5px solid #8fa5b8;border-right:1.5px solid #8fa5b8;transform:rotate(45deg);pointer-events:none}}
+
+/* Notice categories and pinned rows in one continuous list. */
+.notice-labels{display:inline-flex;flex-direction:column;align-items:flex-start;gap:6px}.notice-category{white-space:nowrap}.notice-pin{display:inline-flex;align-items:center;gap:4px;color:var(--accent-dark);font-size:12px;font-weight:700;white-space:nowrap}.notice-pin svg{width:14px;height:14px;flex:none}.announcement-row{padding-left:14px;padding-right:14px;border-left:3px solid transparent}.announcement-row.is-pinned{background:#f0f5fc;border-left-color:var(--primary)}.announcement-row.is-pinned:hover{background:#e4edf8}.announcement-meta{flex-wrap:wrap}.home-notice.is-pinned{padding-left:12px;padding-right:12px;background:#f0f5fc;border-left:3px solid var(--primary)}.home-notice.is-pinned:hover{background:#e4edf8}
+@media(max-width:640px){.announcement-row{gap:7px 12px;padding:20px 12px}.announcement-row .notice-labels,.home-notice .notice-labels{grid-column:1;grid-row:1 / span 2;align-self:start}.announcement-row .notice-category{margin-top:0}.announcement-meta{gap:10px}.announcement-meta time{font-size:14px}.home-notice.is-pinned{padding-left:10px;padding-right:10px}}

@@ -1,6 +1,7 @@
 import { CONFIG } from './config.js';
 import { readPublicResource } from './read-only-api.js?v=drive-download-20261007';
 import { readPhotoCache, savePhotoCache, compactPhoto } from './photo-cache.js';
+import { parseNoticeTitle, compareNotices } from './notice-metadata.js?v=notice-metadata-20261011';
 const DRIVE = 'https://www.googleapis.com/drive/v3';
 // Drive Discovery specifies the download service for files.get media reads.
 const DRIVE_MEDIA = 'https://www.googleapis.com/download/drive/v3';
@@ -183,10 +184,6 @@ function noticeKind(file){
   if(file.mimeType==='application/pdf')return 'pdf';
   return isImage(file)?'image':'file';
 }
-function noticeDate(value){
-  if(!value||Number.isNaN(Date.parse(value)))return '';
-  return new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(value));
-}
 async function noticeText(file){
   return cached(`notice-document:${file.id}:${file.modifiedTime||''}`,async()=>{
     const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),CONFIG.requestTimeoutMs);
@@ -309,12 +306,12 @@ function noticesFrom(files){
     const kind=noticeKind(file),stored=kind==='text'?readCached(`notice-document:${file.id}:${file.modifiedTime||''}`):null;
     const photos=noticePhotoCache.get(noticeVersion(file))||{images:[],imagesStatus:file.mimeType==='application/vnd.google-apps.document'?'unloaded':'ready'};
     return {
-      id:file.id,title:file.name.trim().replace(/\.(pdf|txt|md|docx?|hwp|hwpx|odt|rtf|png|jpe?g|webp)$/i,''),
-      date:noticeDate(file.createdTime),createdTime:file.createdTime||'',modifiedTime:file.modifiedTime||'',kind,mimeType:file.mimeType,resourceKey:file.resourceKey,thumbnailLink:file.thumbnailLink,
+      id:file.id,...parseNoticeTitle(file.name,file.createdTime),
+      createdTime:file.createdTime||'',modifiedTime:file.modifiedTime||'',kind,mimeType:file.mimeType,resourceKey:file.resourceKey,thumbnailLink:file.thumbnailLink,
       description:file.description||'',url:driveViewUrl(file),bodyStatus:stored||['pdf','file'].includes(kind)?'ready':'unloaded',
-      ...(stored?{body:stored.value}:{}),...photos,pinned:false
+      ...(stored?{body:stored.value}:{}),...photos
     };
-  }).sort((a,b)=>b.createdTime.localeCompare(a.createdTime)||a.title.localeCompare(b.title,'ko')||a.id.localeCompare(b.id));
+  }).sort(compareNotices);
 }
 export async function preloadNotice(notice){
   if(notice.kind!=='text')return notice;

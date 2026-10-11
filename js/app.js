@@ -75,7 +75,7 @@ function driveKeys(path){
  return [];
 }
 function pageResource(path){return path.startsWith('news/notices/')||path==='mission/saturday-outreach'?null:path==='sermons'?'videos':driveKeys(path)[0];}
-import { loadDrive, loadVideos, loadVisionVideos, preloadNotice, safeUrl } from './integrations.js?v=news-only-drive-20261007';
+import { loadDrive, loadVideos, loadVisionVideos, preloadNotice, safeUrl } from './integrations.js?v=notice-metadata-20261011';
 const main=document.querySelector('#main');
 const homeIntro=main.innerHTML;
 const homeNewcomer=document.querySelector('#home-newcomer-template').innerHTML;
@@ -100,8 +100,11 @@ function bulletinRows(limit=100){
   if(state.driveStatus==='connected')return empty('등록된 주보가 없습니다.','새 주보가 등록되면 이곳에서 보실 수 있습니다.');
   return `<button class="news-item plain-button full-width" data-bulletin-sample><span class="tag">안내</span><strong>주보는 이렇게 만나보세요</strong><span class="sample-tag">샘플</span><span class="plus">+</span></button><a class="news-item" href="#/worship"><span class="tag">예배</span><strong>세종하나교회 예배 안내</strong><span class="plus">+</span></a><a class="news-item" href="#/welcome"><span class="tag">환영</span><strong>처음 오신 여러분을 환영합니다</strong><span class="plus">+</span></a>`;
 }
+function noticeCategoryBadge(item){return `<span class="tag notice-category">${esc(item.category||'일반')}</span>`;}
+function noticePin(item){return item.pinned?'<span class="notice-pin"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m7 3 8 8M6 4l4-2 8 8-2 4-4-1-2 3-6-6 3-2-1-4ZM8 12l-5 5"/></svg>고정</span>':'';}
+function noticeLabels(item){return `<span class="notice-labels">${noticeCategoryBadge(item)}${noticePin(item)}</span>`;}
 function homeNoticeRows(){
- if(state.notices.length)return state.notices.slice(0,3).map(notice=>`<a class="news-item home-notice" href="#/news/notices/${encodeURIComponent(notice.id)}"><span class="tag">공지</span><strong>${esc(notice.title)}</strong>${notice.date?`<time datetime="${esc(notice.date)}" title="생성일">${date(notice.date)}</time>`:''}<span class="plus" aria-hidden="true">+</span></a>`).join('');
+ if(state.notices.length)return state.notices.slice(0,3).map(notice=>`<a class="news-item home-notice${notice.pinned?' is-pinned':''}" data-notice-id="${esc(notice.id)}" href="#/news/notices/${encodeURIComponent(notice.id)}">${noticeLabels(notice)}<strong>${esc(notice.title)}</strong>${notice.date?`<time datetime="${esc(notice.date)}" title="생성일">${date(notice.date)}</time>`:''}<span class="plus" aria-hidden="true">+</span></a>`).join('');
  if(state.noticesStatus==='error')return `<div class="notice" role="status">공지를 불러오지 못했습니다. <a class="text-link" href="#/">다시 불러오기</a></div>`;
  return empty('등록된 공지사항이 없습니다.','새로운 교회 소식이 등록되면 이곳에서 확인하실 수 있습니다.');
 }
@@ -303,11 +306,11 @@ function notices(id=''){
  const back='<a class="button outline" href="#/news/notices">공지사항 목록으로</a>';
  if(id){
   const item=state.notices.find(n=>n.id===id),loading=!item&&state.noticesStatus==='loading';
-  const heading=item?`<header data-immediate><div class="announcement-meta">${item.date?`<time datetime="${esc(item.date)}">생성일 ${date(item.date)}</time>`:''}</div><h2>${esc(item.title)}</h2></header>`:state.noticesStatus==='error'?'':empty('공지사항을 찾을 수 없습니다.','삭제되었거나 주소가 변경된 공지입니다.');
+  const heading=item?`<header data-immediate><div class="announcement-meta">${noticeCategoryBadge(item)}${noticePin(item)}${item.date?`<time datetime="${esc(item.date)}">생성일 ${date(item.date)}</time>`:''}</div><h2>${esc(item.title)}</h2></header>`:state.noticesStatus==='error'?'':empty('공지사항을 찾을 수 없습니다.','삭제되었거나 주소가 변경된 공지입니다.');
   const body=item?noticeBody(item):'';
   return page('공지사항','교회의 새로운 소식을 전합니다.',`<article class="announcement-article">${resource(`notice-header:${id}`,heading,'rows',true,loading)}${resource(`notice-body:${id}`,body,'rows',true,loading||Boolean(item?.bodyStatus==='unloaded'&&state.noticesStatus!=='error'))}${resource(`notice-images:${id}`,noticePhotosView(item,id),'image',true)}<div class="button-row">${back}</div></article>`,newsNav);
  }
- const content=state.notices.length?`<ul class="announcement-list">${state.notices.map(n=>`<li><a class="announcement-row" href="#/news/notices/${encodeURIComponent(n.id)}"><span class="tag">공지</span><strong>${esc(n.title)}</strong>${n.date?`<time datetime="${esc(n.date)}" title="생성일">${date(n.date)}</time>`:''}<span class="announcement-arrow" aria-hidden="true">→</span></a></li>`).join('')}</ul>`:state.noticesStatus==='error'?'':empty('등록된 공지사항이 없습니다.','새로운 교회 소식이 등록되면 이곳에서 확인하실 수 있습니다.');
+ const content=state.notices.length?`<ul class="announcement-list" aria-label="공지사항">${state.notices.map(n=>`<li><a class="announcement-row${n.pinned?' is-pinned':''}" data-notice-id="${esc(n.id)}" href="#/news/notices/${encodeURIComponent(n.id)}">${noticeLabels(n)}<strong>${esc(n.title)}</strong>${n.date?`<time datetime="${esc(n.date)}" title="생성일">${date(n.date)}</time>`:''}<span class="announcement-arrow" aria-hidden="true">→</span></a></li>`).join('')}</ul>`:state.noticesStatus==='error'?'':empty('등록된 공지사항이 없습니다.','새로운 교회 소식이 등록되면 이곳에서 확인하실 수 있습니다.');
  return page('공지사항','교회의 새로운 소식을 전합니다.',content,newsNav);
 }
 function albumPicture(album,key){return resource(`album-image:${key}`,album.image?imageTag(album.image,album.title):album.mediaError?'<p class="media-unavailable">사진을 불러오지 못했습니다.</p>':'','image',true,Boolean(album.mediaPending&&!album.image));}
