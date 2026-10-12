@@ -197,28 +197,77 @@ export const COMMUNITY = {
   ],
   "education": [
     {
-      "meeting": "예배와 모임 시간은 교회에 문의해 주세요.",
-      "location": "교회에서 안내해 드립니다.",
-      "image": "./assets/community/education/infant/1Xvb_1mz5CjVxx8tXS_seFyHTLspoGHns-preview.webp",
+      "meeting": "주일 오전 11시",
+      "location": "2층 유아부실",
+      "image": "./assets/community/education/infant/infant-20261013-7.jpg",
       "images": [
         {
-          "id": "1Xvb_1mz5CjVxx8tXS_seFyHTLspoGHns",
-          "title": "01-공동체-샘플.jpg",
-          "url": "./assets/community/education/infant/1Xvb_1mz5CjVxx8tXS_seFyHTLspoGHns-preview.webp",
-          "originalUrl": "./assets/community/education/infant/1Xvb_1mz5CjVxx8tXS_seFyHTLspoGHns-full.webp",
+          "id": "infant-20261013-1",
+          "title": "유아부 활동 사진",
+          "url": "./assets/community/education/infant/infant-20261013-1.jpg",
+          "status": "ready"
+        },
+        {
+          "id": "infant-20261013-2",
+          "title": "유아부 활동 사진",
+          "url": "./assets/community/education/infant/infant-20261013-2.jpg",
+          "status": "ready"
+        },
+        {
+          "id": "infant-20261013-3",
+          "title": "유아부 활동 사진",
+          "url": "./assets/community/education/infant/infant-20261013-3.jpg",
+          "status": "ready"
+        },
+        {
+          "id": "infant-20261013-4",
+          "title": "유아부 활동 사진",
+          "url": "./assets/community/education/infant/infant-20261013-4.jpg",
+          "status": "ready"
+        },
+        {
+          "id": "infant-20261013-5",
+          "title": "유아부 활동 사진",
+          "url": "./assets/community/education/infant/infant-20261013-5.jpg",
+          "status": "ready"
+        },
+        {
+          "id": "infant-20261013-6",
+          "title": "유아부 활동 사진",
+          "url": "./assets/community/education/infant/infant-20261013-6.jpg",
+          "status": "ready"
+        },
+        {
+          "id": "infant-20261013-7",
+          "title": "유아부 활동 사진",
+          "url": "./assets/community/education/infant/infant-20261013-7.jpg",
+          "status": "ready"
+        },
+        {
+          "id": "infant-20261013-8",
+          "title": "유아부 활동 사진",
+          "url": "./assets/community/education/infant/infant-20261013-8.jpg",
+          "status": "ready"
+        },
+        {
+          "id": "infant-20261013-9",
+          "title": "유아부 활동 사진",
+          "url": "./assets/community/education/infant/infant-20261013-9.jpg",
           "status": "ready"
         }
       ],
-      "sample": true,
-      "imageSample": true,
+      "sample": false,
+      "imageSample": false,
       "id": "infant",
       "title": "유아부",
       "eyebrow": "LITTLE HEARTS, BIG LOVE",
-      "description": "[소개 문구 초안] test! ggg g 하나님의 사랑을 처음 만나는 시간. 찬양하고 이야기하며, 작은 마음에 믿음의 씨앗을 심습니다.",
+      "description": "유아부는 어린이들이 하나님을 알고 사랑하며, 말씀을 통해 믿음의 기초를 세워가는 공동체입니다. 하나님을 먼저 생각하고 말씀에 순종하며, 예수님을 닮아가는 어린이로 자라도록 양육합니다.",
       "audience": "영유아와 부모님",
-      "leader": "성혜순 사모",
+      "leader": "성혜순 사모, 홍정호 집사, 정유연 집사",
       "contentPending": false,
-      "mediaPending": false
+      "mediaPending": false,
+      "headline": "하나님 생각! 말씀 순종!",
+      "imageAlt": "유아부 어린이들과 선생님들이 함께한 야외 모임"
     },
     {
       "meeting": "예배와 모임 시간은 교회에 문의해 주세요.",

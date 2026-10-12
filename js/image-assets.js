@@ -253,6 +253,60 @@ const assets = {
     "src": "./assets/optimized/seong-hyesun-204-2ec4e34bb0.webp",
     "width": 204,
     "height": 320
+  },
+  "./assets/community/education/infant/infant-20261013-1.jpg": {
+    "src": "./assets/optimized/community/education/infant/infant-20261013-1-1280-622d9beda7.webp",
+    "width": 1280,
+    "height": 720,
+    "srcset": "./assets/optimized/community/education/infant/infant-20261013-1-640-5ddca1c2bf.webp 640w, ./assets/optimized/community/education/infant/infant-20261013-1-960-89e201500d.webp 960w, ./assets/optimized/community/education/infant/infant-20261013-1-1280-622d9beda7.webp 1280w"
+  },
+  "./assets/community/education/infant/infant-20261013-2.jpg": {
+    "src": "./assets/optimized/community/education/infant/infant-20261013-2-1280-998f8686cc.webp",
+    "width": 1280,
+    "height": 720,
+    "srcset": "./assets/optimized/community/education/infant/infant-20261013-2-640-f326e3b846.webp 640w, ./assets/optimized/community/education/infant/infant-20261013-2-960-79451131c1.webp 960w, ./assets/optimized/community/education/infant/infant-20261013-2-1280-998f8686cc.webp 1280w"
+  },
+  "./assets/community/education/infant/infant-20261013-3.jpg": {
+    "src": "./assets/optimized/community/education/infant/infant-20261013-3-1280-d61b95bd4a.webp",
+    "width": 1280,
+    "height": 960,
+    "srcset": "./assets/optimized/community/education/infant/infant-20261013-3-640-1102b875c7.webp 640w, ./assets/optimized/community/education/infant/infant-20261013-3-960-f17f064325.webp 960w, ./assets/optimized/community/education/infant/infant-20261013-3-1280-d61b95bd4a.webp 1280w"
+  },
+  "./assets/community/education/infant/infant-20261013-4.jpg": {
+    "src": "./assets/optimized/community/education/infant/infant-20261013-4-1280-5f1b0b8f6c.webp",
+    "width": 1280,
+    "height": 960,
+    "srcset": "./assets/optimized/community/education/infant/infant-20261013-4-640-c5aa3149e9.webp 640w, ./assets/optimized/community/education/infant/infant-20261013-4-960-58e9181129.webp 960w, ./assets/optimized/community/education/infant/infant-20261013-4-1280-5f1b0b8f6c.webp 1280w"
+  },
+  "./assets/community/education/infant/infant-20261013-5.jpg": {
+    "src": "./assets/optimized/community/education/infant/infant-20261013-5-1280-2132a63116.webp",
+    "width": 1280,
+    "height": 960,
+    "srcset": "./assets/optimized/community/education/infant/infant-20261013-5-640-f8197a8ec9.webp 640w, ./assets/optimized/community/education/infant/infant-20261013-5-960-746b7bbd31.webp 960w, ./assets/optimized/community/education/infant/infant-20261013-5-1280-2132a63116.webp 1280w"
+  },
+  "./assets/community/education/infant/infant-20261013-6.jpg": {
+    "src": "./assets/optimized/community/education/infant/infant-20261013-6-1280-fe9cd2d72e.webp",
+    "width": 1280,
+    "height": 960,
+    "srcset": "./assets/optimized/community/education/infant/infant-20261013-6-640-5783fbb6bf.webp 640w, ./assets/optimized/community/education/infant/infant-20261013-6-960-5605543b02.webp 960w, ./assets/optimized/community/education/infant/infant-20261013-6-1280-fe9cd2d72e.webp 1280w"
+  },
+  "./assets/community/education/infant/infant-20261013-7.jpg": {
+    "src": "./assets/optimized/community/education/infant/infant-20261013-7-1280-d2ddefbedd.webp",
+    "width": 1280,
+    "height": 960,
+    "srcset": "./assets/optimized/community/education/infant/infant-20261013-7-640-48ae2a3e70.webp 640w, ./assets/optimized/community/education/infant/infant-20261013-7-960-409a684e69.webp 960w, ./assets/optimized/community/education/infant/infant-20261013-7-1280-d2ddefbedd.webp 1280w"
+  },
+  "./assets/community/education/infant/infant-20261013-8.jpg": {
+    "src": "./assets/optimized/community/education/infant/infant-20261013-8-1280-da65b6761f.webp",
+    "width": 1280,
+    "height": 960,
+    "srcset": "./assets/optimized/community/education/infant/infant-20261013-8-640-a7f279d3a5.webp 640w, ./assets/optimized/community/education/infant/infant-20261013-8-960-9665f9bae6.webp 960w, ./assets/optimized/community/education/infant/infant-20261013-8-1280-da65b6761f.webp 1280w"
+  },
+  "./assets/community/education/infant/infant-20261013-9.jpg": {
+    "src": "./assets/optimized/community/education/infant/infant-20261013-9-1280-818c0dbbba.webp",
+    "width": 1280,
+    "height": 960,
+    "srcset": "./assets/optimized/community/education/infant/infant-20261013-9-640-1f8e5e18c2.webp 640w, ./assets/optimized/community/education/infant/infant-20261013-9-960-5852c82b7e.webp 960w, ./assets/optimized/community/education/infant/infant-20261013-9-1280-818c0dbbba.webp 1280w"
   }
 };
 
