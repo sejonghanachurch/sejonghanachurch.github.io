@@ -9,21 +9,21 @@ export const COMMUNITY = {
       "contentPending": false,
       "mediaPending": false,
       "description": "[소개 문구 초안] 작은 만남 안에 큰 사랑이 자랍니다. 한 주의 삶을 나누고 말씀으로 서로를 세워가는 1셀입니다.",
-      "meeting": "모임 시간은 교회에 문의해 주세요.",
-      "location": "모임 장소는 교회에서 안내해 드립니다.",
-      "image": "./assets/community/cells/1/1FbxX4IMH9wJoJNGnwxzasonUmuHMwQye-preview.webp",
+      "meeting": "주일 점심 식사 후",
+      "location": "청년부실",
+      "image": "./assets/community/cells/1/cell-1-20261013-preview.webp",
       "images": [
         {
-          "id": "1FbxX4IMH9wJoJNGnwxzasonUmuHMwQye",
-          "title": "01-공동체-샘플.jpg",
-          "url": "./assets/community/cells/1/1FbxX4IMH9wJoJNGnwxzasonUmuHMwQye-preview.webp",
-          "originalUrl": "./assets/community/cells/1/1FbxX4IMH9wJoJNGnwxzasonUmuHMwQye-full.webp",
+          "id": "cell-1-20261013",
+          "title": "1셀 모임 사진",
+          "url": "./assets/community/cells/1/cell-1-20261013-preview.webp",
           "status": "ready"
         }
       ],
-      "sample": true,
-      "imageSample": true,
-      "audience": null
+      "sample": false,
+      "imageSample": false,
+      "audience": null,
+      "imageAlt": "1셀 공동체 사진"
     },
     {
       "id": "2",
@@ -475,5 +475,28 @@ export const COMMUNITY = {
     "leader": "",
     "location": null,
     "imageSample": false
+  },
+  "camp": {
+    "title": "토요캠프",
+    "images": [
+      {
+        "id": "camp-20261013-1",
+        "title": "토요캠프 활동 사진",
+        "url": "./assets/community/mission/saturday-camp/camp-20261013-1.png",
+        "status": "ready"
+      },
+      {
+        "id": "camp-20261013-2",
+        "title": "토요캠프 활동 사진",
+        "url": "./assets/community/mission/saturday-camp/camp-20261013-2.png",
+        "status": "ready"
+      },
+      {
+        "id": "camp-20261013-3",
+        "title": "토요캠프 활동 사진",
+        "url": "./assets/community/mission/saturday-camp/camp-20261013-3.png",
+        "status": "ready"
+      }
+    ]
   }
 };

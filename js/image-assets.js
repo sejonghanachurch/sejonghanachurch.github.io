@@ -307,6 +307,30 @@ const assets = {
     "width": 1280,
     "height": 960,
     "srcset": "./assets/optimized/community/education/infant/infant-20261013-9-640-1f8e5e18c2.webp 640w, ./assets/optimized/community/education/infant/infant-20261013-9-960-5852c82b7e.webp 960w, ./assets/optimized/community/education/infant/infant-20261013-9-1280-818c0dbbba.webp 1280w"
+  },
+  "./assets/community/cells/1/cell-1-20261013-preview.webp": {
+    "src": "./assets/optimized/community/cells/1/cell-1-20261013-preview-1280-f6353230c7.webp",
+    "width": 1280,
+    "height": 800,
+    "srcset": "./assets/optimized/community/cells/1/cell-1-20261013-preview-640-19e2f4cd1e.webp 640w, ./assets/optimized/community/cells/1/cell-1-20261013-preview-960-4159c77209.webp 960w, ./assets/optimized/community/cells/1/cell-1-20261013-preview-1280-f6353230c7.webp 1280w"
+  },
+  "./assets/community/mission/saturday-camp/camp-20261013-1.png": {
+    "src": "./assets/optimized/community/mission/saturday-camp/camp-20261013-1-960-c72a01ce42.webp",
+    "width": 960,
+    "height": 1280,
+    "srcset": "./assets/optimized/community/mission/saturday-camp/camp-20261013-1-640-4fa5168a8a.webp 640w, ./assets/optimized/community/mission/saturday-camp/camp-20261013-1-960-c72a01ce42.webp 960w"
+  },
+  "./assets/community/mission/saturday-camp/camp-20261013-2.png": {
+    "src": "./assets/optimized/community/mission/saturday-camp/camp-20261013-2-1280-4466548a7c.webp",
+    "width": 1280,
+    "height": 960,
+    "srcset": "./assets/optimized/community/mission/saturday-camp/camp-20261013-2-640-967c359f7a.webp 640w, ./assets/optimized/community/mission/saturday-camp/camp-20261013-2-960-bcdca3edce.webp 960w, ./assets/optimized/community/mission/saturday-camp/camp-20261013-2-1280-4466548a7c.webp 1280w"
+  },
+  "./assets/community/mission/saturday-camp/camp-20261013-3.png": {
+    "src": "./assets/optimized/community/mission/saturday-camp/camp-20261013-3-960-cfbbd8cf30.webp",
+    "width": 960,
+    "height": 1280,
+    "srcset": "./assets/optimized/community/mission/saturday-camp/camp-20261013-3-640-637177696f.webp 640w, ./assets/optimized/community/mission/saturday-camp/camp-20261013-3-960-cfbbd8cf30.webp 960w"
   }
 };
 

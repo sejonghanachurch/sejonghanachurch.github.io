@@ -304,3 +304,5 @@ dialog .photo-slide-outgoing,.album-photo-stage.is-photo-sliding>.album-photo-im
 @media(max-width:640px){.church-photos{margin-top:44px}.church-photos>h2{font-size:27px;margin-bottom:20px}.church-photos .gallery{gap:14px 12px}.church-photos .gallery button{border-radius:12px}.church-photos .gallery img{aspect-ratio:16 / 10}.church-photos .gallery button:first-child img{aspect-ratio:16 / 9}.church-photos .gallery button span{padding:12px 10px;font-size:14px}}
 
 .infant-introduction img{height:auto;max-height:none;aspect-ratio:4/3;object-fit:cover}
+
+.camp-photos .gallery img{object-fit:contain}

@@ -1,4 +1,4 @@
-import { imageAsset } from './image-assets.js?v=infant-update-20261013';
+import { imageAsset } from './image-assets.js?v=camp-photos-20261013';
 import { CONFIG } from './config.js';
 
 const ready = new Set();

@@ -1,0 +1,23 @@
+{
+  "title": "토요캠프",
+  "images": [
+    {
+      "id": "camp-20261013-1",
+      "title": "토요캠프 활동 사진",
+      "url": "./assets/community/mission/saturday-camp/camp-20261013-1.png",
+      "status": "ready"
+    },
+    {
+      "id": "camp-20261013-2",
+      "title": "토요캠프 활동 사진",
+      "url": "./assets/community/mission/saturday-camp/camp-20261013-2.png",
+      "status": "ready"
+    },
+    {
+      "id": "camp-20261013-3",
+      "title": "토요캠프 활동 사진",
+      "url": "./assets/community/mission/saturday-camp/camp-20261013-3.png",
+      "status": "ready"
+    }
+  ]
+}
