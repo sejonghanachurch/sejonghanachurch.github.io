@@ -16,7 +16,7 @@ const memoryCache=new Map();
 const validId = value => typeof value === 'string' && /^[a-zA-Z0-9_-]+$/.test(value);
 export function safeUrl(value, fallback='') {
   if(typeof value!=='string')return fallback;
-  try { const url=new URL(value,window.location.href); return ['http:','https:'].includes(url.protocol)||(url.protocol==='blob:'&&[...driveMedia.values()].includes(value))?url.href:fallback; } catch { return fallback; }
+  try { const url=new URL(value,new URL('/',window.location.href)); return ['http:','https:'].includes(url.protocol)||(url.protocol==='blob:'&&[...driveMedia.values()].includes(value))?url.href:fallback; } catch { return fallback; }
 }
 export function driveViewUrl(file) {
   if(file.mimeType==='application/pdf'&&validId(file.id)){

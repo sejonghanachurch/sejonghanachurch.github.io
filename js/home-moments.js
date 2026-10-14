@@ -1,3 +1,4 @@
+import { routeHref } from './routing.js?v=seo-20261014';
 import { bindHorizontalSwipe } from './horizontal-swipe.js?v=photo-swipe-20261008';
 
 const INTERVAL=4000;
@@ -32,7 +33,7 @@ function createCarousel(host){
   }
   function slide(photo){
     const link=document.createElement('a');
-    link.className='moments-slide';link.href='#/news/albums';link.setAttribute('aria-label',`${photo.title} 앨범 보기`);
+    link.className='moments-slide';link.href=routeHref('news/albums');link.setAttribute('aria-label',`${photo.title} 앨범 보기`);
     const img=document.createElement('img');img.src=photo.src;img.alt=photo.alt;img.decoding='async';img.draggable=false;
     const caption=document.createElement('span');caption.className='moments-caption';caption.textContent=photo.title;
     link.append(img,caption);return link;

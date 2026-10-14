@@ -338,7 +338,7 @@ export function imageAsset(source) {
   if (typeof source !== 'string') return { src: '' };
   let key = source;
   try {
-    const address = new URL(source, window.location.href);
+    const address = new URL(source, new URL('/', window.location.href));
     if (address.origin === window.location.origin) key = '.' + address.pathname;
   } catch {}
   return assets[key] || { src: source };
