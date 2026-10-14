@@ -296,18 +296,47 @@ export const COMMUNITY = {
     {
       "meeting": "예배와 모임 시간은 교회에 문의해 주세요.",
       "location": "교회에서 안내해 드립니다.",
-      "image": "./assets/community/education/youth/1PRZ2MaF1TiapnURZsZ5vKpRwWeXv-Bfl-preview.webp",
+      "image": "./assets/community/cells/1/cell-1-20261013-preview.webp",
       "images": [
         {
-          "id": "1PRZ2MaF1TiapnURZsZ5vKpRwWeXv-Bfl",
-          "title": "01-공동체-샘플.jpg",
-          "url": "./assets/community/education/youth/1PRZ2MaF1TiapnURZsZ5vKpRwWeXv-Bfl-preview.webp",
-          "originalUrl": "./assets/community/education/youth/1PRZ2MaF1TiapnURZsZ5vKpRwWeXv-Bfl-full.webp",
+          "id": "youth-20261015-1",
+          "title": "학생부 활동 사진",
+          "url": "./assets/community/education/youth/youth-20261015-1-preview.webp",
+          "status": "ready"
+        },
+        {
+          "id": "youth-20261015-2",
+          "title": "학생부 활동 사진",
+          "url": "./assets/community/education/youth/youth-20261015-2-preview.webp",
+          "status": "ready"
+        },
+        {
+          "id": "youth-20261015-3",
+          "title": "학생부 활동 사진",
+          "url": "./assets/community/education/youth/youth-20261015-3-preview.webp",
+          "status": "ready"
+        },
+        {
+          "id": "youth-20261015-4",
+          "title": "학생부 활동 사진",
+          "url": "./assets/community/education/youth/youth-20261015-4-preview.webp",
+          "status": "ready"
+        },
+        {
+          "id": "youth-20261015-5",
+          "title": "학생부 활동 사진",
+          "url": "./assets/community/education/youth/youth-20261015-5-preview.webp",
+          "status": "ready"
+        },
+        {
+          "id": "youth-20261015-6",
+          "title": "학생부 활동 사진",
+          "url": "./assets/community/education/youth/youth-20261015-6-preview.webp",
           "status": "ready"
         }
       ],
-      "sample": true,
-      "imageSample": true,
+      "sample": false,
+      "imageSample": false,
       "id": "youth",
       "title": "학생부",
       "aliases": [
@@ -316,9 +345,10 @@ export const COMMUNITY = {
       "eyebrow": "FAITH FOR TOMORROW",
       "description": "[소개 문구 초안] 잘 되나? 질문하고, 꿈꾸고, 함께 믿는 우리. 말씀 안에서 나를 발견하고 믿음의 친구들과 함께 자라갑니다.",
       "audience": "중학생과 고등학생",
-      "leader": "송나단 목사",
+      "leader": "송나단 목사, 문홍일 전도사",
       "contentPending": false,
-      "mediaPending": false
+      "mediaPending": false,
+      "imageAlt": "1셀 공동체 사진"
     },
     {
       "meeting": "예배와 모임 시간은 교회에 문의해 주세요.",

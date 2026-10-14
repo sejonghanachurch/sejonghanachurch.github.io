@@ -83,7 +83,7 @@ export const SEO_PAGES = {
   "education/youth": {
     "label": "학생부",
     "title": "학생부 | 세종하나교회",
-    "description": "세종하나교회 학생부 소개와 활동 사진을 안내합니다. 담당자는 송나단 목사입니다."
+    "description": "세종하나교회 학생부 소개와 활동 사진을 안내합니다. 담당자는 송나단 목사, 문홍일 전도사입니다."
   },
   "education/young-adult": {
     "label": "청년부",

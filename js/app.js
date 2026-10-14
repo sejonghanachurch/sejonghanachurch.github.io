@@ -1,8 +1,8 @@
 import { SAMPLE } from './data.js?v=education-label-20261007';
-import { COMMUNITY } from './community-data.js?v=camp-photos-20261013';
-import { imageAsset } from './image-assets.js?v=seo-20261014';
+import { COMMUNITY } from './community-data.js?v=youth-cell1-20261015';
+import { imageAsset } from './image-assets.js?v=youth-20261015';
 import { currentPath, canonicalizeCurrentRoute, normalizeRouteLinks, bindRouteNavigation } from './routing.js?v=seo-20261014';
-import { updatePageSeo } from './page-seo.js?v=naver-20261015';
+import { updatePageSeo } from './page-seo.js?v=youth-20261015';
 const prerender=window.__CHURCH_PRERENDER__===true;
 const groupPath=(root,id)=>root==='education'&&id==='adults'?'cells':`${root}/${id}`;
 const nav = [
@@ -64,7 +64,7 @@ matchMedia('(max-width:1000px)').addEventListener('change',closeDesktopMenus);
 document.querySelector('#back-top').onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
 document.querySelector('#year').textContent=new Date().getFullYear();
 import { CONFIG } from './config.js';
-import { resource, settleResource, mountResources, patchResources } from './resource-view.js?v=seo-20261014';
+import { resource, settleResource, mountResources, patchResources } from './resource-view.js?v=youth-20261015';
 import { syncHomeMoments } from './home-moments.js?v=seo-20261014';
 import { syncHomeHero } from './home-hero.js?v=hero-continuous-20261009';
 import { syncCellPhotos } from './cell-photos.js?v=cell2-photos-20261009';
@@ -151,7 +151,7 @@ function groupPage(root,id){
  if(!g)return notFound();
  const mature=['adults','caleb'].includes(id);
  const copy=`<div class="prose"><p class="eyebrow green">${g.eyebrow}</p><h2>${g.headline?esc(g.headline):mature?'삶을 나누며,<br>믿음으로 함께합니다.':'오늘의 작은 믿음이<br>내일의 큰 소망으로.'}</h2><p>${esc(g.description)}</p><div class="info-list">${g.leader?`<div class="info-row"><strong>담당자</strong><span>${esc(g.leader)}</span></div>`:''}${g.audience?`<div class="info-row"><strong>함께하는 이들</strong><span>${esc(g.audience)}</span></div>`:''}<div class="info-row"><strong>${g.headline?'모임 시간':'모임 안내'}</strong><span>${esc(g.meeting)}</span></div><div class="info-row"><strong>장소</strong><span>${esc(g.location)}</span></div></div><div class="button-row"><a class="button solid" href="#/directions">교회 방문 안내</a></div></div>`;
- return page(g.title,'하나님의 사랑 안에서 함께 자라는 공동체',`<div class="detail-grid${id==='infant'?' infant-introduction':''}"><div>${groupPicture(g,`${root}/${id}`)}</div><div>${resource(`group-copy:${root}/${id}`,copy,'rows',true,Boolean(g.contentPending))}</div></div>${resource(`group-gallery:${root}/${id}`,g.images.length>(mature?1:0)?`<h3 class="spaced-title">활동 사진</h3>${gallery(g.images,{hideTitles:true,galleryTitle:g.title})}`:'','image',true)}`,nav[3],id==='infant'?infantVideos():id==='young-adult'?youngAdultVideos():'');
+ return page(g.title,'하나님의 사랑 안에서 함께 자라는 공동체',`<div class="detail-grid${id==='infant'?' infant-introduction':id==='youth'?' youth-introduction':''}"><div>${groupPicture(g,`${root}/${id}`)}</div><div>${resource(`group-copy:${root}/${id}`,copy,'rows',true,Boolean(g.contentPending))}</div></div>${resource(`group-gallery:${root}/${id}`,g.images.length>(mature?1:0)?`<h3 class="spaced-title">활동 사진</h3>${gallery(g.images,{hideTitles:true,galleryTitle:g.title})}`:'','image',true)}`,nav[3],id==='infant'?infantVideos():id==='young-adult'?youngAdultVideos():'');
 }
 function infantVideos(){
  return `<section class="infant-videos" aria-labelledby="infant-videos-title"><h3 class="spaced-title" id="infant-videos-title">활동 영상</h3><div class="infant-video-grid">${state.infantPlaylists.map(playlist=>{

@@ -331,6 +331,42 @@ const assets = {
     "width": 960,
     "height": 1280,
     "srcset": "./assets/optimized/community/mission/saturday-camp/camp-20261013-3-640-637177696f.webp 640w, ./assets/optimized/community/mission/saturday-camp/camp-20261013-3-960-cfbbd8cf30.webp 960w"
+  },
+  "./assets/community/education/youth/youth-20261015-1-preview.webp": {
+    "src": "./assets/optimized/community/education/youth/youth-20261015-1-preview-1280-3ec1b9824d.webp",
+    "width": 1280,
+    "height": 1114,
+    "srcset": "./assets/optimized/community/education/youth/youth-20261015-1-preview-640-5b6b775148.webp 640w, ./assets/optimized/community/education/youth/youth-20261015-1-preview-960-5178a23adf.webp 960w, ./assets/optimized/community/education/youth/youth-20261015-1-preview-1280-3ec1b9824d.webp 1280w"
+  },
+  "./assets/community/education/youth/youth-20261015-2-preview.webp": {
+    "src": "./assets/optimized/community/education/youth/youth-20261015-2-preview-1280-b2a614f6fc.webp",
+    "width": 1280,
+    "height": 960,
+    "srcset": "./assets/optimized/community/education/youth/youth-20261015-2-preview-640-fdc842d6c5.webp 640w, ./assets/optimized/community/education/youth/youth-20261015-2-preview-960-b12a57a2bf.webp 960w, ./assets/optimized/community/education/youth/youth-20261015-2-preview-1280-b2a614f6fc.webp 1280w"
+  },
+  "./assets/community/education/youth/youth-20261015-3-preview.webp": {
+    "src": "./assets/optimized/community/education/youth/youth-20261015-3-preview-1280-c66300c2ae.webp",
+    "width": 1280,
+    "height": 721,
+    "srcset": "./assets/optimized/community/education/youth/youth-20261015-3-preview-640-dfda032a9a.webp 640w, ./assets/optimized/community/education/youth/youth-20261015-3-preview-960-580d2a4727.webp 960w, ./assets/optimized/community/education/youth/youth-20261015-3-preview-1280-c66300c2ae.webp 1280w"
+  },
+  "./assets/community/education/youth/youth-20261015-4-preview.webp": {
+    "src": "./assets/optimized/community/education/youth/youth-20261015-4-preview-1280-4f7ac9d5b8.webp",
+    "width": 1280,
+    "height": 960,
+    "srcset": "./assets/optimized/community/education/youth/youth-20261015-4-preview-640-453a4a8f7a.webp 640w, ./assets/optimized/community/education/youth/youth-20261015-4-preview-960-3cde70f1b5.webp 960w, ./assets/optimized/community/education/youth/youth-20261015-4-preview-1280-4f7ac9d5b8.webp 1280w"
+  },
+  "./assets/community/education/youth/youth-20261015-5-preview.webp": {
+    "src": "./assets/optimized/community/education/youth/youth-20261015-5-preview-1280-9e8ee639ee.webp",
+    "width": 1280,
+    "height": 960,
+    "srcset": "./assets/optimized/community/education/youth/youth-20261015-5-preview-640-b57ec8680a.webp 640w, ./assets/optimized/community/education/youth/youth-20261015-5-preview-960-f2cef4179e.webp 960w, ./assets/optimized/community/education/youth/youth-20261015-5-preview-1280-9e8ee639ee.webp 1280w"
+  },
+  "./assets/community/education/youth/youth-20261015-6-preview.webp": {
+    "src": "./assets/optimized/community/education/youth/youth-20261015-6-preview-1280-ee56f8cb7e.webp",
+    "width": 1280,
+    "height": 960,
+    "srcset": "./assets/optimized/community/education/youth/youth-20261015-6-preview-640-51392407c0.webp 640w, ./assets/optimized/community/education/youth/youth-20261015-6-preview-960-8886086d11.webp 960w, ./assets/optimized/community/education/youth/youth-20261015-6-preview-1280-ee56f8cb7e.webp 1280w"
   }
 };
 
