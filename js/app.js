@@ -2,7 +2,7 @@ import { SAMPLE } from './data.js?v=education-label-20261007';
 import { COMMUNITY } from './community-data.js?v=camp-photos-20261013';
 import { imageAsset } from './image-assets.js?v=seo-20261014';
 import { currentPath, canonicalizeCurrentRoute, normalizeRouteLinks, bindRouteNavigation } from './routing.js?v=seo-20261014';
-import { updatePageSeo } from './page-seo.js?v=seo-20261014';
+import { updatePageSeo } from './page-seo.js?v=naver-20261015';
 const prerender=window.__CHURCH_PRERENDER__===true;
 const groupPath=(root,id)=>root==='education'&&id==='adults'?'cells':`${root}/${id}`;
 const nav = [
