@@ -308,5 +308,5 @@ dialog .photo-slide-outgoing,.album-photo-stage.is-photo-sliding>.album-photo-im
 .camp-photos .gallery img{object-fit:contain}
 
 /* Keep the student group and wide activity photos fully visible. */
-.detail-grid.youth-introduction>div>[data-resource]>img{height:auto;max-height:none;aspect-ratio:auto;object-fit:contain}
+.detail-grid.youth-introduction>div>[data-resource]>img,.detail-grid [data-resource="group-image:education/young-adult"]>img{height:auto;max-height:none;aspect-ratio:auto;object-fit:contain}
 [data-resource="group-gallery:education/youth"] .gallery img{object-fit:contain;background:white}

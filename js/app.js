@@ -1,5 +1,5 @@
 import { SAMPLE } from './data.js?v=education-label-20261007';
-import { COMMUNITY } from './community-data.js?v=youth-cell1-20261015';
+import { COMMUNITY } from './community-data.js?v=education-covers-corrected-20261015';
 import { imageAsset } from './image-assets.js?v=youth-20261015';
 import { currentPath, canonicalizeCurrentRoute, normalizeRouteLinks, bindRouteNavigation } from './routing.js?v=seo-20261014';
 import { updatePageSeo } from './page-seo.js?v=youth-20261015';

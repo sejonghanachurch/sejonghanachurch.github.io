@@ -296,7 +296,7 @@ export const COMMUNITY = {
     {
       "meeting": "예배와 모임 시간은 교회에 문의해 주세요.",
       "location": "교회에서 안내해 드립니다.",
-      "image": "./assets/community/cells/1/cell-1-20261013-preview.webp",
+      "image": "./assets/community/education/youth/youth-20261015-1-preview.webp",
       "images": [
         {
           "id": "youth-20261015-1",
@@ -348,12 +348,12 @@ export const COMMUNITY = {
       "leader": "송나단 목사, 문홍일 전도사",
       "contentPending": false,
       "mediaPending": false,
-      "imageAlt": "1셀 공동체 사진"
+      "imageAlt": "학생부 여름수련회 단체사진"
     },
     {
       "meeting": "예배와 모임 시간은 교회에 문의해 주세요.",
       "location": "교회에서 안내해 드립니다.",
-      "image": "./assets/community/education/young-adult/1MJsN2iReJdTtzMYu_HSsLJlQTf5E1GT1-preview.webp",
+      "image": "./assets/community/cells/1/cell-1-20261013-preview.webp",
       "images": [
         {
           "id": "1MJsN2iReJdTtzMYu_HSsLJlQTf5E1GT1",
@@ -363,8 +363,8 @@ export const COMMUNITY = {
           "status": "ready"
         }
       ],
-      "sample": true,
-      "imageSample": true,
+      "sample": false,
+      "imageSample": false,
       "id": "young-adult",
       "title": "청년부",
       "aliases": [
@@ -375,7 +375,8 @@ export const COMMUNITY = {
       "audience": "청년",
       "leader": "위태영 전도사",
       "contentPending": false,
-      "mediaPending": false
+      "mediaPending": false,
+      "imageAlt": "청년부 공동체 사진"
     },
     {
       "meeting": "각 셀 소개에서 모임 안내를 확인해 주세요.",
