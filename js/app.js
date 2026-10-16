@@ -1,5 +1,5 @@
 import { SAMPLE } from './data.js?v=education-label-20261007';
-import { COMMUNITY } from './community-data.js?v=education-covers-corrected-20261015';
+import { COMMUNITY } from './community-data.js?v=community-meetings-20261015';
 import { imageAsset } from './image-assets.js?v=youth-20261015';
 import { currentPath, canonicalizeCurrentRoute, normalizeRouteLinks, bindRouteNavigation } from './routing.js?v=seo-20261014';
 import { updatePageSeo } from './page-seo.js?v=youth-20261015';
@@ -84,9 +84,9 @@ const homeIntro=document.querySelector('#home-intro-template').innerHTML;
 const homeNewcomer=document.querySelector('#home-newcomer-template').innerHTML;
 let homePhotoObserver=null;
 const albumPhotoTasks=new Map();
-let state={...SAMPLE,...COMMUNITY,driveStatus:'unconfigured',noticesStatus:'loading',videoStatus:'unconfigured',jubileeStatus:'loading',jubileeVideos:[],missionStatus:'loading',missionVideos:[],youngAdultStatus:'loading',youngAdultVideos:[],visionStatus:'loading',visionVideos:[],visionLoaded:false,oneMinuteStatus:'loading',oneMinuteVideos:[],oneMinuteLoaded:false,infantPlaylists:CONFIG.infantPlaylists.map(playlist=>({...playlist,status:'loading',videos:[]}))};
+let state={...SAMPLE,...COMMUNITY,driveStatus:'unconfigured',noticesStatus:'loading',videoStatus:'unconfigured',jubileeStatus:'loading',jubileeVideos:[],jubileeLoaded:false,missionStatus:'loading',missionVideos:[],youngAdultStatus:'loading',youngAdultVideos:[],visionStatus:'loading',visionVideos:[],visionLoaded:false,oneMinuteStatus:'loading',oneMinuteVideos:[],oneMinuteLoaded:false,infantPlaylists:CONFIG.infantPlaylists.map(playlist=>({...playlist,status:'loading',videos:[]}))};
 if(prerender){
- Object.assign(state,{videos:[],notices:[],bulletins:[],albums:[],driveStatus:'connected',noticesStatus:'connected',videoStatus:'connected',jubileeStatus:'connected',missionStatus:'connected',youngAdultStatus:'connected',visionStatus:'connected',visionLoaded:true,oneMinuteStatus:'connected',oneMinuteLoaded:true});
+ Object.assign(state,{videos:[],notices:[],bulletins:[],albums:[],driveStatus:'connected',noticesStatus:'connected',videoStatus:'connected',jubileeStatus:'connected',jubileeLoaded:true,missionStatus:'connected',youngAdultStatus:'connected',visionStatus:'connected',visionLoaded:true,oneMinuteStatus:'connected',oneMinuteLoaded:true});
  for(const playlist of state.infantPlaylists)playlist.status='connected';
  for(const key of ['videos','notices','bulletins','albums','jubilee','mission','young-adult-videos','vision-videos','one-minute-videos',...state.infantPlaylists.map(playlist=>`infant-videos:${playlist.id}`)])settleResource(key);
 }
@@ -150,7 +150,7 @@ function groupPage(root,id){
  const g=state.education.find(x=>x.id===id);
  if(!g)return notFound();
  const mature=['adults','caleb'].includes(id);
- const copy=`<div class="prose"><p class="eyebrow green">${g.eyebrow}</p><h2>${g.headline?esc(g.headline):mature?'삶을 나누며,<br>믿음으로 함께합니다.':'오늘의 작은 믿음이<br>내일의 큰 소망으로.'}</h2><p>${esc(g.description)}</p><div class="info-list">${g.leader?`<div class="info-row"><strong>담당자</strong><span>${esc(g.leader)}</span></div>`:''}${g.audience?`<div class="info-row"><strong>함께하는 이들</strong><span>${esc(g.audience)}</span></div>`:''}<div class="info-row"><strong>${g.headline?'모임 시간':'모임 안내'}</strong><span>${esc(g.meeting)}</span></div><div class="info-row"><strong>장소</strong><span>${esc(g.location)}</span></div></div><div class="button-row"><a class="button solid" href="#/directions">교회 방문 안내</a></div></div>`;
+ const copy=`<div class="prose"><p class="eyebrow green">${g.eyebrow}</p><h2>${g.headline?esc(g.headline):mature?'삶을 나누며,<br>믿음으로 함께합니다.':'오늘의 작은 믿음이<br>내일의 큰 소망으로.'}</h2><p>${esc(g.description)}</p><div class="info-list">${g.leader?`<div class="info-row"><strong>담당자</strong><span>${esc(g.leader)}</span></div>`:''}${g.audience?`<div class="info-row"><strong>함께하는 이들</strong><span>${esc(g.audience)}</span></div>`:''}<div class="info-row"><strong>${g.headline||id==='youth'?'모임 시간':'모임 안내'}</strong><span>${esc(g.meeting)}</span></div><div class="info-row"><strong>${id==='youth'?'모임 장소':'장소'}</strong><span>${esc(g.location)}</span></div></div><div class="button-row"><a class="button solid" href="#/directions">교회 방문 안내</a></div></div>`;
  return page(g.title,'하나님의 사랑 안에서 함께 자라는 공동체',`<div class="detail-grid${id==='infant'?' infant-introduction':id==='youth'?' youth-introduction':''}"><div>${groupPicture(g,`${root}/${id}`)}</div><div>${resource(`group-copy:${root}/${id}`,copy,'rows',true,Boolean(g.contentPending))}</div></div>${resource(`group-gallery:${root}/${id}`,g.images.length>(mature?1:0)?`<h3 class="spaced-title">활동 사진</h3>${gallery(g.images,{hideTitles:true,galleryTitle:g.title})}`:'','image',true)}`,nav[3],id==='infant'?infantVideos():id==='young-adult'?youngAdultVideos():'');
 }
 function infantVideos(){
@@ -274,15 +274,16 @@ function worship(){
   ['새벽기도','매일','05:30 - 06:30'],
   ['수요예배','수요일','20:00 - 21:00'],
   ['금요기도회','금요일','20:00 - 22:00'],
-  ['학생부 모임','주일','12:00 - 13:00'],
+  ['학생부 모임','주일','점심 식사 후'],
   ['청년부 모임','주일','12:00 - 13:00']
  ];
  return page('예배 안내','하나님을 만나는 시간, 함께 예배하는 기쁨.',`<div class="prose worship-intro"><p class="eyebrow green">WORSHIP TOGETHER</p><h2>예배가 삶이 되고,<br>삶이 예배가 됩니다.</h2><p>말씀을 듣고 찬양하며, 하나님께 우리의 마음을 드립니다. 세종하나교회의 예배에 여러분을 초대합니다.</p><a class="button solid" href="#/sermons">주일예배 영상 보기</a></div><section class="worship-schedule" aria-labelledby="worship-schedule-title"><h3 class="spaced-title" id="worship-schedule-title">예배와 모임 시간</h3><div class="schedule-wrap"><table class="schedule worship-schedule-table" aria-labelledby="worship-schedule-title"><thead><tr><th scope="col">예배 / 모임</th><th scope="col">요일</th><th scope="col">시간</th></tr></thead><tbody>${schedule.map(([name,day,time])=>`<tr><th scope="row">${esc(name)}</th><td>${esc(day)}</td><td class="worship-time">${esc(time)}</td></tr>`).join('')}</tbody></table></div></section>`,nav[1]);
 }
 function sermons(){return page('주일예배 영상','말씀으로 하루를 새롭게, 믿음으로 한 주를 든든하게.',`${state.videoStatus==='error'?'<p class="notice">새 영상을 불러오지 못해 기존에 등록된 영상을 보여드립니다.</p>':''}${videoCards(state.videos)}<div class="button-row"><a class="button outline" href="${youtube}/videos" target="_blank" rel="noopener noreferrer">YouTube에서 모든 영상 보기</a></div>`,nav[1]);}
 function jubilee(){
- const videos=state.jubileeStatus==='error'?empty('영상을 불러오지 못했습니다.','잠시 후 다시 방문하거나 아래 재생목록에서 확인해 주세요.'):videoCards(state.jubileeVideos);
- return page('쥬빌리기도회','함께 마음을 모아, 기도로 나아갑니다.',`<div class="jubilee-intro"><p class="eyebrow green">JUBILEE PRAYER</p><h2>“복음적 통일은 우리가 함께 모여<br> 기도할 때 주시는 하나님의 선물입니다!”</h2></div><div class="detail-grid jubilee-details"><div class="jubilee-principles"><p>하나님의 절대 주권을 인정하는 <strong>‘희년’(쥬빌리) 정신</strong>을 추구합니다.</p><p>피 흘림 없는 복음적 평화 <strong>‘통일’</strong>을 추구합니다.</p><p>나라와 민족을 위한 <strong>‘구국’ 기도회</strong>입니다.</p><p>일체의 정치성을 배제한 순수한 <strong>‘기도 운동’</strong>입니다.</p><p>교단과 교파를 초월하여 한국교회가 다가올 통일을 위해 기도하는 자리입니다.</p></div><div class="map-card jubilee-meeting"><h3>함께 기도해요</h3><div class="info-list"><div class="info-row"><strong>일정</strong><span>매월 마지막 주 금요일<br><strong>오후 8시</strong></span></div><div class="info-row"><strong>장소</strong><span>세종하나교회 본당</span></div></div><a class="button solid" href="https://www.jubileeuni.com/" target="_blank" rel="noopener noreferrer">쥬빌리기도회 홈페이지 <span aria-hidden="true">↗</span></a></div></div><h3 class="spaced-title">쥬빌리기도회 영상</h3>${resource('jubilee',videos,'cards',!CONFIG.jubileePlaylistId)}<div class="button-row"><a class="button outline" href="${url(jubileePlaylist)}" target="_blank" rel="noopener noreferrer">YouTube에서 재생목록 전체 보기 <span aria-hidden="true">↗</span></a></div>`,nav[1]);
+ const failed=state.jubileeStatus==='error';
+ const videos=failed?(state.jubileeLoaded?'<p class="notice" role="status">최신 목록을 불러오지 못해 이전에 확인한 영상을 표시합니다. 아래 YouTube 재생목록에서 최신 영상을 확인해 주세요.</p>'+videoCards(state.jubileeVideos):empty('영상을 불러오지 못했습니다.','잠시 후 다시 방문하거나 아래 재생목록에서 확인해 주세요.')):videoCards(state.jubileeVideos);
+ return page('쥬빌리기도회','함께 마음을 모아, 기도로 나아갑니다.',`<div class="jubilee-intro"><p class="eyebrow green">JUBILEE PRAYER</p><h2>“복음적 통일은 우리가 함께 모여<br> 기도할 때 주시는 하나님의 선물입니다!”</h2></div><div class="detail-grid jubilee-details"><div class="jubilee-principles"><p>하나님의 절대 주권을 인정하는 <strong>‘희년’(쥬빌리) 정신</strong>을 추구합니다.</p><p>피 흘림 없는 복음적 평화 <strong>‘통일’</strong>을 추구합니다.</p><p>나라와 민족을 위한 <strong>‘구국’ 기도회</strong>입니다.</p><p>일체의 정치성을 배제한 순수한 <strong>‘기도 운동’</strong>입니다.</p><p>교단과 교파를 초월하여 한국교회가 다가올 통일을 위해 기도하는 자리입니다.</p></div><div class="map-card jubilee-meeting"><h3>함께 기도해요</h3><div class="info-list"><div class="info-row"><strong>일정</strong><span>매월 마지막 주 금요일<br><strong>오후 8시</strong></span></div><div class="info-row"><strong>장소</strong><span>세종하나교회 본당</span></div></div><a class="button solid" href="https://www.jubileeuni.com/" target="_blank" rel="noopener noreferrer">쥬빌리기도회 홈페이지 <span aria-hidden="true">↗</span></a></div></div><h3 class="spaced-title">쥬빌리기도회 영상</h3>${resource('jubilee',videos,'cards',!CONFIG.jubileePlaylistId,!state.jubileeLoaded&&state.jubileeStatus==='loading')}<div class="button-row"><a class="button outline" href="${url(jubileePlaylist)}" target="_blank" rel="noopener noreferrer">YouTube에서 재생목록 전체 보기 <span aria-hidden="true">↗</span></a></div>`,nav[1]);
 }
 function oneMinute(){
  const href='https://www.youtube.com/playlist?list='+encodeURIComponent(CONFIG.oneMinutePlaylistId);
@@ -537,7 +538,7 @@ function renderNavigation(){
  btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-label','전체 메뉴 열기');
  document.querySelector('#mobile-nav').hidden=true;document.body.classList.remove('menu-open');
  closeDesktopMenus();document.activeElement?.blur();
- render({scroll:true});refreshDrive();refreshOneMinute();refreshVision();
+ render({scroll:true});refreshDrive();refreshOneMinute();refreshVision();refreshJubilee();
 }
 bindRouteNavigation(renderNavigation);
 render();
@@ -661,13 +662,6 @@ loadVideos().then(result=>{
  if(result.status==='connected'){state.videos=result.videos;state.videoStatus='connected';}
  renderResourceUpdate();
 }).catch(()=>{settleResource('videos');state.videoStatus='error';renderResourceUpdate();});
-loadVideos({jubilee:true}).then(result=>{
- settleResource('jubilee');
- if(result.status==='connected')state.jubileeVideos=result.videos;
- state.jubileeStatus=result.status;
- renderResourceUpdate();
-}).catch(()=>{settleResource('jubilee');state.jubileeStatus='error';renderResourceUpdate();});
-
 loadVideos({mission:true}).then(result=>{
  settleResource('mission');
  if(result.status==='connected')state.missionVideos=result.videos;
@@ -741,3 +735,31 @@ function refreshOneMinute(){
  return oneMinuteRefreshTask;
 }
 refreshOneMinute();
+
+let jubileeRefreshTask=null;
+function refreshJubilee(){
+ if(prerender||currentPath()!=='jubilee')return;
+ if(jubileeRefreshTask)return jubileeRefreshTask;
+ state.jubileeStatus='loading';
+ renderResourceUpdate();
+ jubileeRefreshTask=(async()=>{
+  try{
+   const result=await loadVideos({jubilee:true,fresh:true,allPages:true});
+   if(result.status!=='connected')throw new Error('Playlist unavailable');
+   state.jubileeVideos=result.videos;
+   state.jubileeLoaded=true;
+   state.jubileeStatus='connected';
+  }catch{state.jubileeStatus='error';}
+  finally{
+   settleResource('jubilee');
+   jubileeRefreshTask=null;
+   if(currentPath()==='jubilee')renderResourceUpdate();
+  }
+ })();
+ return jubileeRefreshTask;
+}
+refreshJubilee();
+// Recheck when visitors return from YouTube, without polling background tabs.
+document.addEventListener('visibilitychange',()=>{
+ if(document.visibilityState==='visible')refreshJubilee();
+});

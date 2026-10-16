@@ -96,8 +96,8 @@ export const COMMUNITY = {
       "contentPending": false,
       "mediaPending": false,
       "description": "[소개 문구 초안] 믿음의 걸음을 함께 걷습니다. 서로 다른 삶이 만나 하나의 공동체를 이루는 4셀입니다.",
-      "meeting": "모임 시간은 교회에 문의해 주세요.",
-      "location": "모임 장소는 교회에서 안내해 드립니다.",
+      "meeting": "주일 점심 식사 후",
+      "location": "교회 식당",
       "image": "./assets/community/cells/4/1FyFYtNEml7Kr9aCTcM5ys0_NfWV4hC1_-preview.webp",
       "images": [
         {
@@ -294,8 +294,8 @@ export const COMMUNITY = {
       "mediaPending": false
     },
     {
-      "meeting": "예배와 모임 시간은 교회에 문의해 주세요.",
-      "location": "교회에서 안내해 드립니다.",
+      "meeting": "주일 점심 식사 후",
+      "location": "2층 다목적실",
       "image": "./assets/community/education/youth/youth-20261015-1-preview.webp",
       "images": [
         {
