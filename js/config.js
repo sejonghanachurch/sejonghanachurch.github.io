@@ -2,6 +2,7 @@
 export const CONFIG = {
   googleApiKey: 'AIzaSyDDKozm3Vx0ORiBbVHN7wLvU5Fv_9vqKeI', // Enable Google Drive API and YouTube Data API v3; restrict key to your website domains.
   driveRootFolderId: '1Yev0W9aosjq3V0csy5mioNj2KKn2Ccuy',
+  driveAlbumsFolderId: '1u1htee0pjCVg7Zb2B5ECBAFaaB5VdfP6', // 행사앨범: keep the connection stable when the folder is renamed.
   youtubeChannelId: 'UCBlksyAAB24gB6DTzb5MtKQ',
   youtubeUploadsPlaylistId: '', // Optional; discovered through channels.list when blank.
   jubileePlaylistId: 'PLYVmVd0kt83fwuENRS4VTsRDGyF2ini_Z', // 쥬빌리기도회 공식 재생목록.

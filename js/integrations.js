@@ -1,4 +1,4 @@
-import { CONFIG } from './config.js';
+import { CONFIG } from './config.js?v=albums-folder-20261017';
 import { readPublicResource } from './read-only-api.js?v=drive-download-20261007';
 import { readPhotoCache, savePhotoCache, compactPhoto } from './photo-cache.js?v=photo-preview-960-20261011';
 import { parseNoticeTitle, compareNotices } from './notice-metadata.js?v=notice-metadata-20261011';
@@ -392,7 +392,8 @@ export async function loadDrive(base,{path=null,onUpdate=()=>{}}={}) {
   // local and must not even request the shared Drive root.
   if(!wantsBulletins&&!wantsAlbums&&!wantsNotices)return {status:'idle'};
   if(!CONFIG.googleApiKey)return {status:'unconfigured'};
-  const root=await listDriveFiles(CONFIG.driveRootFolderId),result={status:'connected'};
+  const needsRoot=wantsNotices||wantsBulletins||(wantsAlbums&&!CONFIG.driveAlbumsFolderId);
+  const root=needsRoot?await listDriveFiles(CONFIG.driveRootFolderId):[],result={status:'connected'};
   const publish=patch=>onUpdate({status:'connected',...patch});
   const tasks=[];
   if(wantsNotices)tasks.push((async()=>{
@@ -415,7 +416,9 @@ export async function loadDrive(base,{path=null,onUpdate=()=>{}}={}) {
     publish({bulletins:result.bulletins});
   })());
   if(wantsAlbums)tasks.push((async()=>{
-    const folders=(await childFiles(root,['앨범','albums'])).filter(isFolder);
+    const albumFolder=CONFIG.driveAlbumsFolderId?{id:CONFIG.driveAlbumsFolderId}:findFolder(root,['행사앨범','앨범','albums']);
+    if(!albumFolder)throw new Error('Album folder unavailable');
+    const folders=(await listDriveFiles(albumFolder.id,albumFolder.resourceKey)).filter(isFolder);
     // Keep the full upload timestamp so albums uploaded on the same day sort correctly.
     const byUploadDate=(a,b)=>(Date.parse(b.uploadedAt)||0)-(Date.parse(a.uploadedAt)||0)||a.id.localeCompare(b.id);
     result.albums=folders.map(folder=>({id:folder.id,title:folder.name,description:folder.description||'',date:folder.name.match(/^\d{4}-\d{2}-\d{2}/)?.[0]||'',uploadedAt:folder.createdTime||'',image:'',images:[],contentPending:true,mediaPending:true,url:`https://drive.google.com/drive/folders/${folder.id}`}));

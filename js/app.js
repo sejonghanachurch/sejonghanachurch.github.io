@@ -63,7 +63,7 @@ for(const group of desktopGroups){
 matchMedia('(max-width:1000px)').addEventListener('change',closeDesktopMenus);
 document.querySelector('#back-top').onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
 document.querySelector('#year').textContent=new Date().getFullYear();
-import { CONFIG } from './config.js';
+import { CONFIG } from './config.js?v=albums-folder-20261017';
 import { resource, settleResource, mountResources, patchResources } from './resource-view.js?v=youth-20261015';
 import { syncHomeMoments } from './home-moments.js?v=seo-20261014';
 import { syncHomeHero } from './home-hero.js?v=hero-continuous-20261009';
@@ -78,7 +78,7 @@ function driveKeys(path){
  return [];
 }
 function pageResource(path){return path.startsWith('news/notices/')||path==='mission/saturday-outreach'?null:path==='sermons'?'videos':driveKeys(path)[0];}
-import { loadDrive, loadAlbumPhotos, loadVideos, loadVisionVideos, preloadNotice, safeUrl } from './integrations.js?v=seo-20261014';
+import { loadDrive, loadAlbumPhotos, loadVideos, loadVisionVideos, preloadNotice, safeUrl } from './integrations.js?v=albums-folder-20261017';
 const main=document.querySelector('#main');
 const homeIntro=document.querySelector('#home-intro-template').innerHTML;
 const homeNewcomer=document.querySelector('#home-newcomer-template').innerHTML;
