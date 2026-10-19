@@ -1,6 +1,6 @@
 {
   "meeting": "주일 점심 식사 후",
-  "location": "2층 다목적실",
+  "location": "2층 비전홀",
   "image": "./assets/community/education/youth/youth-20261015-1-preview.webp",
   "images": [
     {
@@ -48,7 +48,8 @@
     "학생회"
   ],
   "eyebrow": "FAITH FOR TOMORROW",
-  "description": "[소개 문구 초안] 잘 되나? 질문하고, 꿈꾸고, 함께 믿는 우리. 말씀 안에서 나를 발견하고 믿음의 친구들과 함께 자라갑니다.",
+  "headline": "말씀으로 자라고, 믿음으로 꿈꾸는 우리.",
+  "description": "세종하나교회 학생부는 중학생과 고등학생이 함께 말씀을 배우고 예수님을 닮아가는 공동체입니다. 학교와 일상에서 만나는 고민과 질문을 나누며, 예배와 기도 안에서 믿음을 키워갑니다. 서로를 격려하는 친구들과 함께 그리스도인으로 살아가는 길을 찾아갑니다.",
   "audience": "중학생과 고등학생",
   "leader": "송나단 목사, 문홍일 전도사",
   "contentPending": false,

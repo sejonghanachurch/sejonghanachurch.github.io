@@ -1,8 +1,8 @@
 import { SAMPLE } from './data.js?v=education-label-20261007';
-import { COMMUNITY } from './community-data.js?v=community-meetings-20261015';
-import { imageAsset } from './image-assets.js?v=youth-20261015';
+import { COMMUNITY } from './community-data.js?v=adults-cover-20261019';
+import { imageAsset } from './image-assets.js?v=adults-cover-20261019';
 import { currentPath, canonicalizeCurrentRoute, normalizeRouteLinks, bindRouteNavigation } from './routing.js?v=seo-20261014';
-import { updatePageSeo } from './page-seo.js?v=youth-20261015';
+import { updatePageSeo } from './page-seo.js?v=youth-copy-20261019';
 const prerender=window.__CHURCH_PRERENDER__===true;
 const groupPath=(root,id)=>root==='education'&&id==='adults'?'cells':`${root}/${id}`;
 const nav = [
@@ -150,7 +150,7 @@ function groupPage(root,id){
  const g=state.education.find(x=>x.id===id);
  if(!g)return notFound();
  const mature=['adults','caleb'].includes(id);
- const copy=`<div class="prose"><p class="eyebrow green">${g.eyebrow}</p><h2>${g.headline?esc(g.headline):mature?'삶을 나누며,<br>믿음으로 함께합니다.':'오늘의 작은 믿음이<br>내일의 큰 소망으로.'}</h2><p>${esc(g.description)}</p><div class="info-list">${g.leader?`<div class="info-row"><strong>담당자</strong><span>${esc(g.leader)}</span></div>`:''}${g.audience?`<div class="info-row"><strong>함께하는 이들</strong><span>${esc(g.audience)}</span></div>`:''}<div class="info-row"><strong>${g.headline||id==='youth'?'모임 시간':'모임 안내'}</strong><span>${esc(g.meeting)}</span></div><div class="info-row"><strong>${id==='youth'?'모임 장소':'장소'}</strong><span>${esc(g.location)}</span></div></div><div class="button-row"><a class="button solid" href="#/directions">교회 방문 안내</a></div></div>`;
+ const copy=`<div class="prose"><p class="eyebrow green">${g.eyebrow}</p><h2>${g.headline?esc(g.headline):mature?'삶을 나누며,<br>믿음으로 함께합니다.':'오늘의 작은 믿음이<br>내일의 큰 소망으로.'}</h2><p>${esc(g.description)}</p><div class="info-list">${g.leader?`<div class="info-row"><strong>담당자</strong><span>${esc(g.leader)}</span></div>`:''}${g.audience?`<div class="info-row"><strong>함께하는 이들</strong><span>${esc(g.audience)}</span></div>`:''}<div class="info-row"><strong>${g.headline||id==='youth'?'모임 시간':'모임 안내'}</strong><span>${esc(g.meeting)}</span></div><div class="info-row"><strong>${['youth','young-adult'].includes(id)?'모임 장소':'장소'}</strong><span>${esc(g.location)}</span></div></div><div class="button-row"><a class="button solid" href="#/directions">교회 방문 안내</a></div></div>`;
  return page(g.title,'하나님의 사랑 안에서 함께 자라는 공동체',`<div class="detail-grid${id==='infant'?' infant-introduction':id==='youth'?' youth-introduction':''}"><div>${groupPicture(g,`${root}/${id}`)}</div><div>${resource(`group-copy:${root}/${id}`,copy,'rows',true,Boolean(g.contentPending))}</div></div>${resource(`group-gallery:${root}/${id}`,g.images.length>(mature?1:0)?`<h3 class="spaced-title">활동 사진</h3>${gallery(g.images,{hideTitles:true,galleryTitle:g.title})}`:'','image',true)}`,nav[3],id==='infant'?infantVideos():id==='young-adult'?youngAdultVideos():'');
 }
 function infantVideos(){
@@ -173,11 +173,11 @@ function peopleCards(){
  const people=[
   {id:'pastor',name:'위남환',role:'담임목사',image:'./assets/pastor-wi-namhwan-smooth.svg',width:1082,height:1082},
   {id:'seong',name:'성혜순',role:'사모',ministries:['유아부'],image:'./assets/seong-hyesun-smooth.svg',width:204,height:320},
-  {id:'song',name:'송나단',role:'부목사',ministries:['학생부']},
+  {id:'song',name:'송나단',role:'부목사',ministries:['학생부'],image:'./assets/song-nadan-20261019.webp'},
   {id:'seok',name:'석정문',role:'협동목사',ministries:['교회 조직코칭','리더코칭','평신도코칭'],image:'./assets/seok-jeongmun.png',width:1140,height:1380},
-  {id:'wi',name:'위태영',role:'전도사',ministries:['청년부']},
-  {id:'park',name:'박한솔',role:'전도사',ministries:['초등부','행정']},
-  {id:'moon',name:'문홍일',role:'전도사',ministries:['학생부','토요캠프']}
+  {id:'wi',name:'위태영',role:'전도사',ministries:['청년부'],image:'./assets/wi-taeyoung-20261019.webp'},
+  {id:'park',name:'박한솔',role:'전도사',ministries:['초등부','행정'],image:'./assets/park-hansol-20261019.webp'},
+  {id:'moon',name:'문홍일',role:'전도사',ministries:['학생부','토요캠프'],image:'./assets/moon-hongil-20261019.webp'}
  ];
  const support=[
   ['총무',['김영옥 집사']],
@@ -275,7 +275,7 @@ function worship(){
   ['수요예배','수요일','20:00 - 21:00'],
   ['금요기도회','금요일','20:00 - 22:00'],
   ['학생부 모임','주일','점심 식사 후'],
-  ['청년부 모임','주일','12:00 - 13:00']
+  ['청년부 모임','주일','점심 식사 후']
  ];
  return page('예배 안내','하나님을 만나는 시간, 함께 예배하는 기쁨.',`<div class="prose worship-intro"><p class="eyebrow green">WORSHIP TOGETHER</p><h2>예배가 삶이 되고,<br>삶이 예배가 됩니다.</h2><p>말씀을 듣고 찬양하며, 하나님께 우리의 마음을 드립니다. 세종하나교회의 예배에 여러분을 초대합니다.</p><a class="button solid" href="#/sermons">주일예배 영상 보기</a></div><section class="worship-schedule" aria-labelledby="worship-schedule-title"><h3 class="spaced-title" id="worship-schedule-title">예배와 모임 시간</h3><div class="schedule-wrap"><table class="schedule worship-schedule-table" aria-labelledby="worship-schedule-title"><thead><tr><th scope="col">예배 / 모임</th><th scope="col">요일</th><th scope="col">시간</th></tr></thead><tbody>${schedule.map(([name,day,time])=>`<tr><th scope="row">${esc(name)}</th><td>${esc(day)}</td><td class="worship-time">${esc(time)}</td></tr>`).join('')}</tbody></table></div></section>`,nav[1]);
 }

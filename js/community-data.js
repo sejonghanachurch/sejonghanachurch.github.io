@@ -270,32 +270,45 @@ export const COMMUNITY = {
       "imageAlt": "유아부 어린이들과 선생님들이 함께한 야외 모임"
     },
     {
-      "meeting": "예배와 모임 시간은 교회에 문의해 주세요.",
-      "location": "교회에서 안내해 드립니다.",
-      "image": "./assets/community/education/children/1UAUD-OYot7RPrmZDehGPY3ig-0vBTqz3-preview.webp",
+      "meeting": "주일 11:00-12:00",
+      "location": "2층 비전홀",
+      "image": "./assets/community/education/children/children-20261019-1-preview.webp",
       "images": [
         {
-          "id": "1UAUD-OYot7RPrmZDehGPY3ig-0vBTqz3",
-          "title": "01-공동체-샘플.jpg",
-          "url": "./assets/community/education/children/1UAUD-OYot7RPrmZDehGPY3ig-0vBTqz3-preview.webp",
-          "originalUrl": "./assets/community/education/children/1UAUD-OYot7RPrmZDehGPY3ig-0vBTqz3-full.webp",
+          "id": "children-20261019-2",
+          "title": "초등부 여름성경학교 시상식",
+          "url": "./assets/community/education/children/children-20261019-2-preview.webp",
+          "status": "ready"
+        },
+        {
+          "id": "children-20261019-3",
+          "title": "초등부 말씀 나눔",
+          "url": "./assets/community/education/children/children-20261019-3-preview.webp",
+          "status": "ready"
+        },
+        {
+          "id": "children-20261019-4",
+          "title": "초등부 찬양과 예배",
+          "url": "./assets/community/education/children/children-20261019-4-preview.webp",
           "status": "ready"
         }
       ],
-      "sample": true,
-      "imageSample": true,
+      "sample": false,
+      "imageSample": false,
       "id": "children",
       "title": "초등부",
       "eyebrow": "GROWING IN GRACE",
-      "description": "[소개 문구 초안] 말씀 속에서 발견하는 놀라운 기쁨. 친구들과 함께 예배하고 배우며 예수님의 사랑을 알아갑니다.",
-      "audience": "어린이",
-      "leader": "박한솔 전도사",
+      "headline": "거룩한 세상의 빛으로 쓰임받는 초등부 공동체!",
+      "description": "말씀과 예배속에서 경험한 하나님의 사랑을 이웃에게 전하여 더 큰 기쁨을 누리어 살아가도록 안내합니다",
+      "audience": "초1-6학년 친구들",
+      "leader": "박한솔 전도사, 송예린 선생님",
       "contentPending": false,
-      "mediaPending": false
+      "mediaPending": false,
+      "imageAlt": "초등부 어린이들과 선생님이 함께한 공동체 사진"
     },
     {
       "meeting": "주일 점심 식사 후",
-      "location": "2층 다목적실",
+      "location": "2층 비전홀",
       "image": "./assets/community/education/youth/youth-20261015-1-preview.webp",
       "images": [
         {
@@ -343,7 +356,8 @@ export const COMMUNITY = {
         "학생회"
       ],
       "eyebrow": "FAITH FOR TOMORROW",
-      "description": "[소개 문구 초안] 잘 되나? 질문하고, 꿈꾸고, 함께 믿는 우리. 말씀 안에서 나를 발견하고 믿음의 친구들과 함께 자라갑니다.",
+      "headline": "말씀으로 자라고, 믿음으로 꿈꾸는 우리.",
+      "description": "세종하나교회 학생부는 중학생과 고등학생이 함께 말씀을 배우고 예수님을 닮아가는 공동체입니다. 학교와 일상에서 만나는 고민과 질문을 나누며, 예배와 기도 안에서 믿음을 키워갑니다. 서로를 격려하는 친구들과 함께 그리스도인으로 살아가는 길을 찾아갑니다.",
       "audience": "중학생과 고등학생",
       "leader": "송나단 목사, 문홍일 전도사",
       "contentPending": false,
@@ -351,8 +365,8 @@ export const COMMUNITY = {
       "imageAlt": "학생부 여름수련회 단체사진"
     },
     {
-      "meeting": "예배와 모임 시간은 교회에 문의해 주세요.",
-      "location": "교회에서 안내해 드립니다.",
+      "meeting": "주일 점심 식사 후",
+      "location": "1층 모임실",
       "image": "./assets/community/cells/1/cell-1-20261013-preview.webp",
       "images": [
         {
@@ -371,7 +385,8 @@ export const COMMUNITY = {
         "청년회"
       ],
       "eyebrow": "LIVING OUR FAITH",
-      "description": "[소개 문구 초안] 안뇽? 청춘의 길 위에서 믿음으로 함께합니다. 삶의 고민을 나누고 세상 속에서 그리스도인으로 살아가는 공동체입니다.",
+      "headline": "함께 걷는 청춘, 함께 자라는 믿음.",
+      "description": "세종하나교회 청년부는 삶의 질문과 꿈을 함께 나누며 예수님을 따라가는 공동체입니다. 말씀과 기도 안에서 서로를 격려하고, 학교와 일터를 비롯한 일상에서 믿음을 실천하며 함께 자라갑니다.",
       "audience": "청년",
       "leader": "위태영 전도사",
       "contentPending": false,
@@ -381,18 +396,17 @@ export const COMMUNITY = {
     {
       "meeting": "각 셀 소개에서 모임 안내를 확인해 주세요.",
       "location": "교회에서 안내해 드립니다.",
-      "image": "./assets/community/education/adults/1ZSA4Hvj10YtD_WjubVPNdL5v6IwPgYmn-preview.webp",
+      "image": "./assets/community/education/adults/adults-20261019-preview.webp",
       "images": [
         {
-          "id": "1ZSA4Hvj10YtD_WjubVPNdL5v6IwPgYmn",
-          "title": "01-공동체-샘플.jpg",
-          "url": "./assets/community/education/adults/1ZSA4Hvj10YtD_WjubVPNdL5v6IwPgYmn-preview.webp",
-          "originalUrl": "./assets/community/education/adults/1ZSA4Hvj10YtD_WjubVPNdL5v6IwPgYmn-full.webp",
+          "id": "adults-20261019",
+          "title": "신혼부부/장년부 셀모임 공동체 사진",
+          "url": "./assets/community/education/adults/adults-20261019-preview.webp",
           "status": "ready"
         }
       ],
       "sample": false,
-      "imageSample": true,
+      "imageSample": false,
       "id": "adults",
       "title": "신혼부부/장년부 (셀모임)",
       "aliases": [
@@ -405,7 +419,8 @@ export const COMMUNITY = {
       "audience": "장년 성도",
       "leader": "",
       "contentPending": false,
-      "mediaPending": false
+      "mediaPending": false,
+      "imageAlt": "신혼부부와 장년 성도들이 함께한 공동체 사진"
     },
     {
       "meeting": "예배와 모임 시간은 교회에 문의해 주세요.",
