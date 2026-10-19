@@ -1,6 +1,6 @@
 import { SAMPLE } from './data.js?v=education-label-20261007';
-import { COMMUNITY } from './community-data.js?v=adults-cover-20261019';
-import { imageAsset } from './image-assets.js?v=adults-cover-20261019';
+import { COMMUNITY } from './community-data.js?v=young-adult-photos-20261020';
+import { imageAsset } from './image-assets.js?v=young-adult-photos-20261020';
 import { currentPath, canonicalizeCurrentRoute, normalizeRouteLinks, bindRouteNavigation } from './routing.js?v=seo-20261014';
 import { updatePageSeo } from './page-seo.js?v=youth-copy-20261019';
 const prerender=window.__CHURCH_PRERENDER__===true;
@@ -176,7 +176,7 @@ function peopleCards(){
   {id:'song',name:'송나단',role:'부목사',ministries:['학생부'],image:'./assets/song-nadan-20261019.webp'},
   {id:'seok',name:'석정문',role:'협동목사',ministries:['교회 조직코칭','리더코칭','평신도코칭'],image:'./assets/seok-jeongmun.png',width:1140,height:1380},
   {id:'wi',name:'위태영',role:'전도사',ministries:['청년부'],image:'./assets/wi-taeyoung-20261019.webp'},
-  {id:'park',name:'박한솔',role:'전도사',ministries:['초등부','행정'],image:'./assets/park-hansol-20261019.webp'},
+  {id:'park',name:'박한솔',role:'전도사',ministries:['초등부','행정'],image:'./assets/park-hansol-20261020.webp'},
   {id:'moon',name:'문홍일',role:'전도사',ministries:['학생부','토요캠프'],image:'./assets/moon-hongil-20261019.webp'}
  ];
  const support=[
@@ -293,7 +293,7 @@ function oneMinute(){
  return page('내 삶을 바꾸는 1분','짧은 영상으로 나누는 말씀.',`${resource('one-minute-feedback',feedback,'rows',true)}${resource('one-minute-videos',videos,'cards',false,!state.oneMinuteLoaded&&state.oneMinuteStatus==='loading')}<div class="button-row"><a class="button outline" href="${url(href)}" target="_blank" rel="noopener noreferrer">YouTube에서 재생목록 전체 보기 <span aria-hidden="true">↗</span></a></div>`,nav[1]);
 }
 function saturdayCamp(){
- return page('토요캠프','함께 배우고 어울리는 토요일.',`<section class="mission-intro"><p class="eyebrow green">SATURDAY CAMP</p><h2>배움의 즐거움,<br>함께하는 기쁨.</h2><div class="camp-programs"><h3>토요캠프 교실</h3><ul class="camp-classes"><li>기타 교실</li><li>드럼 교실</li><li>탁구 교실</li><li>영어성경 교실</li><li>영어찬양 교실</li></ul></div><div class="info-list"><div class="info-row"><strong>활동 기간</strong><span>2026년 9월–11월</span></div><div class="info-row"><strong>활동 시간</strong><span>매주 토요일 오후 3시–5시</span></div><div class="info-row"><strong>문의</strong><span>문홍일 전도사 (010-XXXX-XXXX)</span></div></div></section><section class="camp-photos" aria-labelledby="camp-photos-title"><h3 class="spaced-title" id="camp-photos-title">활동 사진</h3>${gallery(state.camp.images,{hideTitles:true,galleryTitle:'토요캠프'})}</section>`,missionNav);
+ return page('토요캠프','함께 배우고 어울리는 토요일.',`<section class="mission-intro"><p class="eyebrow green">SATURDAY CAMP</p><h2>배움의 즐거움,<br>함께하는 기쁨.</h2><div class="camp-programs"><h3>토요캠프 교실</h3><ul class="camp-classes"><li>기타 교실</li><li>드럼 교실</li><li>탁구 교실</li><li>영어성경 교실</li><li>영어찬양 교실</li></ul></div><div class="info-list"><div class="info-row"><strong>활동 기간</strong><span>2026년 9월–11월</span></div><div class="info-row"><strong>활동 시간</strong><span>매주 토요일 오후 3시–5시</span></div></div></section><section class="camp-photos" aria-labelledby="camp-photos-title"><h3 class="spaced-title" id="camp-photos-title">활동 사진</h3>${gallery(state.camp.images,{hideTitles:true,galleryTitle:'토요캠프'})}</section>`,missionNav);
 }
 function saturdayOutreach(){
  const outreach=state.outreach;

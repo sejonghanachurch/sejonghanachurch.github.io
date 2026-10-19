@@ -370,10 +370,33 @@ export const COMMUNITY = {
       "image": "./assets/community/cells/1/cell-1-20261013-preview.webp",
       "images": [
         {
-          "id": "1MJsN2iReJdTtzMYu_HSsLJlQTf5E1GT1",
-          "title": "01-공동체-샘플.jpg",
-          "url": "./assets/community/education/young-adult/1MJsN2iReJdTtzMYu_HSsLJlQTf5E1GT1-preview.webp",
-          "originalUrl": "./assets/community/education/young-adult/1MJsN2iReJdTtzMYu_HSsLJlQTf5E1GT1-full.webp",
+          "id": "young-adult-20261020-1",
+          "title": "청년부 활동 사진",
+          "url": "./assets/community/education/young-adult/young-adult-20261020-1-preview.webp",
+          "status": "ready"
+        },
+        {
+          "id": "young-adult-20261020-2",
+          "title": "청년부 활동 사진",
+          "url": "./assets/community/education/young-adult/young-adult-20261020-2-preview.webp",
+          "status": "ready"
+        },
+        {
+          "id": "young-adult-20261020-3",
+          "title": "청년부 활동 사진",
+          "url": "./assets/community/education/young-adult/young-adult-20261020-3-preview.webp",
+          "status": "ready"
+        },
+        {
+          "id": "young-adult-20261020-4",
+          "title": "청년부 활동 사진",
+          "url": "./assets/community/education/young-adult/young-adult-20261020-4-preview.webp",
+          "status": "ready"
+        },
+        {
+          "id": "young-adult-20261020-5",
+          "title": "청년부 활동 사진",
+          "url": "./assets/community/education/young-adult/young-adult-20261020-5-preview.webp",
           "status": "ready"
         }
       ],
