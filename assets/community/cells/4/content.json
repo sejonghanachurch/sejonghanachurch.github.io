@@ -4,11 +4,25 @@
   "meeting": "주일 점심 식사 후",
   "location": "교회 식당",
   "coverFileId": "",
-  "sample": true,
-  "imageSample": true,
-  "imageSourceUrl": "https://www.pexels.com/photo/person-placing-hands-on-bible-2258251/",
-  "imageCredit": "Luis Quintero / Pexels",
-  "imageLicense": "Pexels License",
-  "imageLicenseUrl": "https://www.pexels.com/license/",
-  "imageAlt": "펼친 성경 위로 기도하는 두 손 — 소그룹 소개용 샘플 사진"
+  "sample": false,
+  "imageSample": false,
+  "imageAlt": "4셀 모임 사진",
+  "leader": "문연식 집사",
+  "image": "./assets/community/cells/4/cell-4-20261104-1-preview.webp",
+  "images": [
+    {
+      "id": "cell-4-20261104-1",
+      "title": "4셀 모임 사진",
+      "url": "./assets/community/cells/4/cell-4-20261104-1-preview.webp",
+      "position": "50% 75%",
+      "status": "ready"
+    },
+    {
+      "id": "cell-4-20261104-2",
+      "title": "4셀 모임 사진",
+      "url": "./assets/community/cells/4/cell-4-20261104-2-preview.webp",
+      "position": "50% 93%",
+      "status": "ready"
+    }
+  ]
 }

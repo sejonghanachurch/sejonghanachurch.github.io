@@ -230,6 +230,7 @@ dialog .photo-slide-outgoing,.album-photo-stage.is-photo-sliding>.album-photo-im
 @media(max-width:640px){.worship-schedule-table{display:block;position:relative}.worship-schedule-table thead{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);clip-path:inset(50%);white-space:nowrap}.worship-schedule-table tbody{display:block;border-top:1px solid var(--line)}.worship-schedule-table tbody tr{display:grid;grid-template-columns:70px minmax(0,1fr);column-gap:12px;row-gap:8px;padding:20px 0;border-bottom:1px solid var(--line)}.worship-schedule-table tbody tr:last-child{border-bottom:0}.page-layout .worship-schedule-table tbody th,.page-layout .worship-schedule-table tbody td{border:0;padding:0;width:auto;font-size:18px;line-height:1.6}.worship-schedule-table tbody th{grid-column:1 / -1}.worship-schedule-table tbody td:nth-child(2){grid-column:1}.worship-schedule-table .worship-time{grid-column:2}}
 
 /* Cell photos share one crop ratio, with a slideshow for multiple photos. */
+[data-resource="group-image:cells/3"] img{object-position:50% 67%}
 .cell-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
 .cell-card{min-width:0;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:white}
 .cell-slideshow{position:relative;width:100%;height:100%;isolation:isolate;overflow:hidden}

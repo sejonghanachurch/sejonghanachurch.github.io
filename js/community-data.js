@@ -74,19 +74,19 @@ export const COMMUNITY = {
       "description": "[소개 문구 초안] 일상에서 발견한 은혜를 나눕니다. 말씀을 가까이하고 서로를 따뜻하게 돌보는 3셀입니다.",
       "meeting": "모임 시간은 교회에 문의해 주세요.",
       "location": "모임 장소는 교회에서 안내해 드립니다.",
-      "image": "./assets/community/cells/3/1Ghym4UiDMngglDS4Axg8tKTObdN1cePT-preview.webp",
+      "image": "./assets/community/cells/3/cell-3-20261104-preview.webp",
       "images": [
         {
-          "id": "1Ghym4UiDMngglDS4Axg8tKTObdN1cePT",
-          "title": "01-공동체-샘플.jpg",
-          "url": "./assets/community/cells/3/1Ghym4UiDMngglDS4Axg8tKTObdN1cePT-preview.webp",
-          "originalUrl": "./assets/community/cells/3/1Ghym4UiDMngglDS4Axg8tKTObdN1cePT-full.webp",
+          "id": "cell-3-20261104",
+          "title": "3셀 모임 사진",
+          "url": "./assets/community/cells/3/cell-3-20261104-preview.webp",
           "status": "ready"
         }
       ],
-      "sample": true,
-      "imageSample": true,
-      "audience": null
+      "sample": false,
+      "imageSample": false,
+      "audience": null,
+      "imageAlt": "3셀 모임 사진"
     },
     {
       "id": "4",
@@ -98,24 +98,27 @@ export const COMMUNITY = {
       "description": "[소개 문구 초안] 믿음의 걸음을 함께 걷습니다. 서로 다른 삶이 만나 하나의 공동체를 이루는 4셀입니다.",
       "meeting": "주일 점심 식사 후",
       "location": "교회 식당",
-      "image": "./assets/community/cells/4/1FyFYtNEml7Kr9aCTcM5ys0_NfWV4hC1_-preview.webp",
+      "image": "./assets/community/cells/4/cell-4-20261104-1-preview.webp",
       "images": [
         {
-          "id": "1FyFYtNEml7Kr9aCTcM5ys0_NfWV4hC1_",
-          "title": "01-공동체-샘플.jpg",
-          "url": "./assets/community/cells/4/1FyFYtNEml7Kr9aCTcM5ys0_NfWV4hC1_-preview.webp",
-          "originalUrl": "./assets/community/cells/4/1FyFYtNEml7Kr9aCTcM5ys0_NfWV4hC1_-full.webp",
+          "id": "cell-4-20261104-1",
+          "title": "4셀 모임 사진",
+          "url": "./assets/community/cells/4/cell-4-20261104-1-preview.webp",
+          "position": "50% 75%",
+          "status": "ready"
+        },
+        {
+          "id": "cell-4-20261104-2",
+          "title": "4셀 모임 사진",
+          "url": "./assets/community/cells/4/cell-4-20261104-2-preview.webp",
+          "position": "50% 93%",
           "status": "ready"
         }
       ],
-      "sample": true,
-      "imageSample": true,
+      "sample": false,
+      "imageSample": false,
       "audience": null,
-      "imageCredit": "Luis Quintero / Pexels",
-      "imageLicense": "Pexels License",
-      "imageLicenseUrl": "https://www.pexels.com/license/",
-      "imageSourceUrl": "https://www.pexels.com/photo/person-placing-hands-on-bible-2258251/",
-      "imageAlt": "펼친 성경 위로 기도하는 두 손 — 소그룹 소개용 샘플 사진"
+      "imageAlt": "4셀 모임 사진"
     },
     {
       "id": "5",
@@ -151,24 +154,19 @@ export const COMMUNITY = {
       "description": "[소개 문구 초안] 삶의 자리에서 믿음을 이어갑니다. 말씀을 나누고 이웃을 향한 사랑을 실천하는 7셀입니다.",
       "meeting": "모임 시간은 교회에 문의해 주세요.",
       "location": "모임 장소는 교회에서 안내해 드립니다.",
-      "image": "./assets/community/cells/7/16BnanIlVJdt-3DalXt1neMWEwLzNLj_k-preview.webp",
+      "image": "./assets/community/cells/7/cell-7-20261104-preview.webp",
       "images": [
         {
-          "id": "16BnanIlVJdt-3DalXt1neMWEwLzNLj_k",
-          "title": "01-공동체-샘플.jpg",
-          "url": "./assets/community/cells/7/16BnanIlVJdt-3DalXt1neMWEwLzNLj_k-preview.webp",
-          "originalUrl": "./assets/community/cells/7/16BnanIlVJdt-3DalXt1neMWEwLzNLj_k-full.webp",
+          "id": "cell-7-20261104",
+          "title": "7셀 모임 사진",
+          "url": "./assets/community/cells/7/cell-7-20261104-preview.webp",
           "status": "ready"
         }
       ],
-      "sample": true,
-      "imageSample": true,
+      "sample": false,
+      "imageSample": false,
       "audience": null,
-      "imageCredit": "Andrea Piacquadio / Pexels",
-      "imageLicense": "Pexels License",
-      "imageLicenseUrl": "https://www.pexels.com/license/",
-      "imageSourceUrl": "https://www.pexels.com/photo/crop-multiracial-people-joining-hands-together-during-break-in-modern-workplace-3931562/",
-      "imageAlt": "함께 손을 모으는 사람들 — 소그룹 소개용 샘플 사진"
+      "imageAlt": "7셀 모임 사진"
     },
     {
       "id": "8",

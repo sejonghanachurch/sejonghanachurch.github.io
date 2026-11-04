@@ -4,5 +4,17 @@
   "meeting": "모임 시간은 교회에 문의해 주세요.",
   "location": "모임 장소는 교회에서 안내해 드립니다.",
   "coverFileId": "",
-  "sample": true
+  "sample": false,
+  "leader": "김영옥 집사",
+  "image": "./assets/community/cells/3/cell-3-20261104-preview.webp",
+  "images": [
+    {
+      "id": "cell-3-20261104",
+      "title": "3셀 모임 사진",
+      "url": "./assets/community/cells/3/cell-3-20261104-preview.webp",
+      "status": "ready"
+    }
+  ],
+  "imageAlt": "3셀 모임 사진",
+  "imageSample": false
 }
